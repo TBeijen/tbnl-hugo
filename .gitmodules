@@ -1,0 +1,4 @@
+[submodule "themes/hugo-steam-theme"]
+	path = themes/hugo-steam-theme
+	url = git@github.com:TBeijen/hugo-steam-theme.git
+	branch = blog-changes
