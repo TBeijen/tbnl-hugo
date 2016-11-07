@@ -1,3 +1,39 @@
-title = "My New Hugo Site"
+baseurl = "https://www.dev.tibobeijen.nl/"
 languageCode = "en-us"
-baseurl = "http://replace-this-with-your-hugo-site.com/"
+title = "TBNL"
+theme = "hugo-steam-theme"
+disqusShortname = "tbnl-dev"
+paginate = 10
+
+[params]
+
+	title = "TBNL"
+	subtitle = "…another view on the web and how it’s built"
+	copyright = "Released under the MIT license."
+
+	# You can choose between green, orange, red and blue.
+	themeColor = "green"
+	# Enable Google Analytics be inserting your tracking code
+	googleAnalytics = ""
+
+	# To provide some metadata for search engines and the about section in the footer
+	# feel free to add a few information about you and your website.
+	name = "Tibo Beijen"
+	bio = "I'm just a theme. That's it. If you like my design clone [me](//github.com/digitalcraftsman/hugo-steam-theme) from Github. Thanks."
+	description = "Your description of the blog"
+	location = "" # optional
+	twitter = "TBeijen" # optional
+	github = "TBeijen" # optional
+ 	gitlab = "TBeijen" # optional
+
+	# Enable a comment system
+	# You can choose between Disqus or Google Plus by setting comments
+	# to disqus or googleplus. For using Disqus you need to enter your
+	# shortname in disqusShortname at the top of the configs. 
+	comments = "disqus"
+
+	# Customize or translate the strings
+	keepReadingStr = "Keep reading"
+	backtotopStr = "Back to top"
+	shareStr = "Share"
+	pageNotFoundTitle = "404 - Page not found"
