@@ -2,8 +2,14 @@ baseurl = "https://www.dev.tibobeijen.nl/"
 languageCode = "en-us"
 title = "TBNL"
 theme = "hugo-steam-theme"
+# theme = "startbootstrap-clean-blog"
 disqusShortname = "tbnl-dev"
 paginate = 10
+
+[taxonomies]
+tag = "tags"
+category = "categories"
+
 
 [params]
 
@@ -12,9 +18,9 @@ paginate = 10
 	copyright = "Released under the MIT license."
 
 	# You can choose between green, orange, red and blue.
-	themeColor = "green"
+	themeColor = "tbnl-btbam-p2fs"
 	# Enable Google Analytics be inserting your tracking code
-	googleAnalytics = ""
+	googleAnalytics = "UA-6241889-1"
 
 	# To provide some metadata for search engines and the about section in the footer
 	# feel free to add a few information about you and your website.
@@ -22,9 +28,14 @@ paginate = 10
 	bio = "I'm just a theme. That's it. If you like my design clone [me](//github.com/digitalcraftsman/hugo-steam-theme) from Github. Thanks."
 	description = "Your description of the blog"
 	location = "" # optional
-	twitter = "TBeijen" # optional
-	github = "TBeijen" # optional
- 	gitlab = "TBeijen" # optional
+	twitter = "TBeijen"
+ 	linkedin = ''
+ 	googleplus = ''
+ 	facebook = ''
+ 	instagram = ''
+	github = "TBeijen"
+ 	gitlab = "TBeijen"
+	bitbucket = ""
 
 	# Enable a comment system
 	# You can choose between Disqus or Google Plus by setting comments
@@ -32,7 +43,15 @@ paginate = 10
 	# shortname in disqusShortname at the top of the configs. 
 	comments = "disqus"
 
+	# By setting homeMaxPosts, home page will show limited number of post and link to archive (/post/) 
+	# instead of paginated list of posts
+	homeMaxPosts = 4
+
+	# Use summary instead, if description is empty
+	useSummaryIfNoDescription = true
+
 	# Customize or translate the strings
+	archiveStr = "Older posts"
 	keepReadingStr = "Keep reading"
 	backtotopStr = "Back to top"
 	shareStr = "Share"
