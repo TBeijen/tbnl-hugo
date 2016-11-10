@@ -12,6 +12,17 @@ def code_to_markdown(content):
 		return '\n'.join(['    ' + line for line in m.group(1).split('\n')])
 	return re.sub(re.compile('<pre.*?>(.*?)</pre>', re.MULTILINE|re.DOTALL), repl, content)
 
+def fix_img_tags(content):
+	def repl(m):
+		# replaces img locations
+		m = m.group(1).replace('http://www.tibobeijen.nl/blog/wp-content/', '/media/wp-content/')
+		# remove width & height
+		m = re.sub(r'(width|height)="\d+"', '', m)
+		return m
+	return re.sub(re.compile('(<img.*?/>)', re.MULTILINE|re.DOTALL), repl, content)
+
+
 content = code_to_markdown(content)
+content = fix_img_tags(content)
 
 print content
