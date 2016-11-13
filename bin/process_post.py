@@ -21,8 +21,12 @@ def fix_img_tags(content):
 		return m
 	return re.sub(re.compile('(<img.*?/>)', re.MULTILINE|re.DOTALL), repl, content)
 
+def github_to_gitlab(content):
+	return content.replace(': https://github.com/TBeijen/', ': https://gitlab.com/TBeijen-blog-sample-code/')
+
 
 content = code_to_markdown(content)
 content = fix_img_tags(content)
+content = github_to_gitlab(content)
 
 print content
