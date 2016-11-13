@@ -1,7 +1,6 @@
 ---
 title: DPC09 down, DPC10 to go
 author: Tibo Beijen
-layout: post
 date: 2009-06-13T21:29:57+00:00
 url: /blog/2009/06/13/dpc09-down-dpc10-to-go/
 postuserpic:

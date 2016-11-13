@@ -1,7 +1,6 @@
 ---
 title: PHPBenelux meeting at Freshheads
 author: Tibo Beijen
-layout: post
 date: 2009-09-30T18:48:53+00:00
 url: /blog/2009/09/30/phpbenelux-meeting-at-freshheads/
 postuserpic:
@@ -22,13 +21,13 @@ Two talks were scheduled and Stefan Koopmanschap kicked off the meeting with a p
 
 After a brief pause, Juliette Reinders Folmer hosted the big &#8220;Why Equal Doesn&#8217;t Equal Quiz&#8221;. 65 Questings testing the knowledge of the attendees about the type conversions going on when writing code like:
 
-<pre lang="php">$a = null;
-if (empty($a)) echo 'empty';
-
-foreach(array('test','0','etc...') as $val) {
-    if ($val) echo 'has value';
-}
-</pre>
+    $a = null;
+    if (empty($a)) echo 'empty';
+    
+    foreach(array('test','0','etc...') as $val) {
+        if ($val) echo 'has value';
+    }
+    
 
 Questions like the ones above where the easy ones&#8230; Especially interesting where the [ctype family of functions][6]. They are especially usefull for checking database result or GPC data. Although I had seen the ctype functions before I kind of forgot about them so especially there I had wrong answers. Score: 45 out of 65.
 

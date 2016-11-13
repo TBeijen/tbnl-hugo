@@ -1,7 +1,6 @@
 ---
 title: 'FireScope &#8211; Firebug extended'
 author: Tibo Beijen
-layout: post
 date: 2009-01-28T08:28:42+00:00
 url: /blog/2009/01/28/firescope-firebug-extended/
 categories:

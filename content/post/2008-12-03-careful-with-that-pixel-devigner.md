@@ -1,7 +1,6 @@
 ---
 title: Careful with that pixel, devigner
 author: Tibo Beijen
-layout: post
 date: 2008-12-03T17:04:53+00:00
 url: /blog/2008/12/03/careful-with-that-pixel-devigner/
 postuserpic:

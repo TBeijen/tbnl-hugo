@@ -1,7 +1,6 @@
 ---
 title: Lift-off. Finally!
 author: Tibo Beijen
-layout: post
 date: 2009-02-10T08:51:29+00:00
 url: /blog/2009/02/10/lift-off-finally/
 postuserpic:

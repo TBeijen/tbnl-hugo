@@ -1,7 +1,6 @@
 ---
 title: 'Usability: What does this button do?'
 author: Tibo Beijen
-layout: post
 date: 2009-10-09T14:01:48+00:00
 url: /blog/2009/10/09/usability-what-does-this-button-do/
 postuserpic:
@@ -34,7 +33,7 @@ Summarized: action and information, past and future as illustrated below:
 
 
 <div id="attachment_501" style="width: 510px" class="wp-caption aligncenter">
-  <img src="http://www.tibobeijen.nl/blog/wp-content/uploads/2009/09/usability_application_state_diagram_01.gif" alt="Usability: Application State Diagram" title="Usability: Application State Diagram" width="500" height="350" class="size-full wp-image-501" srcset="http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/09/usability_application_state_diagram_01.gif 500w, http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/09/usability_application_state_diagram_01-300x210.gif 300w" sizes="(max-width: 500px) 100vw, 500px" />
+  <img src="/media/wp-content/uploads/2009/09/usability_application_state_diagram_01.gif" alt="Usability: Application State Diagram" title="Usability: Application State Diagram"   class="size-full wp-image-501" srcset="http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/09/usability_application_state_diagram_01.gif 500w, http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/09/usability_application_state_diagram_01-300x210.gif 300w" sizes="(max-width: 500px) 100vw, 500px" />
   
   <p class="wp-caption-text">
     Usability: Application State Diagram

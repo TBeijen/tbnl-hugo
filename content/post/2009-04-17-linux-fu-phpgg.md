@@ -1,7 +1,6 @@
 ---
 title: Linux-Fu @ phpGG
 author: Tibo Beijen
-layout: post
 date: 2009-04-17T07:32:52+00:00
 url: /blog/2009/04/17/linux-fu-phpgg/
 postuserpic:
@@ -20,15 +19,15 @@ Last night there was a phpGG (dutch php user group) [meeting][1] in Utrecht with
 
 Switching between current and previous directory:
 
-<pre lang="bash">cd -</pre>
+    cd -
 
 Going home can be done without the ~:
 
-<pre lang="bash">cd</pre>
+    cd
 
 How &#8216;grep&#8217; can beat your IDE. I&#8217;ve been playing around a bit and this is really a quick way of finding all classes within a directory that implement an interface (and it&#8217;s fast!):
 
-<pre lang="bash">grep -i -r 'class ' . | grep implements</pre>
+    grep -i -r 'class ' . | grep implements
 
 And there&#8217;s &#8216;screen&#8217;. Very useful for handling multiple terminal sessions without the risk of losing them all due to a connection hick-up. Lorna has [some config examples][3] on her site.
 

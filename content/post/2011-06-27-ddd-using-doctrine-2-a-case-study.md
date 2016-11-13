@@ -1,7 +1,6 @@
 ---
 title: 'DDD using Doctrine 2: A case study'
 author: Tibo Beijen
-layout: post
 date: 2011-06-27T13:06:57+00:00
 url: /blog/2011/06/27/ddd-using-doctrine-2-a-case-study/
 postuserpic:
@@ -51,7 +50,7 @@ The application developed is a time registration tool that allows users to enter
 
 ### Description of entities {#descriptionOfEntities}
 
-[<img src="http://www.tibobeijen.nl/blog/wp-content/uploads/2011/06/yuml-ddd-hrm-001.21-500x46.png" alt="" title="User, TimeSheet and TimeSheetStatusChange entities" width="500" height="46" class="aligncenter size-medium wp-image-723" srcset="http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2011/06/yuml-ddd-hrm-001.21-500x46.png 500w, http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2011/06/yuml-ddd-hrm-001.21.png 587w" sizes="(max-width: 500px) 100vw, 500px" />][19]
+[<img src="/media/wp-content/uploads/2011/06/yuml-ddd-hrm-001.21-500x46.png" alt="" title="User, TimeSheet and TimeSheetStatusChange entities"   class="aligncenter size-medium wp-image-723" srcset="http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2011/06/yuml-ddd-hrm-001.21-500x46.png 500w, http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2011/06/yuml-ddd-hrm-001.21.png 587w" sizes="(max-width: 500px) 100vw, 500px" />][19]
 
 #### User {#entUser}
 
@@ -87,18 +86,18 @@ This is achieved by requiring an e-mail address in the constructor and by settin
 
 _[Domain/Entity/User.php][20]_
 
-<pre lang="php">class User
-{
-    // ...
-
-    /**
-     * @Column(type="string", length=128, unique=true)
-     * @var string
-     */
-    private $email;
-
-    // ...
-</pre>
+    class User
+    {
+        // ...
+    
+        /**
+         * @Column(type="string", length=128, unique=true)
+         * @var string
+         */
+        private $email;
+    
+        // ...
+    
 
 #### A TimeSheet should always belong to a user which, once specified, cannot be changed {#req2}
 
@@ -112,27 +111,27 @@ In the TimeSheet constructor, a new TimeSheetStatusChange is created and added t
 
 _[Domain/Entity/TimeSheet.php][21]_
 
-<pre lang="php">class TimeSheet
-{
-    // ...
-
-    /**
-     * Constructor requiring a registrant user instance
-     * 
-     * @param User $registrant
-     */
-    public function __construct(User $registrant)
+    class TimeSheet
     {
-    	$this->registrant = $registrant;
-    	
-    	$this->statusChanges = new ArrayCollection();
-    	$this->addStatusChange(new TimeSheetStatusChange('open'));
-    }
-
-    // no setRegistrant()
-
-    // ...
-</pre>
+        // ...
+    
+        /**
+         * Constructor requiring a registrant user instance
+         * 
+         * @param User $registrant
+         */
+        public function __construct(User $registrant)
+        {
+        	$this->registrant = $registrant;
+        	
+        	$this->statusChanges = new ArrayCollection();
+        	$this->addStatusChange(new TimeSheetStatusChange('open'));
+        }
+    
+        // no setRegistrant()
+    
+        // ...
+    
 
 <div class="sidenote">
   <p>
@@ -146,43 +145,43 @@ This is achieved by validating each TimeSheetStatusChange that is added via the 
 
 _[Domain/Entity/TimeSheet.php][21]_
 
-<pre lang="php">class TimeSheet
-{
-    // ...
-
-    /**
-     * Performs status change validation logic
-     * 
-     * @param string $statusChange
-     * @return boolean
-     */
-    protected function _validateNextStatus($nextStatus)
+    class TimeSheet
     {
-    	// make exception for initial adding of open status
-    	if ($nextStatus === 'open' && count($this->statusChanges) === 0) {
-    		return true;
-    	}
-    	
-    	// validate status changes map
-    	$allowedChangeMap = array(
-    		'open' => array('submitted'),
-    		'submitted' => array('approved', 'disapproved'),
-    		'approved' => array('final', 'disapproved'),
-    		'disapproved' => array('submitted', 'approved'),
-    		'final' => array(),
-    	);
-
-    	$currentStatus = $this->getStatus();
-    	if (in_array($nextStatus, $allowedChangeMap[$currentStatus], true)) {
-    		return true;
-    	}
-    	
-    	return false;
+        // ...
+    
+        /**
+         * Performs status change validation logic
+         * 
+         * @param string $statusChange
+         * @return boolean
+         */
+        protected function _validateNextStatus($nextStatus)
+        {
+        	// make exception for initial adding of open status
+        	if ($nextStatus === 'open' && count($this->statusChanges) === 0) {
+        		return true;
+        	}
+        	
+        	// validate status changes map
+        	$allowedChangeMap = array(
+        		'open' => array('submitted'),
+        		'submitted' => array('approved', 'disapproved'),
+        		'approved' => array('final', 'disapproved'),
+        		'disapproved' => array('submitted', 'approved'),
+        		'final' => array(),
+        	);
+    
+        	$currentStatus = $this->getStatus();
+        	if (in_array($nextStatus, $allowedChangeMap[$currentStatus], true)) {
+        		return true;
+        	}
+        	
+        	return false;
+        }
+    
+        // ...
     }
-
-    // ...
-}
-</pre>
+    
 
 #### A new TimeSheetStatusChange should have a dateApplied that is equal or more recent than the most recent TimeSheetStatusChange {#req5}
 
@@ -190,39 +189,39 @@ The dateApplied property is settable because it can’t be assumed that the time
 
 _[Domain/Entity/TimeSheet.php][21]_
 
-<pre lang="php">class TimeSheet
-{
-    // ...
-
-    /**
-     * @OneToMany(targetEntity="Domain\Entity\TimeSheetStatusChange", mappedBy="timeSheet", cascade={"persist"}, orphanRemoval=true)
-     * @OrderBy({"dateApplied" = "ASC", "id" = "ASC"})
-     */
-    private $statusChanges;
-    
-    // ...
-
-    /**
-     * Validates if the date of the statusChange given is later than the date
-     * of the last statusChange present
-     */
-    protected function _validateNextStatusChangeDate(TimeSheetStatusChange $statusChange)
+    class TimeSheet
     {
-    	// if no statusChanges present yet any date is valid
-    	if (count($this->statusChanges) === 0) {
-    		return true;
-    	}
-    	
-    	$currentDate = $this->getLastStatusChange()->getDateApplied();
-    	$nextDate = $statusChange->getDateApplied();
-    	
-    	// enable once tests finish
-		return ($nextDate >= $currentDate);
+        // ...
+    
+        /**
+         * @OneToMany(targetEntity="Domain\Entity\TimeSheetStatusChange", mappedBy="timeSheet", cascade={"persist"}, orphanRemoval=true)
+         * @OrderBy({"dateApplied" = "ASC", "id" = "ASC"})
+         */
+        private $statusChanges;
+        
+        // ...
+    
+        /**
+         * Validates if the date of the statusChange given is later than the date
+         * of the last statusChange present
+         */
+        protected function _validateNextStatusChangeDate(TimeSheetStatusChange $statusChange)
+        {
+        	// if no statusChanges present yet any date is valid
+        	if (count($this->statusChanges) === 0) {
+        		return true;
+        	}
+        	
+        	$currentDate = $this->getLastStatusChange()->getDateApplied();
+        	$nextDate = $statusChange->getDateApplied();
+        	
+        	// enable once tests finish
+    		return ($nextDate >= $currentDate);
+        }
+    
+        // ...
     }
-
-    // ...
-}
-</pre>
+    
 
 #### TimeSheetStatusChanges must have reference to a TimeSheet but at the same time must be valid. {#req6}
 
@@ -230,47 +229,47 @@ It can be prevented to store a TimeSheetStatusChange without reference to a Time
 
 _[Domain/Entity/TimeSheetStatusChange.php][23]_
 
-<pre lang="php">class TimeSheetStatusChange
-{
-    // ...
-
-    /**
-     * @ManyToOne(targetEntity="Domain\Entity\TimeSheet", inversedBy="statusChanges")
-     * @JoinColumn(name="timesheet_id", referencedColumnName="id", nullable=false)
-     */
-    private $timeSheet;
-
-    // ...
-}
-</pre>
+    class TimeSheetStatusChange
+    {
+        // ...
+    
+        /**
+         * @ManyToOne(targetEntity="Domain\Entity\TimeSheet", inversedBy="statusChanges")
+         * @JoinColumn(name="timesheet_id", referencedColumnName="id", nullable=false)
+         */
+        private $timeSheet;
+    
+        // ...
+    }
+    
 
 This still leaves the possibility to set ‘any’ TimeSheet and thereby skipping validation that would normally be done in TimeSheet::addStatusChange(). To prevent this, TimeSheetStatusChange::setTimeSheet() verifies if the TimeSheet’s last status is the current TimeSheetStatusChange instance. 
 
 _[Domain/Entity/TimeSheet.php][21]_
 
-<pre lang="php">class TimeSheetStatusChange
-{
-    // ...
-
-    /**
-     * Sets the timeSheet.
-     * 
-     * Purpose is to have the reference to the timeSheet set when adding a 
-     * new TimeSheetStatusChange to a TimeSheet. Therefore this method validates
-     * if the timeSheet has the this instance as the last statusChange.
-     * 
-     * @param TimeSheet $timeSheet
-     */
-    public function setTimeSheet(TimeSheet $timeSheet)
+    class TimeSheetStatusChange
     {
-    	if ($timeSheet->getLastStatusChange() !== $this) {
-    		throw new \InvalidArgumentException('Cannot set TimeSheet if not having current instance as lastStatusChange');
-    	}
-    	$this->timeSheet = $timeSheet;
+        // ...
+    
+        /**
+         * Sets the timeSheet.
+         * 
+         * Purpose is to have the reference to the timeSheet set when adding a 
+         * new TimeSheetStatusChange to a TimeSheet. Therefore this method validates
+         * if the timeSheet has the this instance as the last statusChange.
+         * 
+         * @param TimeSheet $timeSheet
+         */
+        public function setTimeSheet(TimeSheet $timeSheet)
+        {
+        	if ($timeSheet->getLastStatusChange() !== $this) {
+        		throw new \InvalidArgumentException('Cannot set TimeSheet if not having current instance as lastStatusChange');
+        	}
+        	$this->timeSheet = $timeSheet;
+        }
+        // ...
     }
-    // ...
-}
-</pre>
+    
 
 The result is that the only way to create a persistable TimeSheetStatusChange is by adding it to the TimeSheet which will:
 
@@ -282,19 +281,19 @@ Persisting a TimeSheet is propagated to the status changes by setting the cascad
 
 _[Domain/Entity/TimeSheet.php][21]_
 
-<pre lang="php">class TimeSheetStatusChange
-{
-    // ...
-
-    /**
-     * @OneToMany(targetEntity="Domain\Entity\TimeSheetStatusChange", mappedBy="timeSheet", cascade={"persist"}, orphanRemoval=true)
-     * @OrderBy({"dateApplied" = "ASC", "id" = "ASC"})
-     */
-    private $statusChanges;
-
-    // ...
-}
-</pre>
+    class TimeSheetStatusChange
+    {
+        // ...
+    
+        /**
+         * @OneToMany(targetEntity="Domain\Entity\TimeSheetStatusChange", mappedBy="timeSheet", cascade={"persist"}, orphanRemoval=true)
+         * @OrderBy({"dateApplied" = "ASC", "id" = "ASC"})
+         */
+        private $statusChanges;
+    
+        // ...
+    }
+    
 
 ### Where the domain model goes beyond the database model {#beyondDatabase}
 
@@ -326,7 +325,7 @@ In future articles I intend to expand on this case, showing how Domain Driven De
 
  [1]: http://domaindrivendesign.org/
  [2]: http://www.doctrine-project.org/projects/orm/2.0/docs/en
- [3]: https://github.com/TBeijen/DDD-HRM/tree/v001
+ [3]: https://gitlab.com/TBeijen-blog-sample-code/DDD-HRM/tree/v001
  [4]: #caseOutline
  [5]: #descriptionOfEntities
  [6]: #entUser
@@ -343,11 +342,11 @@ In future articles I intend to expand on this case, showing how Domain Driven De
  [17]: #beyondDatabase
  [18]: #concluding
  [19]: http://www.tibobeijen.nl/blog/wp-content/uploads/2011/06/yuml-ddd-hrm-001.21.png
- [20]: https://github.com/TBeijen/DDD-HRM/blob/v001/Domain/Entity/User.php
- [21]: https://github.com/TBeijen/DDD-HRM/blob/v001/Domain/Entity/TimeSheet.php
+ [20]: https://gitlab.com/TBeijen-blog-sample-code/DDD-HRM/blob/v001/Domain/Entity/User.php
+ [21]: https://gitlab.com/TBeijen-blog-sample-code/DDD-HRM/blob/v001/Domain/Entity/TimeSheet.php
  [22]: http://www.doctrine-project.org/docs/orm/2.0/en/reference/annotations-reference.html#orderby
- [23]: https://github.com/TBeijen/DDD-HRM/blob/v001/Domain/Entity/TimeSheetStatusChange.php
+ [23]: https://gitlab.com/TBeijen-blog-sample-code/DDD-HRM/blob/v001/Domain/Entity/TimeSheetStatusChange.php
  [24]: http://www.doctrine-project.org/docs/orm/2.0/en/reference/tools.html
  [25]: http://www.doctrine-project.org/docs/orm/2.0/en/reference/tools.html#entity-generation
- [26]: https://github.com/TBeijen/DDD-HRM/tree/v001/Test/Domain/Entity
+ [26]: https://gitlab.com/TBeijen-blog-sample-code/DDD-HRM/tree/v001/Test/Domain/Entity
  [27]: https://github.com/giorgiosironi/ddd-talk

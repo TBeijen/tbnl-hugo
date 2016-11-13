@@ -1,7 +1,6 @@
 ---
 title: Bye bye old site, welcome new site
 author: Tibo Beijen
-layout: post
 date: 2008-11-06T16:36:35+00:00
 url: /blog/2008/11/06/bye-bye-old-site-welcome-new-site/
 postuserpic:

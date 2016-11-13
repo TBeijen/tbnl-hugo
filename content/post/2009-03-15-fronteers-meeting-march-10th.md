@@ -1,7 +1,6 @@
 ---
 title: 'Fronteers: Meeting march 10th'
 author: Tibo Beijen
-layout: post
 date: 2009-03-15T10:04:20+00:00
 url: /blog/2009/03/15/fronteers-meeting-march-10th/
 postuserpic:

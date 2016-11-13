@@ -1,7 +1,6 @@
 ---
 title: Engineering World 2009
 author: Tibo Beijen
-layout: post
 date: 2009-02-10T23:01:36+00:00
 url: /blog/2009/02/11/engineering-world-2009/
 postuserpic:

@@ -1,7 +1,6 @@
 ---
 title: 'Annoying banners: A plea for quality'
 author: Tibo Beijen
-layout: post
 date: 2009-04-27T20:51:10+00:00
 url: /blog/2009/04/27/annoying-banners-a-plea-for-quality/
 postuserpic:
@@ -21,7 +20,7 @@ Banners play an essential role in many site&#8217;s business models so they are 
 The T-mobile banner is positioned at the bottom of the viewport and is kept in place by javascript or actionscript. This means that during scrolling the banner shakes because the script reacts to the scroll event. No awards won but not a real problem either. But what _is_ bad is the fact that in the orange area (note the little pun there) no link can be clicked. Something I didn&#8217;t notice at first resulting in rapid agitated clicking. See screenshot below:
 
 <div id="attachment_335" style="width: 510px" class="wp-caption aligncenter">
-  <img src="http://www.tibobeijen.nl/blog/wp-content/uploads/2009/04/tmobile_add_scaled_text.jpg" alt="T-Mobile banner on nu.nl" title="tmobile_add_scaled_text" width="500" height="317" class="size-full wp-image-335" srcset="http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/04/tmobile_add_scaled_text.jpg 500w, http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/04/tmobile_add_scaled_text-300x190.jpg 300w" sizes="(max-width: 500px) 100vw, 500px" />
+  <img src="/media/wp-content/uploads/2009/04/tmobile_add_scaled_text.jpg" alt="T-Mobile banner on nu.nl" title="tmobile_add_scaled_text"   class="size-full wp-image-335" srcset="http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/04/tmobile_add_scaled_text.jpg 500w, http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/04/tmobile_add_scaled_text-300x190.jpg 300w" sizes="(max-width: 500px) 100vw, 500px" />
   
   <p class="wp-caption-text">
     T-Mobile banner on nu.nl
@@ -43,16 +42,16 @@ To conclude this criticism in a more positive and constructive fashion I&#8217;v
 
 It&#8217;s positioning is now done by using css position:absolute but could just as well have been javascript. The demo took about 15 minutes to make while watching tv. I haven&#8217;t tested it on IE6 so expect about 2 hours needed for that but even then development time seems reasonable. The advertisment html part is displayed below.
 
-<pre lang="html"><div id="banner" style="background-color:purple;position:fixed;bottom:0;width:100%;height:80px;">
-  <div id="bannerCenter" style="width:760px;height:80px;position:relative;margin:0 auto;background-color:red;">
-    &lt;div id="phone" style="position:absolute;width:100px;height:160px;left:660px;top:-100px;background-color:#666;z-index"100;">
-    		
-  </div>
-  	
-</div>
-&lt;/div>
-&lt;/body>
-</pre>
+    <div id="banner" style="background-color:purple;position:fixed;bottom:0;width:100%;height:80px;">
+      <div id="bannerCenter" style="width:760px;height:80px;position:relative;margin:0 auto;background-color:red;">
+        &lt;div id="phone" style="position:absolute;width:100px;height:160px;left:660px;top:-100px;background-color:#666;z-index"100;">
+        		
+      </div>
+      	
+    </div>
+    &lt;/div>
+    &lt;/body>
+    
 
 Of course the real world is more complicated than can be described in a short article but it&#8217;s obvious that the examined banner is sub-par. In my opinion it would be wise, or at least nice, to take the user a bit more seriously.
 

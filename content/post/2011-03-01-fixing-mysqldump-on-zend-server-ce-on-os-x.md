@@ -1,7 +1,6 @@
 ---
 title: Fixing mysqldump on Zend Server CE on OS X
 author: Tibo Beijen
-layout: post
 date: 2011-03-01T07:37:56+00:00
 url: /blog/2011/03/01/fixing-mysqldump-on-zend-server-ce-on-os-x/
 postuserpic:
@@ -28,22 +27,22 @@ Although it is possible to specify the socket by using mysqldump&#8217;s `--sock
 
 Apparently mysqldump, as opposed to the mysql client does not use the server-specific settings contained in `/usr/local/zend/mysql/data/my.cnf`. The comments in my.cnf state:
 
-<pre lang="ini"># You can copy this file to
-# /etc/my.cnf to set global options,
-# mysql-data-dir/my.cnf to set server-specific options (in this
-# installation this directory is /usr/local/zend/mysql/data) or
-# ~/.my.cnf to set user-specific options.
-</pre>
+    # You can copy this file to
+    # /etc/my.cnf to set global options,
+    # mysql-data-dir/my.cnf to set server-specific options (in this
+    # installation this directory is /usr/local/zend/mysql/data) or
+    # ~/.my.cnf to set user-specific options.
+    
 
 After copying `/usr/local/zend/mysql/data/my.cnf` to `/etc/my.cnf` mysqldump worked as expected.
 
 In `/etc/my.cnf` I have included only the setting needed to get mysqldump running:
 
-<pre lang="ini"># Specifying socket to use for mysql/mysqldump
-# For other settings refer to /usr/local/zend/mysql/data/my.cnf
-[client]
-socket      = /usr/local/zend/mysql/tmp/mysql.sock
-</pre>
+    # Specifying socket to use for mysql/mysqldump
+    # For other settings refer to /usr/local/zend/mysql/data/my.cnf
+    [client]
+    socket      = /usr/local/zend/mysql/tmp/mysql.sock
+    
 
 Hope this saves anyone running into the same issue some time.
 
@@ -63,22 +62,22 @@ Although it is possible to specify the socket by using mysqldump&#8217;s `--sock
 
 Apparently mysqldump, as opposed to the mysql client does not use the server-specific settings contained in `/usr/local/zend/mysql/data/my.cnf`. The comments in my.cnf state:
 
-<pre lang="ini"># You can copy this file to
-# /etc/my.cnf to set global options,
-# mysql-data-dir/my.cnf to set server-specific options (in this
-# installation this directory is /usr/local/zend/mysql/data) or
-# ~/.my.cnf to set user-specific options.
-</pre>
+    # You can copy this file to
+    # /etc/my.cnf to set global options,
+    # mysql-data-dir/my.cnf to set server-specific options (in this
+    # installation this directory is /usr/local/zend/mysql/data) or
+    # ~/.my.cnf to set user-specific options.
+    
 
 After copying `/usr/local/zend/mysql/data/my.cnf` to `/etc/my.cnf` mysqldump worked as expected.
 
 In `/etc/my.cnf` I have included only the setting needed to get mysqldump running:
 
-<pre lang="ini"># Specifying socket to use for mysql/mysqldump
-# For other settings refer to /usr/local/zend/mysql/data/my.cnf
-[client]
-socket      = /usr/local/zend/mysql/tmp/mysql.sock
-</pre>
+    # Specifying socket to use for mysql/mysqldump
+    # For other settings refer to /usr/local/zend/mysql/data/my.cnf
+    [client]
+    socket      = /usr/local/zend/mysql/tmp/mysql.sock
+    
 
 Hope this saves anyone running into the same issue some time.
 
@@ -102,22 +101,22 @@ Although it is possible to specify the socket by using mysqldump&#8217;s `--sock
 
 Apparently mysqldump, as opposed to the mysql client does not use the server-specific settings contained in `/usr/local/zend/mysql/data/my.cnf`. The comments in my.cnf state:
 
-<pre lang="ini"># You can copy this file to
-# /etc/my.cnf to set global options,
-# mysql-data-dir/my.cnf to set server-specific options (in this
-# installation this directory is /usr/local/zend/mysql/data) or
-# ~/.my.cnf to set user-specific options.
-</pre>
+    # You can copy this file to
+    # /etc/my.cnf to set global options,
+    # mysql-data-dir/my.cnf to set server-specific options (in this
+    # installation this directory is /usr/local/zend/mysql/data) or
+    # ~/.my.cnf to set user-specific options.
+    
 
 After copying `/usr/local/zend/mysql/data/my.cnf` to `/etc/my.cnf` mysqldump worked as expected.
 
 In `/etc/my.cnf` I have included only the setting needed to get mysqldump running:
 
-<pre lang="ini"># Specifying socket to use for mysql/mysqldump
-# For other settings refer to /usr/local/zend/mysql/data/my.cnf
-[client]
-socket      = /usr/local/zend/mysql/tmp/mysql.sock
-</pre>
+    # Specifying socket to use for mysql/mysqldump
+    # For other settings refer to /usr/local/zend/mysql/data/my.cnf
+    [client]
+    socket      = /usr/local/zend/mysql/tmp/mysql.sock
+    
 
 Hope this saves anyone running into the same issue some time.
 
@@ -137,22 +136,22 @@ Although it is possible to specify the socket by using mysqldump&#8217;s `--sock
 
 Apparently mysqldump, as opposed to the mysql client does not use the server-specific settings contained in `/usr/local/zend/mysql/data/my.cnf`. The comments in my.cnf state:
 
-<pre lang="ini"># You can copy this file to
-# /etc/my.cnf to set global options,
-# mysql-data-dir/my.cnf to set server-specific options (in this
-# installation this directory is /usr/local/zend/mysql/data) or
-# ~/.my.cnf to set user-specific options.
-</pre>
+    # You can copy this file to
+    # /etc/my.cnf to set global options,
+    # mysql-data-dir/my.cnf to set server-specific options (in this
+    # installation this directory is /usr/local/zend/mysql/data) or
+    # ~/.my.cnf to set user-specific options.
+    
 
 After copying `/usr/local/zend/mysql/data/my.cnf` to `/etc/my.cnf` mysqldump worked as expected.
 
 In `/etc/my.cnf` I have included only the setting needed to get mysqldump running:
 
-<pre lang="ini"># Specifying socket to use for mysql/mysqldump
-# For other settings refer to /usr/local/zend/mysql/data/my.cnf
-[client]
-socket      = /usr/local/zend/mysql/tmp/mysql.sock
-</pre>
+    # Specifying socket to use for mysql/mysqldump
+    # For other settings refer to /usr/local/zend/mysql/data/my.cnf
+    [client]
+    socket      = /usr/local/zend/mysql/tmp/mysql.sock
+    
 
 Hope this saves anyone running into the same issue some time.
 

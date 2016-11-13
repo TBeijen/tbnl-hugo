@@ -1,7 +1,6 @@
 ---
 title: Dutch PHP Conference 2009
 author: Tibo Beijen
-layout: post
 date: 2009-04-24T07:30:36+00:00
 url: /blog/2009/04/24/dutch-php-conference-2009/
 postuserpic:

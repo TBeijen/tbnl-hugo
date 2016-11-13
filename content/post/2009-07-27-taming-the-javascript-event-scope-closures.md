@@ -1,7 +1,6 @@
 ---
 title: 'Taming the Javascript event scope: Closures'
 author: Tibo Beijen
-layout: post
 date: 2009-07-27T13:52:44+00:00
 url: /blog/2009/07/27/taming-the-javascript-event-scope-closures/
 postuserpic:
@@ -26,34 +25,34 @@ A simple (and rather useless) example:
 
 html:
 
-<pre lang="javascript"></head>
-
-
-
-<div id="scope">
-  <div>
-    <p>
-      
-    </p>
-            
+    </head>
     
-    <input type="button" value="btn 1" />
-        
-  </div>
-      
-  
-  <div>
-    <p>
-      
-    </p>
-            
     
-    <input type="button" value="btn 2" />
+    
+    <div id="scope">
+      <div>
+        <p>
+          
+        </p>
+                
         
-  </div>
-  
-</div>
-</pre>
+        <input type="button" value="btn 1" />
+            
+      </div>
+          
+      
+      <div>
+        <p>
+          
+        </p>
+                
+        
+        <input type="button" value="btn 2" />
+            
+      </div>
+      
+    </div>
+    
 
 
 <p>
@@ -61,27 +60,27 @@ html:
 </p>
 
 
-<pre lang="javascript">
-function controllerExample(node,idx)
-{
-    this.node = node;
-    this.idx = idx;
-    this.clickCount = 0;
-
-    this.setEventHandlers();
-}
-controllerExample.prototype.setEventHandlers = function()
-{
-      $(this.node).find('input').bind('click',this.handleClick);
-}
-controllerExample.prototype.handleClick = function(event)
-{
-    this.clickCount++;
-    $(this.node).find('p').text(
-        'Button is clicked '+this.clickCount+' time(s)'
-    );
-}
-</pre>
+    
+    function controllerExample(node,idx)
+    {
+        this.node = node;
+        this.idx = idx;
+        this.clickCount = 0;
+    
+        this.setEventHandlers();
+    }
+    controllerExample.prototype.setEventHandlers = function()
+    {
+          $(this.node).find('input').bind('click',this.handleClick);
+    }
+    controllerExample.prototype.handleClick = function(event)
+    {
+        this.clickCount++;
+        $(this.node).find('p').text(
+            'Button is clicked '+this.clickCount+' time(s)'
+        );
+    }
+    
 
 
 <h3>
@@ -114,20 +113,20 @@ controllerExample.prototype.handleClick = function(event)
 </p>
 
 
-<pre lang="javascript">
-controllerExample.prototype.setEventHandlers = function()
-{
-    var _scope = this;
-    var getHandleClick = function() {
-        console.log(this); // window
-        console.log(_scope); // controllerExample
-        return function(event) {
-            return _scope.handleClick.call(_scope,event);
+    
+    controllerExample.prototype.setEventHandlers = function()
+    {
+        var _scope = this;
+        var getHandleClick = function() {
+            console.log(this); // window
+            console.log(_scope); // controllerExample
+            return function(event) {
+                return _scope.handleClick.call(_scope,event);
+            }
         }
+        $(this.node).find('input').bind('click',getHandleClick());
     }
-    $(this.node).find('input').bind('click',getHandleClick());
-}
-</pre>
+    
 
 
 <p>
@@ -150,23 +149,23 @@ controllerExample.prototype.setEventHandlers = function()
 </p>
 
 
-<pre lang="javascript">
-controllerExample.prototype.setEventHandlers = function()
-{
-    $(this.node).find('input').bind(
-        'click',
-        this.routeEvent(this.handleClick)
-    );
-}
-// ...
-controllerExample.prototype.routeEvent = function(eventHandler)
-{
-    var _scope = this;
-    return function(event) {
-        return eventHandler.call(_scope,event);
+    
+    controllerExample.prototype.setEventHandlers = function()
+    {
+        $(this.node).find('input').bind(
+            'click',
+            this.routeEvent(this.handleClick)
+        );
     }
-}
-</pre>
+    // ...
+    controllerExample.prototype.routeEvent = function(eventHandler)
+    {
+        var _scope = this;
+        return function(event) {
+            return eventHandler.call(_scope,event);
+        }
+    }
+    
 
 
 <p>

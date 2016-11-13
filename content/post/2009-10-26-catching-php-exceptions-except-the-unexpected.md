@@ -1,7 +1,6 @@
 ---
 title: 'Catching PHP Exceptions: Except the unexpected'
 author: Tibo Beijen
-layout: post
 date: 2009-10-26T11:57:20+00:00
 url: /blog/2009/10/26/catching-php-exceptions-except-the-unexpected/
 postuserpic:
@@ -31,43 +30,43 @@ Let&#8217;s assume a Soap-based web-service client class used to submit order-da
 
 Web-service client class:
 
-<pre lang="php">class WsSoapClient
-{
-    private $config;
-    private $soapClient = null;
+    class WsSoapClient
+    {
+        private $config;
+        private $soapClient = null;
+        
+        public function __construct($config) {
+            $this->config = $config;
+        }
     
-    public function __construct($config) {
-        $this->config = $config;
-    }
-
-    public function submitOrder(Order $order) {
-        $this->initSoapClient();
-        $this->soapClient->submitOrder($order->toSoapParam());
-    }
-
-    private function initSoapClient() {
-        if (!is_null($this->soapClient)) {
-            return;
+        public function submitOrder(Order $order) {
+            $this->initSoapClient();
+            $this->soapClient->submitOrder($order->toSoapParam());
         }
-        if (!$this->config->wsdl) {
-            throw new Exception('Configuration error');
+    
+        private function initSoapClient() {
+            if (!is_null($this->soapClient)) {
+                return;
+            }
+            if (!$this->config->wsdl) {
+                throw new Exception('Configuration error');
+            }
+            $this->soapClient = new SoapClient($this->config->wsdl);
         }
-        $this->soapClient = new SoapClient($this->config->wsdl);
     }
-}</pre>
 
 Application code:
 
-<pre lang="php">$config = Registry::get('config');
-$client = new WsSoapClient($config);
-try {
-    $client->submitOrder($order);
-} catch (Exception $e) {
-    // We need to act on this asap...
-    $AppError->register_error($e);
-    // Redirect to application error page
-    $Redirect->error($e);
-}</pre>
+    $config = Registry::get('config');
+    $client = new WsSoapClient($config);
+    try {
+        $client->submitOrder($order);
+    } catch (Exception $e) {
+        // We need to act on this asap...
+        $AppError->register_error($e);
+        // Redirect to application error page
+        $Redirect->error($e);
+    }
 
 In case of a configuration error a redirect is performed to an application-error page. And (just an example) some mechanism is triggered that starts to bug a (or all) developers that there&#8217;s a problem that needs immediate attention. 
 
@@ -75,52 +74,52 @@ In case of a configuration error a redirect is performed to an application-error
 
 There are of course errors that are less disastrous. Web-services can be down so we need to cope with that, resulting in the modifications below:
 
-<pre lang="php">class WsSoapClientException extends Exception {}
-class WsSoapClientConfigurationException extends WsSoapClientException{}
-class WsSoapClientConnectionException extends WsSoapClientException{}
-
-class WsSoapClient
-{
-    // ...
-    private function initSoapClient() {
-        if (!is_null($this->soapClient)) {
-            return;
-        }
-        if (!$this->config->wsdl) {
-            throw new WsSoapClientConfigurationException(
-                'Configuration error'
-            );
-        }
-        try {
-            $this->soapClient = new SoapClient(
-                $this->config->wsdl, 
-                array('exceptions'=>1)
-            );
-        } catch (SoapFault $e) {
-            throw new WsSoapClientConnectionException(
-                'Cannot load WSDL: '.$this->config->wsdl
-            );
+    class WsSoapClientException extends Exception {}
+    class WsSoapClientConfigurationException extends WsSoapClientException{}
+    class WsSoapClientConnectionException extends WsSoapClientException{}
+    
+    class WsSoapClient
+    {
+        // ...
+        private function initSoapClient() {
+            if (!is_null($this->soapClient)) {
+                return;
+            }
+            if (!$this->config->wsdl) {
+                throw new WsSoapClientConfigurationException(
+                    'Configuration error'
+                );
+            }
+            try {
+                $this->soapClient = new SoapClient(
+                    $this->config->wsdl, 
+                    array('exceptions'=>1)
+                );
+            } catch (SoapFault $e) {
+                throw new WsSoapClientConnectionException(
+                    'Cannot load WSDL: '.$this->config->wsdl
+                );
+            }
         }
     }
-}
-</pre>
-
-<pre lang="php">$client = new WsSoapClient($config);
-try {
-    $client->submitOrder($order);
-} catch (WsSoapClientConnectionException $e) {
-    // store the order in a queue to be processed later
-    $Order->queue();
-    $Redirect->Page('OrderQueued', $order);
-} catch (Exception $e) {
-    // Catch everything, also WsSoapClientConfigurationException
     
-    // We need to act on this asap...
-    $AppError->register_error($e);
-    // Redirect to application error page
-    $Redirect->error($e);
-}
-</pre>
+
+    $client = new WsSoapClient($config);
+    try {
+        $client->submitOrder($order);
+    } catch (WsSoapClientConnectionException $e) {
+        // store the order in a queue to be processed later
+        $Order->queue();
+        $Redirect->Page('OrderQueued', $order);
+    } catch (Exception $e) {
+        // Catch everything, also WsSoapClientConfigurationException
+        
+        // We need to act on this asap...
+        $AppError->register_error($e);
+        // Redirect to application error page
+        $Redirect->error($e);
+    }
+    
 
 Two things have changed:
 
@@ -138,55 +137,55 @@ In the previous example we simply used one WsSoapClient class to handle all web-
 
 After reading up a bit on [Design Patterns][4] we decide to introduce a [Factory][5] that returns the proper web-service client for the order, which we supply in the method call. 
 
-<pre lang="php">class WsClientFactory
-{
-    static public function getWsClient(Order $order)
+    class WsClientFactory
     {
-        switch ($order->supplier) {
-            case 'supplierA':
-                return new WsSoapClient(
-                    Registry::get('config')->soap->supplierA
-                );
-            case 'supplierB':
-                return new WsXmlRpcClient(
-                    Registry::get('config')->xmlrpc->supplierB
-                );
+        static public function getWsClient(Order $order)
+        {
+            switch ($order->supplier) {
+                case 'supplierA':
+                    return new WsSoapClient(
+                        Registry::get('config')->soap->supplierA
+                    );
+                case 'supplierB':
+                    return new WsXmlRpcClient(
+                        Registry::get('config')->xmlrpc->supplierB
+                    );
+            }
         }
     }
-}
-</pre>
+    
 
 Briefly put: The point of a factory is to avoid the &#8216;new&#8217; keyword by allowing it to return various class instances. To know what callable methods to expect on the returned object, the possible object types need to implement a common interface or extend a common (abstract) class. We define an interface WsClient and let the two client types implement it:
 
-<pre lang="php">interface WsClient
-{
-    public function submitOrder(Order $order);
-}
-class WsSoapClient implements WsClient
-{
-    public function submitOrder(Order $order)
+    interface WsClient
     {
-        // submitting order to soap webservice
+        public function submitOrder(Order $order);
     }
-}
-class WsXmlRpcClient implements WsClient
-{
-    public function submitOrder(Order $order)
+    class WsSoapClient implements WsClient
     {
-        // submitting order to xml-rpc webservice
+        public function submitOrder(Order $order)
+        {
+            // submitting order to soap webservice
+        }
     }
-}
-</pre>
+    class WsXmlRpcClient implements WsClient
+    {
+        public function submitOrder(Order $order)
+        {
+            // submitting order to xml-rpc webservice
+        }
+    }
+    
 
 Now if we take a look at our original application code it becomes obvious that we are not finished yet.
 
-<pre lang="php">$client = WsClientFactory($order);
-try {
-    $client->submitOrder($order);
-} catch (WsSoapClientConnectionException $e) {
-    // Now what if there's a XML-RPC client throwing other exceptions?
-}
-</pre>
+    $client = WsClientFactory($order);
+    try {
+        $client->submitOrder($order);
+    } catch (WsSoapClientConnectionException $e) {
+        // Now what if there's a XML-RPC client throwing other exceptions?
+    }
+    
 
 We could catch WsXmlRpcClientConnectException as well but that&#8217;s not the way to go for two obvious reasons:
 
@@ -197,55 +196,55 @@ We could catch WsXmlRpcClientConnectException as well but that&#8217;s not the w
 
 As the client types implement a common interface we can also define a set of exceptions that are thrown by all classes implementing that interface:
 
-<pre lang="php">class WsClientException extends Exception {}
-class WsClientConfigurationException extends WsClientException{}
-class WsClientConnectionException extends WsClientException{}
-
-interface WsClient
-{
-    public function submitOrder(Order $order);
-}
-</pre>
+    class WsClientException extends Exception {}
+    class WsClientConfigurationException extends WsClientException{}
+    class WsClientConnectionException extends WsClientException{}
+    
+    interface WsClient
+    {
+        public function submitOrder(Order $order);
+    }
+    
 
 The classes implementing WsClient:
 
-<pre lang="php">class WsSoapClient implements WsClient
-{
-    public function submitOrder(Order $order) {
-        $this->initSoapClient();
-        // ...
-    }
-
-    private function initSoapClient() {
-        // Might throw: WsClientConfigurationException
-        // Might throw: WsClientConnectionException
-    }
-}
-class WsXmlRpcClient implements WsClient
-{
-    public function submitOrder(Order $order)
+    class WsSoapClient implements WsClient
     {
-        $this->initXmlRpcClient();
-        // ...
+        public function submitOrder(Order $order) {
+            $this->initSoapClient();
+            // ...
+        }
+    
+        private function initSoapClient() {
+            // Might throw: WsClientConfigurationException
+            // Might throw: WsClientConnectionException
+        }
     }
-
-    private function initXmlRpcClient() {
-        // Might throw: WsClientConfigurationException
-        // Might throw: WsClientConnectionException
+    class WsXmlRpcClient implements WsClient
+    {
+        public function submitOrder(Order $order)
+        {
+            $this->initXmlRpcClient();
+            // ...
+        }
+    
+        private function initXmlRpcClient() {
+            // Might throw: WsClientConfigurationException
+            // Might throw: WsClientConnectionException
+        }
     }
-}
-</pre>
+    
 
 The application code retrieving an object from the factory now knows what exception types to expect:
 
-<pre lang="php">$client = WsClientFactory($order);
-try {
-    $client->submitOrder($order);
-} catch (WsClientConnectionException $e) {
-    // Now we know what to expect
-} catch (Exception $e) {
-}
-</pre>
+    $client = WsClientFactory($order);
+    try {
+        $client->submitOrder($order);
+    } catch (WsClientConnectionException $e) {
+        // Now we know what to expect
+    } catch (Exception $e) {
+    }
+    
 
 ### Wrapping it up
 

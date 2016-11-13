@@ -1,7 +1,6 @@
 ---
 title: Dutch PHP Conference (DPC) 2010
 author: Tibo Beijen
-layout: post
 date: 2010-06-15T17:17:24+00:00
 url: /blog/2010/06/15/dutch-php-conference-dpc-2010/
 postuserpic:

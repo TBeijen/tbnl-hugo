@@ -1,7 +1,6 @@
 ---
 title: Using Zend_Form without Zend Framework MVC
 author: Tibo Beijen
-layout: post
 date: 2009-12-07T10:13:13+00:00
 url: /blog/2009/12/07/using-zend_form-without-zend-framework-mvc/
 postuserpic:
@@ -37,12 +36,12 @@ Let&#8217;s start with a quick look at how Zend_Form&#8217;s different component
 
 As the last point above shows, Zend\_Form, through Decorators, makes extensive use of Zend\_View helpers. In a Zend\_Framework project Zend\_Form is able to retrieve the View itself. In other projects (if one wants to use any of Zend\_Form&#8217;s default decorators) a View instance has to be supplied to Zend\_Form:
 
-<pre lang="php">$view = new Zend_View();
-$view->doctype('XHTML1_TRANSITIONAL');
-
-$form = new Zend_Form();
-$form->setView(new Zend_View());
-</pre>
+    $view = new Zend_View();
+    $view->doctype('XHTML1_TRANSITIONAL');
+    
+    $form = new Zend_Form();
+    $form->setView(new Zend_View());
+    
 
 In this example the doctype is specified in the view. This controls if input elements are rendered with XHTML self-closing tags.
 
@@ -52,70 +51,70 @@ In this tutorial I create a form for an admin interface where basic user-details
 
 For re-usability and keeping controller code clean one can best create form objects by creating an instance of a subclass of Zend_Form:
 
-<pre lang="php">class My_Form_User extends Zend_Form
-{
-    public function init() {
-        // username
-        $this->addElement('text','username', array(
-            'required' => true,
-            'validators' => array(
-                // arguments: type, breakchain, validator constructor options
-                array('Alnum', false, false),
-                array('StringLength', false, array(6, 16)),
-            ),
-        ));
-
-        // email
-        $EmailValidate = new My_Validator_Email();
-        $this->addElement('text','email', array(
-            'required' => true,
-            'validators' => array(
-                array('EmailAddress', false),
-                array($EmailValidate, false)
-            )
-        ));
-
-        // ...
+    class My_Form_User extends Zend_Form
+    {
+        public function init() {
+            // username
+            $this->addElement('text','username', array(
+                'required' => true,
+                'validators' => array(
+                    // arguments: type, breakchain, validator constructor options
+                    array('Alnum', false, false),
+                    array('StringLength', false, array(6, 16)),
+                ),
+            ));
+    
+            // email
+            $EmailValidate = new My_Validator_Email();
+            $this->addElement('text','email', array(
+                'required' => true,
+                'validators' => array(
+                    array('EmailAddress', false),
+                    array($EmailValidate, false)
+                )
+            ));
+    
+            // ...
+        }
     }
-}
-</pre>
+    
 
 (As can be seen I create an instance of My\_Validate\_Email and add that to the email element. We&#8217;ll look into that later. First, let&#8217;s continue with the form definition.)
 
 The init() method is designed for this type of form definition, thereby avoiding the need to duplicate the constructor and it&#8217;s parameter scheme. As can be seen, I only define the form elements and validators. Labels and such I defer to the renderer (more on that later). As this is about integrating Zend_Form into existing projects that are not based on Zend Framework, I assume there is some sort of language-aware component. In this example I use a language pack that returns language-specific results based on tags. Adding a set of checkboxes then looks like this:
 
-<pre lang="php">class My_Form_User extends Zend_Form
-{
-    public function init() {
-
-        // ...
-
-        $lang = new My_LanguagePack();
-
-        $groupIds = array(1,2,3,4);
-        $groupOptions = array();
-        foreach ($groupIds as $id) {
-            $groupOptions[$id] = $lang->get('group.label.' . $id);
+    class My_Form_User extends Zend_Form
+    {
+        public function init() {
+    
+            // ...
+    
+            $lang = new My_LanguagePack();
+    
+            $groupIds = array(1,2,3,4);
+            $groupOptions = array();
+            foreach ($groupIds as $id) {
+                $groupOptions[$id] = $lang->get('group.label.' . $id);
+            }
+    
+            $elmGroup = new Zend_Form_Element_MultiCheckbox('group');
+            $elmGroup->setMultiOptions( $groupOptions );
+            $elmGroup->setRequired(true);
+            $this->addElement($elmGroup);
         }
-
-        $elmGroup = new Zend_Form_Element_MultiCheckbox('group');
-        $elmGroup->setMultiOptions( $groupOptions );
-        $elmGroup->setRequired(true);
-        $this->addElement($elmGroup);
     }
-}
-</pre>
+    
 
 Now I create two renderer classes for both the &#8216;edit&#8217; and &#8216;view&#8217; display mode. Both accepting a Zend_Form instance in the constructor. Code below shows how the form is displayed using either rendering class:
 
-<pre lang="php">$Form = new My_Form_User();
-
-$RendererEdit = new My_Form_Renderer_Edit($Form, 'user_edit');
-echo $RendererEdit->render();
- 
-$RendererView = new My_Form_Renderer_View($Form, 'user_view');
-echo $RendererView->render();
-</pre>
+    $Form = new My_Form_User();
+    
+    $RendererEdit = new My_Form_Renderer_Edit($Form, 'user_edit');
+    echo $RendererEdit->render();
+     
+    $RendererView = new My_Form_Renderer_View($Form, 'user_view');
+    echo $RendererView->render();
+    
 
 But before moving onto the renderers, let&#8217;s look into the aforementioned My\_Email\_Validator class.
 
@@ -123,31 +122,31 @@ But before moving onto the renderers, let&#8217;s look into the aforementioned M
 
 When specifying validators by string, as is done with &#8216;EmailAddress&#8217;, Zend_Form adds one of the types of [Zend_Validate][6]. For validation not covered by the standard validators one can create a custom validator by extending Zend\_Validate\_Abstract or implementing Zend\_Validator\_Interface. For email addresses, a typical scenario would be a custom validator that connects to a database and checks if the given email address is allready used by another user. For this demo I skip the database part, resulting in:
 
-<pre lang="php">class My_Validator_Email extends Zend_Validate_Abstract
-{
-    protected $isValid = null;
-
-    public function isValid($value) {
-        $this->isValid = !in_array($value, array(
-            'duplicate@test.com',
-        ));
-        return $this->isValid;
-    }
-
-    public function getMessages() {
-        if ($this->isValid === false) {
-            return array(
-                'duplicateEmail' => 'This email address is allready used'
-            );
+    class My_Validator_Email extends Zend_Validate_Abstract
+    {
+        protected $isValid = null;
+    
+        public function isValid($value) {
+            $this->isValid = !in_array($value, array(
+                'duplicate@test.com',
+            ));
+            return $this->isValid;
         }
-        return array();
+    
+        public function getMessages() {
+            if ($this->isValid === false) {
+                return array(
+                    'duplicateEmail' => 'This email address is allready used'
+                );
+            }
+            return array();
+        }
+    
+        public function getErrors() {
+            return array_keys($this->getMessages());
+        }
     }
-
-    public function getErrors() {
-        return array_keys($this->getMessages());
-    }
-}
-</pre>
+    
 
 Now let&#8217;s continue with the two renderer classes:
 
@@ -155,52 +154,52 @@ Now let&#8217;s continue with the two renderer classes:
 
 The basics of the My\_Form\_Renderer_Edit class constructor are shown below: 
 
-<pre lang="php">class My_Form_Renderer_Edit
-{
-    protected $form;
-
-    protected $lang;
-
-    public function __construct(Zend_Form $form, $form_id = null)
+    class My_Form_Renderer_Edit
     {
-        $view = new Zend_View();
-        $view->doctype('XHTML1_TRANSITIONAL');
-
-        $this->form = $form;
-        $this->form->setView(new Zend_View());
-        $this->form->setAttrib('class', 'form_edit');
-        if (!is_null($form_id)) {
-            $this->form->setAttrib('id', $form_id);
+        protected $form;
+    
+        protected $lang;
+    
+        public function __construct(Zend_Form $form, $form_id = null)
+        {
+            $view = new Zend_View();
+            $view->doctype('XHTML1_TRANSITIONAL');
+    
+            $this->form = $form;
+            $this->form->setView(new Zend_View());
+            $this->form->setAttrib('class', 'form_edit');
+            if (!is_null($form_id)) {
+                $this->form->setAttrib('id', $form_id);
+            }
+    
+            $this->lang = new My_LanguagePack();
         }
-
-        $this->lang = new My_LanguagePack();
+    
+        public function render()
+        {
+            // ...
     }
-
-    public function render()
-    {
-        // ...
-}
-</pre>
+    
 
 As can be seen this is where I setup the view (as mentioned before) and set id and classname that can be used in CSS. I want the HTML to look like this:
 
-<pre lang="xml"><ul>
-  <li class="">
-    <div id="username-label">
-      <label for="username" class="required">* Username</label>
-    </div>
-            
-    
-    <div class="element">
-      <input type="text" name="username" id="username" value="" class="text" />
-                  <span class="description">(Min 6, max 16 char.)</span>
-              
-    </div>
+    <ul>
+      <li class="">
+        <div id="username-label">
+          <label for="username" class="required">* Username</label>
+        </div>
+                
         
-  </li>
-  
-</ul>
-</pre>
+        <div class="element">
+          <input type="text" name="username" id="username" value="" class="text" />
+                      <span class="description">(Min 6, max 16 char.)</span>
+                  
+        </div>
+            
+      </li>
+      
+    </ul>
+    
 
 When the render() method is called on the renderer class I do four things:
 
@@ -219,80 +218,80 @@ As long as the submit value doesn&#8217;t play a role in the processing of enter
 
 By using the method setElementDecorators() of Zend_Form, all default decorators are replaced by the ones specified. The decorators that fit my needs are ViewHelper (renders the element itself) and Description, resulting in:
 
-<pre lang="php">protected function setupElementsCommon()
-    {
-         $this->form->setElementDecorators(array(
-            'ViewHelper',
-            array('Description', array(
-                'placement' => 'append',
-                'tag' => 'span',
-                'class' => 'description'
-            )),
-         ));
-    }
-</pre>
+    protected function setupElementsCommon()
+        {
+             $this->form->setElementDecorators(array(
+                'ViewHelper',
+                array('Description', array(
+                    'placement' => 'append',
+                    'tag' => 'span',
+                    'class' => 'description'
+                )),
+             ));
+        }
+    
 
 #### Setup per-element properties
 
 Here I add additional decorators. First I setup the element&#8217;s label and description properties by using the language pack, then I add the appropriate decorators. Furthermore I add some additional classnames to elements. If the element has an error I not only want to display the errors (using a custom decorator, more on that later). I also want to give the HTML element wrapped around all of the parts an &#8216;error&#8217; classname.
 
-<pre lang="php">$elmHasError = (count($elm->getMessages()) > 0);
-        $liClass = $elmHasError ? 'error' : '';
-        $elm->addDecorator(
-            array('outerLi' => 'HtmlTag'),
-            array('tag' => 'li', 'class' => $liClass)
-        );
-</pre>
+    $elmHasError = (count($elm->getMessages()) > 0);
+            $liClass = $elmHasError ? 'error' : '';
+            $elm->addDecorator(
+                array('outerLi' => 'HtmlTag'),
+                array('tag' => 'li', 'class' => $liClass)
+            );
+    
 
 #### Setup the form object
 
 Finally the Form is configured. After removing all existing decorators, three decorators are added. The only difference with the default set of decorators is the UL element used in the HtmlTag decorator:
 
-<pre lang="php">protected function setupForm()
-    {
-        $this->form->clearDecorators();
-        $this->form->addDecorator('FormElements');
-        $this->form->addDecorator('HtmlTag', array('tag' => 'ul'));
-        $this->form->addDecorator('Form');
-    }
-</pre>
+    protected function setupForm()
+        {
+            $this->form->clearDecorators();
+            $this->form->addDecorator('FormElements');
+            $this->form->addDecorator('HtmlTag', array('tag' => 'ul'));
+            $this->form->addDecorator('Form');
+        }
+    
 
 ### Adding a custom decorator
 
 The complete code shows that instead of the default &#8216;Errors&#8217; decorator I provide my own. This way I can retrieve the error messages provided by the form element and then replace them with messages retrieved from the languagePack. A custom decorator needs to extend Zend\_Form\_Decorator\_Abstract or implement Zend\_Form\_Decorator\_Interface. Excerpts from [My\_Decorator\_Errors][8]:
 
-<pre lang="php">public function render($content)
-        $element = $this->getElement();
-        $errorMessages = $element->getMessages();
-        if (empty($errorMessages)) {
-            return $content;
-        }
-
-        // iterate over errorMessages, replace or use default
-        $errorLinesHtml = '';
-        foreach ($errorMessages as $errorCode => $errorMsg) {
-            // make an exception for isEmpty and array representing elements
-            if ($element->isArray() && $errorCode=='isEmpty') {
-                $msgLangPack = $this->lang->get('form.error.array.' . $errorCode);
-            } else {
-                $msgLangPack = $this->lang->get('form.error.' . $errorCode);
+    public function render($content)
+            $element = $this->getElement();
+            $errorMessages = $element->getMessages();
+            if (empty($errorMessages)) {
+                return $content;
             }
-            $errorMsg = ($msgLangPack !== false) ? $msgLangPack : $errorMsg;
-            $errorLinesHtml .= '
-
-<li>
-  ' . $errorMsg . '
-</li>';
-        }
-        // combine
-        $errorHtml = '
-
-<ul class="errors">
-  ' . $errorLinesHtml .'
-</ul>';
-
-        // ...
-</pre>
+    
+            // iterate over errorMessages, replace or use default
+            $errorLinesHtml = '';
+            foreach ($errorMessages as $errorCode => $errorMsg) {
+                // make an exception for isEmpty and array representing elements
+                if ($element->isArray() && $errorCode=='isEmpty') {
+                    $msgLangPack = $this->lang->get('form.error.array.' . $errorCode);
+                } else {
+                    $msgLangPack = $this->lang->get('form.error.' . $errorCode);
+                }
+                $errorMsg = ($msgLangPack !== false) ? $msgLangPack : $errorMsg;
+                $errorLinesHtml .= '
+    
+    <li>
+      ' . $errorMsg . '
+    </li>';
+            }
+            // combine
+            $errorHtml = '
+    
+    <ul class="errors">
+      ' . $errorLinesHtml .'
+    </ul>';
+    
+            // ...
+    
 
 Errormessages are fetched by an element&#8217;s getMessages() method that returns an associative array. The error-codes (keys) can be used to translate the message. As can be seen I treat elements representing an array differently when fetching the &#8216;isEmpty&#8217; error message.
 

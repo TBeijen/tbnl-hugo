@@ -1,7 +1,6 @@
 ---
 title: 'Usability: Autofocus and not breaking the backspace-button'
 author: Tibo Beijen
-layout: post
 date: 2011-03-14T11:32:39+00:00
 url: /blog/2011/03/14/usability-autofocus-and-not-breaking-the-backspace-button/
 postuserpic:
@@ -60,4 +59,4 @@ As not all browsers support the autofocus attribute yet, and we wanted to preser
 
  [1]: http://www.architecto.nl
  [2]: http://diveintohtml5.org/detect.html#input-autofocus
- [3]: https://github.com/TBeijen/jQuery-plugin-autofocusBackspace
+ [3]: https://gitlab.com/TBeijen-blog-sample-code/jQuery-plugin-autofocusBackspace

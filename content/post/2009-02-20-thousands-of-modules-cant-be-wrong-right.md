@@ -1,7 +1,6 @@
 ---
 title: 'Thousands of modules can&#8217;t be wrong, right?'
 author: Tibo Beijen
-layout: post
 date: 2009-02-20T17:48:58+00:00
 url: /blog/2009/02/20/thousands-of-modules-cant-be-wrong-right/
 postuserpic:
@@ -44,7 +43,7 @@ Once the needed modules are found a situation like illustrated below might occur
 
 
 <div id="attachment_171" style="width: 510px" class="wp-caption aligncenter">
-  <img src="http://www.tibobeijen.nl/blog/wp-content/uploads/2009/02/module_creep.png" alt="Module Creep" title="Module Creep" width="500" height="394" class="size-full wp-image-171" srcset="http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/02/module_creep.png 500w, http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/02/module_creep-300x236.png 300w" sizes="(max-width: 500px) 100vw, 500px" />
+  <img src="/media/wp-content/uploads/2009/02/module_creep.png" alt="Module Creep" title="Module Creep"   class="size-full wp-image-171" srcset="http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/02/module_creep.png 500w, http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/02/module_creep-300x236.png 300w" sizes="(max-width: 500px) 100vw, 500px" />
   
   <p class="wp-caption-text">
     Module Creep

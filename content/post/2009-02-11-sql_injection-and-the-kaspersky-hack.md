@@ -1,7 +1,6 @@
 ---
 title: 'SQL injection & the Kaspersky hack'
 author: Tibo Beijen
-layout: post
 date: 2009-02-11T18:38:50+00:00
 url: /blog/2009/02/11/sql_injection-and-the-kaspersky-hack/
 postuserpic:
@@ -27,23 +26,23 @@ It _is_ true that PHP allows novice as well as experienced programmers to achiev
   * ORM. If you think SQL should be behind an abstraction layer, you can do so. [Propel][5] and [Doctrine][6] are the best known solutions for PHP.
   * Well structured programming. If, for some reason, you want to build queries the old way you can force upon yourself (or your team) some good practices. See example below.
 
-<pre lang="php">$dataTainted['un'] = $_POST['un'];
-$dataTainted['pw'] = $_POST['pw'];
-
-// escape all array values using a custom function of some sort
-$dataSafe = mysqlEscapeValues($dataTainted);
-
-$query = &lt;&lt;&lt;SQL
-SELECT
-  *
-FROM
-  users
-WHERE
-  un = "{$dataSafe['un']}"
-AND
-  pw = SHA1("{$dataSafe['pw']}")
-SQL;
-</pre>
+    $dataTainted['un'] = $_POST['un'];
+    $dataTainted['pw'] = $_POST['pw'];
+    
+    // escape all array values using a custom function of some sort
+    $dataSafe = mysqlEscapeValues($dataTainted);
+    
+    $query = &lt;&lt;&lt;SQL
+    SELECT
+      *
+    FROM
+      users
+    WHERE
+      un = "{$dataSafe['un']}"
+    AND
+      pw = SHA1("{$dataSafe['pw']}")
+    SQL;
+    
 
 And that's just the coding part of the story. In the area of application design a lot can be done to minimize the consequences of an exploit. For example, different database users can be set up that have different levels of access. Only parts of a website needing customer data then use the credentials that do provide such access.
 

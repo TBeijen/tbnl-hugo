@@ -1,7 +1,6 @@
 ---
 title: Jumping in and out of jQuery land
 author: Tibo Beijen
-layout: post
 date: 2009-04-02T21:34:59+00:00
 url: /blog/2009/04/02/jumping-in-and-out-of-jquery-land/
 postuserpic:
@@ -24,41 +23,41 @@ By using jQuery&#8217;s $() functionwe&#8217;re leaving the DOM-zone and enter j
 
 Some simplified HTML code example boxes:
 
-<pre lang="html4strict"><div class="codeBox">
-  <a href="#">copy to clipboard</a>
-      <code>Some code</code>
-  
-</div>
-
-
-<div class="codeBox">
-  <a href="#">copy to clipboard</a>
-      <code>More code</code>
-  
-</div>
-</pre>
+    <div class="codeBox">
+      <a href="#">copy to clipboard</a>
+          <code>Some code</code>
+      
+    </div>
+    
+    
+    <div class="codeBox">
+      <a href="#">copy to clipboard</a>
+          <code>More code</code>
+      
+    </div>
+    
 
 Accompanied by the following javascript:
 
-<pre lang="javascript">$(document).ready(function(){
-    initCodeBox();
-});
-
-function initCodeBox()
-{
-    $('.codeBox a').bind('click',function() {
-        var htmlNode = $(this).siblings('code').get(0);
-        if (htmlNode) copyContentsToClipboard(htmlNode);
-        return false;
+    $(document).ready(function(){
+        initCodeBox();
     });
-}
-
-function copyContentsToClipboard(htmlNode)
-{
-        // js selecting the text contents of a DOM node, simplified to: 
-    alert(htmlNode.innerHTML);
-}
-</pre>
+    
+    function initCodeBox()
+    {
+        $('.codeBox a').bind('click',function() {
+            var htmlNode = $(this).siblings('code').get(0);
+            if (htmlNode) copyContentsToClipboard(htmlNode);
+            return false;
+        });
+    }
+    
+    function copyContentsToClipboard(htmlNode)
+    {
+            // js selecting the text contents of a DOM node, simplified to: 
+        alert(htmlNode.innerHTML);
+    }
+    
 
 It&#8217;s clear that, as long as existing code doesn&#8217;t conflict with the $() function, it&#8217;s very easy to start using jQuery in existing projects.
 

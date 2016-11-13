@@ -1,7 +1,6 @@
 ---
 title: 'Enterprise iPhone Applications: First steps'
 author: Tibo Beijen
-layout: post
 date: 2008-11-17T11:50:38+00:00
 url: /blog/2008/11/17/enterprise-iphone-applications-first-steps/
 postuserpic:

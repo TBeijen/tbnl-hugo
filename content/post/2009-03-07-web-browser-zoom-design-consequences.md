@@ -1,7 +1,6 @@
 ---
 title: 'Web Browser Zoom: Design consequences'
 author: Tibo Beijen
-layout: post
 date: 2009-03-07T18:57:19+00:00
 url: /blog/2009/03/07/web-browser-zoom-design-consequences/
 postuserpic:
@@ -29,7 +28,7 @@ Of course the need for the increased width depends on the specific elements that
 Accessibility guidelines ([W3C WCAG 1.0 point 3.4][5]) state that relative units are to be used when specifying text size. That way, users can easily adjust the size of text. For some time, browsers (except \*sigh\* IE6) allowed users to adjust the displayed text size by using key combinations or ctrl+scrollwheel. This posed a challenge to CSS coding as it wasn&#8217;t always easy to keep everything in place when text size was increased. Or, probably worse, text would flow out of the box and become unreadable. See below image of a [page on eurogamer.net][6]. In the left-column navigation and bottom parts of the page elements will overlap when text size is increased.
 
 <div id="attachment_182" style="width: 505px" class="wp-caption aligncenter">
-  <img src="http://www.tibobeijen.nl/blog/wp-content/uploads/2009/03/eurogamer_textsize_example.png" alt="Eurogamer text size example" title="Eurogamer text size example" width="495" height="271" class="size-full wp-image-182" srcset="http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/03/eurogamer_textsize_example.png 495w, http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/03/eurogamer_textsize_example-300x164.png 300w" sizes="(max-width: 495px) 100vw, 495px" />
+  <img src="/media/wp-content/uploads/2009/03/eurogamer_textsize_example.png" alt="Eurogamer text size example" title="Eurogamer text size example"   class="size-full wp-image-182" srcset="http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/03/eurogamer_textsize_example.png 495w, http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/03/eurogamer_textsize_example-300x164.png 300w" sizes="(max-width: 495px) 100vw, 495px" />
   
   <p class="wp-caption-text">
     Eurogamer text size example
@@ -435,7 +434,7 @@ Acknowledging this side-effect it&#8217;s good to know exactly how today&#8217;s
   </p>
   
   <div id="attachment_198" style="width: 499px" class="wp-caption aligncenter">
-    <img src="http://www.tibobeijen.nl/blog/wp-content/uploads/2009/03/playcom_header_example.png" alt="Play.com header example" title="Play.com header example" width="489" height="156" class="size-full wp-image-198" srcset="http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/03/playcom_header_example.png 489w, http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/03/playcom_header_example-300x95.png 300w" sizes="(max-width: 489px) 100vw, 489px" />
+    <img src="/media/wp-content/uploads/2009/03/playcom_header_example.png" alt="Play.com header example" title="Play.com header example"   class="size-full wp-image-198" srcset="http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/03/playcom_header_example.png 489w, http://www.dev.tibobeijen.nl/blog/wp-content/uploads/2009/03/playcom_header_example-300x95.png 300w" sizes="(max-width: 489px) 100vw, 489px" />
     
     <p class="wp-caption-text">
       Play.com header example

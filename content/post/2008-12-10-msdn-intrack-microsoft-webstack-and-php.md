@@ -1,7 +1,6 @@
 ---
 title: 'MSDN InTrack: Microsoft Webstack and PHP'
 author: Tibo Beijen
-layout: post
 date: 2008-12-10T18:02:41+00:00
 url: /blog/2008/12/10/msdn-intrack-microsoft-webstack-and-php/
 postuserpic:

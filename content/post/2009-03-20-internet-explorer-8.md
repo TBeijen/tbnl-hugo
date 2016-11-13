@@ -1,7 +1,6 @@
 ---
 title: Internet Explorer 8
 author: Tibo Beijen
-layout: post
 date: 2009-03-20T08:32:07+00:00
 url: /blog/2009/03/20/internet-explorer-8/
 postuserpic:
