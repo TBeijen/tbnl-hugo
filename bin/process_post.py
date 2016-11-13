@@ -24,9 +24,12 @@ def fix_img_tags(content):
 def github_to_gitlab(content):
 	return content.replace(': https://github.com/TBeijen/', ': https://gitlab.com/TBeijen-blog-sample-code/')
 
+def remove_layout_post(content):
+	return re.sub(r'layout:\spost\n', '', content)
 
 content = code_to_markdown(content)
 content = fix_img_tags(content)
 content = github_to_gitlab(content)
+content = remove_layout_post(content)
 
 print content
