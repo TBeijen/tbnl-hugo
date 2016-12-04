@@ -56,3 +56,6 @@ category = "categories"
 	backtotopStr = "Back to top"
 	shareStr = "Share"
 	pageNotFoundTitle = "404 - Page not found"
+
+	# Customize favicon (path relative to /static folder)
+	favicon = 'favicon_tbnl.ico'
