@@ -5,7 +5,7 @@ menu  = "main"
 +++
 
 ### The developer
-I'm a developer, working at [Sanoma Technology][1], and more specifically [NU.nl][2], the largest news site in the Netherlands. I do API design, Python, DevOps, AWS, Javascript, Ansible and tons of other buzzwords. 
+I'm a developer, working at [Sanoma Technology][1], and more specifically [NU.nl][2], the largest news site in the Netherlands. I do API design, Python, DevOps, AWS, Javascript, PHP, Ansible and quite some other buzzwords. 
 
 I studied [Industrial Design Engineering][3] so I'm comfortable with talking about UI and UX and care about pixels also.
 
