@@ -36,5 +36,3 @@ content = remove_layout_post(content)
 
 with open(out_file, 'w') as f:
 	f.write(content)
-
-# print content

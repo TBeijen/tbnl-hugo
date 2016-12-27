@@ -29,7 +29,29 @@ Some of the advantages of the Hugo/Caddy setup over Wordpress as I see them.
 * Http2. Not really important for this site at this stage but 'nice to have' nevertheless.
 * Using [Disqus][3] for comments. Not 'owning' the comments could be considered a downside, but for me decoupling the comment system from the technology that creates the site gives me flexibility without having to bother about migrating comments. Plus disqus has an [export][4] function and an [API][5], so content is not entirely locked in.
 
-## Exporting Wordpress content to Hugo
+## Exporting Wordpress content to Hugo 
+
+For exporting wordpress contents to a set of Markdown I used [Wordpress to Hugo convertor][8] which in turn was based on the plugin [Wordpress to Jekyll exporter][9]. As a lot of static site generators use Markdown there are probably a lot of other tools to export wordpress content.
+
+After exporting a number of blog posts and pages in Markdown format was available. Some things needed additional fixing, most notably code blocks, which were exported as HTML fragments using `pre` tags instead of indented code blocks. Cooking up a [python script](https://github.com/TBeijen/tbnl-hugo/blob/master/bin/process_post.py) solved this quite easily.
+
+## Migrating comments to Disqus
+
+Using the [official Disqus Wordpress plugin](https://nl.wordpress.org/plugins/disqus-comment-system/) it's fairly easy to export comments. Be sure to test this first on a test site you've created in your Disqus profile. (Basically: Follow the [Disqus guidelines for development sites](https://help.disqus.com/customer/portal/articles/1053796-best-practices-for-staging-development-and-preview-sites)).
+
+As it turned out, in Disqus https and http are considered different domains. So initially comments didn't show up on my 'production' site (I tested import using http, so missed that part). Although the 'Domain migration tool' seems like the right tool for this conversion I ran into some bumps, resulting in quite a mess. As explained in [this article](https://woorkup.com/migrate-disqus-comments-https/), the 'URL mapper' works fine for this case.
+
+So the main take-away is: Test your export to disqus, including scheme, path or domain changes. 
+
+## Setting up a VPS
+
+### Initial setup using Cloud-Init
+
+
+### Provisioning using Ansible
+
+
+
 
 
 
@@ -70,3 +92,6 @@ Setting up VPS using Ansible
  [5]: https://disqus.com/api/docs/
  [6]: http://www.openwall.com/lists/oss-security/2016/11/21/3
  [7]: https://blog.ripstech.com/2016/the-state-of-wordpress-security/
+ [8]: https://github.com/SchumacherFM/wordpress-to-hugo-exporter
+ [9]: https://github.com/benbalter/wordpress-to-jekyll-exporter
+
