@@ -15,7 +15,7 @@ description: For some years my blog has been inactive. (Now this could imply tha
 ---
 ## Introduction
 
-For some years my blog has been inactive. (Now this could imply that 'not much was happening' on a professional level but that hasn't been the case, in contrary) Recently I've been thinking about adding new content and it became clear that my old Wordpress setup wasn't the best fit anymore for my needs. Several people I know have been very possitive about [Hugo][1] and the webserver [Caddy][2] so I decided to give that a try.
+For some years my blog has been inactive. (Now this could imply that 'not much was happening' on a professional level but that hasn't been the case, in contrary) Recently I've been thinking about adding new content and it became clear that my old Wordpress setup wasn't the best fit anymore for my needs. Several people I know have been very possitive about [Hugo][1] and the webserver [Caddy][2] so I decided to give that a try. For hosting I chose [Digital Ocean](https://m.do.co/c/a6a97fed1069) (Referral link, gets you $10 to start with), based on reputation, pricing and their excellent [technical articles](https://www.digitalocean.com/community/tutorials).
 
 ## Advantages of Hugo and Caddy over Wordpress
 
@@ -33,7 +33,7 @@ Some of the advantages of the Hugo/Caddy setup over Wordpress as I see them.
 
 For exporting wordpress contents to a set of Markdown I used [Wordpress to Hugo convertor][8] which in turn was based on the plugin [Wordpress to Jekyll exporter][9]. As a lot of static site generators use Markdown there are probably a lot of other tools to export wordpress content.
 
-After exporting a number of blog posts and pages in Markdown format was available. Some things needed additional fixing, most notably code blocks, which were exported as HTML fragments using `pre` tags instead of indented code blocks. Cooking up a [python script](https://github.com/TBeijen/tbnl-hugo/blob/master/bin/process_post.py) solved this quite easily.
+After exporting, a Hugo site structure was created containing the blog posts and pages in Markdown format. Some things needed additional fixing, most notably code blocks, which were exported as HTML fragments using `pre` tags instead of indented code blocks. Cooking up a [python script](https://github.com/TBeijen/tbnl-hugo/blob/master/bin/process_post.py) solved this quite easily.
 
 ## Migrating comments to Disqus
 
@@ -47,6 +47,16 @@ So the main take-away is: Test your export to disqus, including scheme, path or 
 
 ### Initial setup using Cloud-Init
 
+For initial server setup I used CloudInit. By providing a ``cloud-config`` script, important parts of the server configuration can be completed even before logging in. This includes:
+
+* User creation
+* Setting up access keys
+* Packages
+* Timezone
+* SSH config
+* UFW firewall setup
+
+Because of some details I've encrypted the cloud-config using Ansible Vault. There's nothing in there that's not explained in [DigitalOcean's cloud-config tutorial](https://www.digitalocean.com/community/tutorials/how-to-use-cloud-config-for-your-initial-server-setup) and various examples on github.
 
 ### Provisioning using Ansible
 
