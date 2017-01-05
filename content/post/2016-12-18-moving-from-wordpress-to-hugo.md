@@ -60,6 +60,15 @@ Because of some details I've encrypted the cloud-config using Ansible Vault. The
 
 ### Provisioning using Ansible
 
+For configuring everything that would not be similar on all my VPSes, I used Ansible. 
+
+Although for a single VPS this will probably take more time than simply installing and configuring some packages manually, it has some important benefits:
+
+* **Documentation by code**. Following [*If it isn't documented it doesn't exist*](https://blog.codinghorror.com/if-it-isnt-documented-it-doesnt-exist/), the ansible code and comments can be considered documentation of the server configuration. I'm for sure not going to *remember* all manual installation steps.
+* **Reproducability**. This will help for example when:
+    * Wanting to move to a different host
+    * Needing to upgrade packages. It allows for easily testing on Vagrant or spinning up a second VPS, testing that, and then switching DNS to it and shutting down the old one.
+
 
 
 
