@@ -19,13 +19,22 @@ For some years my blog has been inactive. (Now this could imply that 'not much w
 
 In this post I'll summarize the steps taken to migrate content to Hugo and setup Hugo and Caddy on a VPS. Provisioning code using Ansible is [on GitHub](https://github.com/TBeijen/tbnl-provision/).
 
+### TL;DR:
+
+* Exporting to Wordpress is fairly easy but the resulting files might need some postprocessing.
+* Test your export to disqus, including scheme, path or domain changes.
+* Use Snap packages instead of your distro's standard package manager to install the latest Hugo version.
+* Setting up Let's Encrypt using Caddy is very easy (easy as in actually doing nothing). Testing it if your site is not yet accessible under the intended domain name will be harder.
+* Be aware of Systemd's ``ProtectHome`` feature to save a lot of time figuring out why deploy keys or scripts won't work when invoked from Caddy.
+* Pushover and Uptimerobot make for great finishing touches.
+
 The old Wordpress site:
 
 ![The old Wordpress site](/img/wordpress_to_hugo__wordpress_site.png)
 
 ## Advantages of Hugo and Caddy over Wordpress
 
-Some of the advantages of the Hugo/Caddy setup over Wordpress as I see them. 
+Some of the advantages of the Hugo/Caddy setup over Wordpress as I see them:
 
 * No more maintenance due to patching of Wordpress and plugins used. [^footnote_wordpress]
 * No more security risks due to [the nature of Wordpress](http://www.openwall.com/lists/oss-security/2016/11/21/3) and [some of its plugins](https://blog.ripstech.com/2016/the-state-of-wordpress-security/).
@@ -43,15 +52,11 @@ For exporting wordpress content to Markdown I used [Wordpress to Hugo convertor]
 
 After exporting, a Hugo site structure was created containing the blog posts and pages in Markdown format. Some things needed additional fixing, most notably code blocks, which were exported as HTML fragments using `pre` tags instead of indented code blocks. Cooking up a [python script](https://github.com/TBeijen/tbnl-hugo/blob/master/bin/process_post.py) solved this quite easily.
 
-**Take-away:** *Exporting to Wordpress is fairly easy but the resulting files might need some postprocessing.*
-
 ## Migrating comments to Disqus
 
 Using the [official Disqus Wordpress plugin](https://nl.wordpress.org/plugins/disqus-comment-system/) it's fairly easy to export comments. Be sure to test this first on a test site you've created in your Disqus profile. (Basically: Follow the [Disqus guidelines for development sites](https://help.disqus.com/customer/portal/articles/1053796-best-practices-for-staging-development-and-preview-sites)).
 
 As it turned out, in Disqus https and http are considered different domains. So initially comments didn't show up on my 'production' site (I tested import using http, so missed that part). Although the 'Domain migration tool' seems like the right tool for this conversion I ran into some bumps, resulting in quite a mess. As explained in [this article](https://woorkup.com/migrate-disqus-comments-https/), the 'URL mapper' works fine for this case.
-
-**Take-away:** *Test your export to disqus, including scheme, path or domain changes.*
 
 ## Initial VPS setup using Cloud-Init
 
@@ -216,7 +221,7 @@ Having set up Pushover already, an easy finishing touch is setting up basic moni
 
 All in all the process of moving from Wordpress to Hugo was pretty smooth. Extracting content was fairly easy although it required quite some post-processing. Migrating the content was a similar experience: There might be some bumps, you need to test, but it's perfectly doable.
 
-Caddy en Hugo make a very good combination. Especially if your use cases stay somewhat simple Caddy is perfect. For complexer environments I suppose the benefit of practically 0-config will disappear at some point, leveling the playing field when comparing with for example Nginx.
+Caddy en Hugo make a very good combination. Especially if your use cases stay somewhat simple, Caddy is perfect. For complexer environments I suppose the benefit of practically 0-config will disappear at some point, leveling the playing field when comparing with for example Nginx.
 
 For me this has been a welcome upgrade. Ditching the maintenance and plugin-bloat allows returning focus on what a blog is about: Content.
 
