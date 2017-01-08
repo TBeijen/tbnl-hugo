@@ -1,8 +1,8 @@
 ---
 title: 'Moving from Wordpress to Hugo'
 author: Tibo Beijen
-date: 2016-12-18T12:00:00+01:00
-url: /2016/12/18/moving-from-wordpress-to-hugo/
+date: 2017-01-09T10:00:00+01:00
+url: /2017/01/09/moving-from-wordpress-to-hugo/
 categories:
   - articles
 tags:

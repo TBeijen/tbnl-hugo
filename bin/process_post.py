@@ -29,10 +29,11 @@ def github_to_gitlab(content):
 def remove_layout_post(content):
 	return re.sub(r'layout:\spost\n', '', content)
 
-content = code_to_markdown(content)
-content = fix_img_tags(content)
-content = github_to_gitlab(content)
-content = remove_layout_post(content)
+# Commented out to prevent accidentally wrecking havoc on already converted content
+# content = code_to_markdown(content)
+# content = fix_img_tags(content)
+# content = github_to_gitlab(content)
+# content = remove_layout_post(content)
 
-with open(out_file, 'w') as f:
-	f.write(content)
+# with open(out_file, 'w') as f:
+# 	f.write(content)

@@ -59,4 +59,4 @@ As not all browsers support the autofocus attribute yet, and we wanted to preser
 
  [1]: http://www.architecto.nl
  [2]: http://diveintohtml5.org/detect.html#input-autofocus
- [3]: https://gitlab.com/TBeijen-blog-sample-code/jQuery-plugin-autofocusBackspace
+ [3]: https://github.com/TBeijen/jQuery-plugin-autofocusBackspace
