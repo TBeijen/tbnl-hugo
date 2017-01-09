@@ -25,7 +25,7 @@ category = "categories"
 	# To provide some metadata for search engines and the about section in the footer
 	# feel free to add a few information about you and your website.
 	name = "Tibo Beijen"
-	bio = "Python, JS and DevOps developer. Coffee addict. Loud music aficionado."
+	bio = "Python, JS and DevOps developer (not limited to). UX enthusiast. Coffee addict. Loud music aficionado."
 	description = "Your description of the blog"
 	location = "" # optional
 	twitter = "TBeijen"
@@ -34,7 +34,7 @@ category = "categories"
  	facebook = ''
  	instagram = ''
 	github = "TBeijen"
- 	gitlab = "TBeijen"
+ 	gitlab = ""
 	bitbucket = ""
 
 	# Enable a comment system
@@ -45,7 +45,7 @@ category = "categories"
 
 	# By setting homeMaxPosts, home page will show limited number of post and link to archive (/post/) 
 	# instead of paginated list of posts
-	homeMaxPosts = 4
+	homeMaxPosts = 1
 
 	# Use summary instead, if description is empty
 	useSummaryIfNoDescription = true

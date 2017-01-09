@@ -325,7 +325,7 @@ In future articles I intend to expand on this case, showing how Domain Driven De
 
  [1]: http://domaindrivendesign.org/
  [2]: http://www.doctrine-project.org/projects/orm/2.0/docs/en
- [3]: https://gitlab.com/TBeijen-blog-sample-code/DDD-HRM/tree/v001
+ [3]: https://github.com/TBeijen/DDD-HRM/tree/v001
  [4]: #caseOutline
  [5]: #descriptionOfEntities
  [6]: #entUser
@@ -342,11 +342,11 @@ In future articles I intend to expand on this case, showing how Domain Driven De
  [17]: #beyondDatabase
  [18]: #concluding
  [19]: http://www.tibobeijen.nl/blog/wp-content/uploads/2011/06/yuml-ddd-hrm-001.21.png
- [20]: https://gitlab.com/TBeijen-blog-sample-code/DDD-HRM/blob/v001/Domain/Entity/User.php
- [21]: https://gitlab.com/TBeijen-blog-sample-code/DDD-HRM/blob/v001/Domain/Entity/TimeSheet.php
+ [20]: https://github.com/TBeijen/DDD-HRM/blob/v001/Domain/Entity/User.php
+ [21]: https://github.com/TBeijen/DDD-HRM/blob/v001/Domain/Entity/TimeSheet.php
  [22]: http://www.doctrine-project.org/docs/orm/2.0/en/reference/annotations-reference.html#orderby
- [23]: https://gitlab.com/TBeijen-blog-sample-code/DDD-HRM/blob/v001/Domain/Entity/TimeSheetStatusChange.php
+ [23]: https://github.com/TBeijen/DDD-HRM/blob/v001/Domain/Entity/TimeSheetStatusChange.php
  [24]: http://www.doctrine-project.org/docs/orm/2.0/en/reference/tools.html
  [25]: http://www.doctrine-project.org/docs/orm/2.0/en/reference/tools.html#entity-generation
- [26]: https://gitlab.com/TBeijen-blog-sample-code/DDD-HRM/tree/v001/Test/Domain/Entity
+ [26]: https://github.com/TBeijen/DDD-HRM/tree/v001/Test/Domain/Entity
  [27]: https://github.com/giorgiosironi/ddd-talk
