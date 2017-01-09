@@ -10,12 +10,12 @@ tags:
   - Hugo
   - Caddy
   - Ansible
-description: For some years my blog has been inactive. (Now this could imply that 'not much was happening' on a professional level but that hasn't been the case, in contrary) Recently I've been thinking about adding new content and it became clear that my old Wordpress setup wasn't the best fit anymore for my needs. Several people I know have been very possitive about Hugo and the webserver Caddy so I decided to give that a try.
+description: For some years my blog has been inactive. Now this could imply that 'not much was happening' on a professional level but that hasn't been the case, in contrary. Recently I've been thinking about adding new content and it became clear that my old Wordpress setup wasn't the best fit anymore for my needs. Several people I know have been very possitive about Hugo and the webserver Caddy so I decided to give that a try.
 
 ---
 ## Introduction
 
-For some years my blog has been inactive. (Now this could imply that 'not much was happening' on a professional level but that hasn't been the case, in contrary) Recently I've been thinking about adding new content and it became clear that my old Wordpress setup wasn't the best fit anymore for my needs. Several people I know have been very possitive about [Hugo](https://gohugo.io/) and the webserver [Caddy](https://caddyserver.com/) so I decided to give that a try. For hosting I chose [Digital Ocean](https://m.do.co/c/a6a97fed1069) (Referral link, gets you $10 to start with), based on reputation, pricing and their excellent [technical articles](https://www.digitalocean.com/community/tutorials).
+For some years my blog has been inactive. Now this could imply that 'not much was happening' on a professional level but that hasn't been the case, in contrary. Recently I've been thinking about adding new content and it became clear that my old Wordpress setup wasn't the best fit anymore for my needs. Several people I know have been very possitive about [Hugo](https://gohugo.io/) and the webserver [Caddy](https://caddyserver.com/) so I decided to give that a try. For hosting I chose [Digital Ocean](https://m.do.co/c/a6a97fed1069) (Referral link, gets you $10 to start with), based on reputation, pricing and their excellent [technical articles](https://www.digitalocean.com/community/tutorials).
 
 In this post I'll summarize the steps taken to migrate content to Hugo and setup Hugo and Caddy on a VPS. Provisioning code using Ansible is [on GitHub](https://github.com/TBeijen/tbnl-provision/).
 
@@ -92,12 +92,12 @@ Currently Hugo is [already at v0.18.1](https://github.com/spf13/hugo/releases) s
 
 For Caddy a fine[^footnote_caddy] role exists on Ansible Galaxy: [antoiner77.caddy](https://galaxy.ansible.com/antoiner77/caddy/). Nevertheless, I copied it to my project and modified some parts:
 
-* I added an optional ``--email`` switch to the ``ExecStart`` command in the systemd config file ``caddy.service``.
+* I added an optional ``-email`` switch to the ``ExecStart`` command in the systemd config file ``caddy.service``.
 * I set ``ProtectHome`` to ``false`` in ``caddy.service``.
 * I used a template file for ``Caddyfile`` instead of defining it directly in group vars. As there's some conditionals in there and length is quite a bit larger than the default example, I find a template to be more readable and easier to maintain (For example: No yaml indenting needed).
 
 #### Reflecting on the above
-Although present both in cli command and Caddyfile in a [Let's Encrypt in 90 seconds](https://daplie.com/articles/lets-encrypt-in-literally-90-seconds/) tutorial on Daplie.com, based on [the Caddy cli docs](https://caddyserver.com/docs/cli) this doesn't seem neccessary. Quoting: *"if not specified for a site in the Caddyfile"*.
+Although present both in cli command and Caddyfile in a [Let's Encrypt in 90 seconds](https://daplie.com/articles/lets-encrypt-in-literally-90-seconds/) tutorial on Daplie.com, based on [the Caddy cli docs](https://caddyserver.com/docs/cli) the ``-email`` switch doesn't seem neccessary. Quoting: *"Email address to use ...if not specified for a site in the Caddyfile"*.
 
 Furthermore, after I started using the Caddy role, there has been an update that includes the [systemd service file in the role](https://github.com/antoiner77/caddy-ansible/blob/master/templates/caddy.service), instead of copying it from the Caddy source files. This will make it much easier to make parts of it configurable via group vars.
 
@@ -165,7 +165,7 @@ Be sure to read the Caddy (automatic https guid)[https://caddyserver.com/docs/au
 
 ### Docker?
 
-For fun I keep my first site alive, a JS-heavy SPA from the times when [XMLHttpRequest](XMLHttpRequest) wasn't widely available yet. I'm interested to see how long it takes before it really breaks. So far it still works pretty neat, on desktop resolutions that is. I'm going to write in more detail about that in another post.
+For fun I keep [my first site](https://www.tibobeijen.nl/anno2003/) alive, a JS-heavy SPA from the times when [XMLHttpRequest](XMLHttpRequest) wasn't widely available yet. I'm interested to see how long it takes before it really breaks. So far it still works pretty neat, on desktop resolutions that is. I'm going to write in more detail about that in another post.
 
 ### Building Hugo
 Caddy's [git extension](https://caddyserver.com/docs/git) is what really makes the Caddy & Hugo combination fly. A push to the master branch is all that it takes to trigger Caddy to check out the code and build a new Hugo site.
@@ -225,7 +225,7 @@ Caddy en Hugo make a very good combination. Especially if your use cases stay so
 
 For me this has been a welcome upgrade. Ditching the maintenance and plugin-bloat allows returning focus on what a blog is about: Content.
 
-Good luck setting up your own Caddy/Hugo site. 
+Good luck setting up your own Caddy/Hugo site!
 
  [^footnote_wordpress]: Of course there is the possibility to automate the updating of Wordpress and the plugins. However, this goes against what I consider a good practice: Actually testing any change before blindly putting it in production and hope for the best. Admitted: Guarding against vulnerabilities is definitely the lesser of evils in this case. But essentially that would require setting up restore points and means to test if all plugins still work. For hardening Wordpress a plugin like [Wordfence](https://nl.wordpress.org/plugins/wordfence/) will help a lot. Altogether, I consider it a lot of moving parts for a site where almost nothing 'moves'.
  [^footnote_caddy]: What makes the Caddy role 'fine'? Multi-platform. Ongoing development. A Vagrantfile that makes it easy to test and contribute. And a sign of good understanding of Ansible: Tests that focus on role execution being idempotent, meaning repeated runs of the same config will record 0 changes.
