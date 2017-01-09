@@ -10,12 +10,12 @@ tags:
   - Hugo
   - Caddy
   - Ansible
-description: For some years my blog has been inactive. Now this could imply that 'not much was happening' on a professional level but that hasn't been the case, in contrary. Recently I've been thinking about adding new content and it became clear that my old Wordpress setup wasn't the best fit anymore for my needs. Several people I know have been very possitive about Hugo and the webserver Caddy so I decided to give that a try.
+description: For some years my blog has been inactive. Now this could imply that 'not much was happening' on a professional level but that hasn't been the case, in contrary. Recently I've been thinking about adding new content and it became clear that my old Wordpress setup wasn't the best fit anymore for my needs. Several people I know have been very positive about Hugo and the webserver Caddy so I decided to give that a try.
 
 ---
 ## Introduction
 
-For some years my blog has been inactive. Now this could imply that 'not much was happening' on a professional level but that hasn't been the case, in contrary. Recently I've been thinking about adding new content and it became clear that my old Wordpress setup wasn't the best fit anymore for my needs. Several people I know have been very possitive about [Hugo](https://gohugo.io/) and the webserver [Caddy](https://caddyserver.com/) so I decided to give that a try. For hosting I chose [Digital Ocean](https://m.do.co/c/a6a97fed1069) (Referral link, gets you $10 to start with), based on reputation, pricing and their excellent [technical articles](https://www.digitalocean.com/community/tutorials).
+For some years my blog has been inactive. Now this could imply that 'not much was happening' on a professional level but that hasn't been the case, in contrary. Recently I've been thinking about adding new content and it became clear that my old Wordpress setup wasn't the best fit anymore for my needs. Several people I know have been very positive about [Hugo](https://gohugo.io/) and the webserver [Caddy](https://caddyserver.com/) so I decided to give that a try. For hosting I chose [Digital Ocean](https://m.do.co/c/a6a97fed1069) (Referral link, gets you $10 to start with), based on reputation, pricing and their excellent [technical articles](https://www.digitalocean.com/community/tutorials).
 
 In this post I'll summarize the steps taken to migrate content to Hugo and setup Hugo and Caddy on a VPS. Provisioning code using Ansible is [on GitHub](https://github.com/TBeijen/tbnl-provision/).
 
