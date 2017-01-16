@@ -10,12 +10,12 @@ tags:
   - Hugo
   - Caddy
   - Ansible
-description: For some years my blog has been inactive. Now this could imply that 'not much was happening' on a professional level but that hasn't been the case, in contrary. Recently I've been thinking about adding new content and it became clear that my old Wordpress setup wasn't the best fit anymore for my needs. Several people I know have been very positive about Hugo and the webserver Caddy so I decided to give that a try.
+description: For some years my blog has been inactive. Now this could imply that 'not much was happening' on a professional level but that hasn't been the case, on the contrary. Recently I've been thinking about adding new content and it became clear that my old Wordpress setup wasn't the best fit anymore for my needs. Several people I know have been very positive about Hugo and the webserver Caddy so I decided to give that a try.
 
 ---
 ## Introduction
 
-For some years my blog has been inactive. Now this could imply that 'not much was happening' on a professional level but that hasn't been the case, in contrary. Recently I've been thinking about adding new content and it became clear that my old Wordpress setup wasn't the best fit anymore for my needs. Several people I know have been very positive about [Hugo](https://gohugo.io/) and the webserver [Caddy](https://caddyserver.com/) so I decided to give that a try. For hosting I chose [Digital Ocean](https://m.do.co/c/a6a97fed1069) (Referral link, gets you $10 to start with), based on reputation, pricing and their excellent [technical articles](https://www.digitalocean.com/community/tutorials).
+For some years my blog has been inactive. Now this could imply that 'not much was happening' on a professional level but that hasn't been the case, on the contrary. Recently I've been thinking about adding new content and it became clear that my old Wordpress setup wasn't the best fit anymore for my needs. Several people I know have been very positive about [Hugo](https://gohugo.io/) and the webserver [Caddy](https://caddyserver.com/) so I decided to give that a try. For hosting I chose [Digital Ocean](https://m.do.co/c/a6a97fed1069) (Referral link, gets you $10 to start with), based on reputation, pricing and their excellent [technical articles](https://www.digitalocean.com/community/tutorials).
 
 In this post I'll summarize the steps taken to migrate content to Hugo and setup Hugo and Caddy on a VPS. Provisioning code using Ansible is [on GitHub](https://github.com/TBeijen/tbnl-provision/).
 
@@ -24,7 +24,7 @@ In this post I'll summarize the steps taken to migrate content to Hugo and setup
 * Exporting to Wordpress is fairly easy but the resulting files might need some postprocessing.
 * Test your export to disqus, including scheme, path or domain changes.
 * Use Snap packages instead of your distro's standard package manager to install the latest Hugo version.
-* Setting up Let's Encrypt using Caddy is very easy (easy as in actually doing nothing). Testing it if your site is not yet accessible under the intended domain name will be harder.
+* Setting up Let's Encrypt using Caddy is very easy (easy as in actually doing nothing). Testing it when your site is not yet accessible under the intended domain name will be harder.
 * Be aware of Systemd's ``ProtectHome`` feature to save a lot of time figuring out why deploy keys or scripts won't work when invoked from Caddy.
 * Pushover and Uptimerobot make for great finishing touches.
 
@@ -54,7 +54,7 @@ After exporting, a Hugo site structure was created containing the blog posts and
 
 ## Migrating comments to Disqus
 
-Using the [official Disqus Wordpress plugin](https://nl.wordpress.org/plugins/disqus-comment-system/) it's fairly easy to export comments. Be sure to test this first on a test site you've created in your Disqus profile. (Basically: Follow the [Disqus guidelines for development sites](https://help.disqus.com/customer/portal/articles/1053796-best-practices-for-staging-development-and-preview-sites)).
+Using the [official Disqus Wordpress plugin](https://nl.wordpress.org/plugins/disqus-comment-system/), it's fairly easy to export comments. Be sure to test this first on a test site you've created in your Disqus profile. (Basically: Follow the [Disqus guidelines for development sites](https://help.disqus.com/customer/portal/articles/1053796-best-practices-for-staging-development-and-preview-sites)).
 
 As it turned out, in Disqus https and http are considered different domains. So initially comments didn't show up on my 'production' site (I tested import using http, so missed that part). Although the 'Domain migration tool' seems like the right tool for this conversion I ran into some bumps, resulting in quite a mess. As explained in [this article](https://woorkup.com/migrate-disqus-comments-https/), the 'URL mapper' works fine for this case.
 
@@ -158,7 +158,7 @@ I've added a variable ``caddy_lets_encrypt``. This allowed me to test the setup 
 * Change DNS, 'launch' the Hugo/Caddy site
 * Re-provision with HTTPS enabled
 
-Be sure to read the Caddy (automatic https guid)[https://caddyserver.com/docs/automatic-https]. Especially note that:
+Be sure to read the Caddy [automatic https guide](https://caddyserver.com/docs/automatic-https). Especially note that:
 
 * If you're using one of the supported DNS provider, you might not need the 'if caddy_lets_encrypt' conditionals I used.
 * There is a (staging environment for Let's Encrypt)[https://letsencrypt.org/docs/staging-environment/]. I only read about that aftwerwards and didn't run into problems, but that looks to be just luck.
@@ -176,7 +176,7 @@ I had two things on my wishlist that weren't implemented as smoothly as hoped fo
 * Using a git submodule to check out the Hugo theme
 * Sending a notfication via [Pushover](https://pushover.net/) when the site has been updated
 
-I originally had the theme submodule defined as ssh link. However, when installing Caddy reported errors about not being able to access the deploy key I provisioned in the caddy home folder. Double checking permissions, trying the same steps as caddy user, all worked fine. This point I worked around by switching the submodule reference to https.
+I originally had the theme submodule defined as ssh link. However, when installing Caddy reported errors about not being able to access the deploy key I provisioned in the caddy home folder. Double checking permissions, trying the same steps as caddy user, all worked fine. This part I worked around by switching the submodule reference to https.
 
 When setting up the pushover script I ran into the same issue, and then discovered that systemd has the ability to protect home folders, which is turned on in the systemd script provided by Caddy. This could also have been worked around by adding the curl command directly in the Caddyfile.
 
@@ -215,13 +215,13 @@ The result:
 
 ### Bonus: Uptimerobot
 
-Having set up Pushover already, an easy finishing touch is setting up basic monitoring. [Uptimerobot](https://uptimerobot.com/) has a free plan allowing up to 50 monitors at 5 minute intervals. It has integration with Pushover, although it asks for the 'user key' instead of the application-specific 'API token', so you can also set up an application-specific e-mail address in Pushover and use that.
+Having set up Pushover already, an easy finishing touch is setting up basic monitoring. [Uptimerobot](https://uptimerobot.com/) has a free plan allowing up to 50 monitors at 5 minute intervals. It has integration with Pushover, although it asks for the 'user key' instead of the application-specific 'API token'. You can also set up an application-specific e-mail address in Pushover and use that.
 
 ## Summary
 
-All in all the process of moving from Wordpress to Hugo was pretty smooth. Extracting content was fairly easy although it required quite some post-processing. Migrating the content was a similar experience: There might be some bumps, you need to test, but it's perfectly doable.
+All in all the process of moving from Wordpress to Hugo was pretty smooth. Extracting content was fairly easy although it required quite some post-processing. Migrating the comments was a similar experience: There might be some bumps, you need to test, but it's perfectly doable.
 
-Caddy en Hugo make a very good combination. Especially if your use cases stay somewhat simple, Caddy is perfect. For complexer environments I suppose the benefit of practically 0-config will disappear at some point, leveling the playing field when comparing with for example Nginx.
+Caddy en Hugo make a very good combination. Especially if your use cases stay somewhat simple, Caddy is perfect. For complexer environments I suppose the benefit of practically 0-config will disappear at some point, leveling the playing field when comparing with, for example, Nginx.
 
 For me this has been a welcome upgrade. Ditching the maintenance and plugin-bloat allows returning focus on what a blog is about: Content.
 
