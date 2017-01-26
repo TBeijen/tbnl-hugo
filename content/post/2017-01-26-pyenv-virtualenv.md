@@ -34,7 +34,7 @@ eval "$(pyenv virtualenv-init -)"
 ```
 
 ## Adding python versions
-Very straightforward:
+Straightforward:
 
 ```
 pyenv install 3.5.3
@@ -42,7 +42,7 @@ pyenv install 3.5.3
 
 ## Creating a virtualenv
 
-By default virtualenvs created using pyenv-virtualenv are located in ``~/.pyenv/versions/``. The syntax has changed as well, compared to 'vanilla' virtualenv. As virtualenvs are now in a central location, my advise would be to simply name them similar to the project they belong to. So if you're working on a project called 'api', create a virtualenv using:
+By default virtualenvs created using pyenv-virtualenv are located in ``~/.pyenv/versions/``. The syntax has changed as well, compared to 'vanilla' virtualenv. As virtualenvs are now in a central location, my advise would be to simply name them similar to the project they belong to. So if you're working on a project called 'api', create a virtualenv in that folder using:
 
 ```
 pyenv virtualenv 3.5.3 api
@@ -77,7 +77,7 @@ defaults write -g AppleShowAllFiles -bool true
 ```
 
 ## When Xcode doesn't play nice
-As a sidenote, if you run into all kinds of compile errors, it doesn't hurt to check the state of your xcode installation. Things not working after a xcode update has bitten me more than once (The xcode update after upgrading to Sierra caused my command line tools to disappear).
+As a sidenote, if you run into all kinds of compile errors, it doesn't hurt to check the state of your xcode installation. Things not working after a xcode update has bitten me more than once. To illustrate: The xcode upgrade after upgrading to Sierra caused my command line tools to disappear.
 
 ```
 xcode-select --install
