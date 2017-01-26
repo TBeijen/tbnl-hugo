@@ -45,7 +45,7 @@ category = "categories"
 
 	# By setting homeMaxPosts, home page will show limited number of post and link to archive (/post/) 
 	# instead of paginated list of posts
-	homeMaxPosts = 1
+	homeMaxPosts = 2
 
 	# Use summary instead, if description is empty
 	useSummaryIfNoDescription = true
