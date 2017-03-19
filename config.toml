@@ -10,6 +10,10 @@ paginate = 10
 tag = "tags"
 category = "categories"
 
+[sitemap]
+changefreq = "monthly"
+priority = 0.5
+filename = "sitemap.xml"
 
 [params]
 
