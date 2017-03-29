@@ -31,10 +31,19 @@ TODO: Schematic of loadbalancers in public subnets of multiple AZs
 ### Route 53 healthchecks
 To prevent half of the traffic going to the /dev/null of the internet, this required having Route 53 health checks in place that will stop traffic going to a loadbalancer in case of failure or reboots due to maintenance. Straightforward if it weren't for the firewall rules that will only allow traffic originating from our VPN...
 
+### Summarizing the case
+
+* Office VPN requires application to have fixed IPs when on public internet, to specifically route traffic to it over VPN.
+* Having the application only accessible from internal network not an option.
+* ELBs no longer possible due to fixed IP requirement.
+* Setup needs to be highly available.
+
+Of course the situation would be easier if we could simply limit access to an internal network that has a route to our VPC. No need for fixed IPs, no need to whitelist VPN exit nodes. Reality however is different and there are some aspects we as a team have no control over.
+
 ## Possible solutions
-After some research, possible solutions boiled down to:
+After brief research, possible solutions boiled down to:
 
 * Whitelist known Route 53 health check ip's.
 * Find a way to only publicly expose a monitor endpoint that reflects the service health.
 
-
+Whitelisting route 53 health checks, using the ip's refered to by the [AWS developer guide](https://ip-ranges.amazonaws.com/ip-ranges.json>) is arguable the cleanest solution. It introduces however, some 'moving parts': 
