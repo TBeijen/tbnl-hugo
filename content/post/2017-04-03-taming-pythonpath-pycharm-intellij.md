@@ -12,7 +12,7 @@ tags:
   - Unit Test
   - PyCharm
   - IntelliJ
-description: PyCharm and IntelliJ default PYTHONPATH shenanigans. 
+description: PyCharm and IntelliJ have some odd defaults that can mask mistakes until they hit CI.
 
 ---
 **TL;DR:** PyCharm and IntelliJ have some odd defaults that can mask mistakes until they hit CI.
