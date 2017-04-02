@@ -50,14 +50,17 @@ Comparing ``sys.path`` from the command line and from code run by the IDE showed
 
 Looking into the configuration options in IntelliJ, there are several places where adding of directories to ``PYTHONPATH`` can be configured. 
 
+### Project configuration
 First of all there is the project configuration that determines what are the 'content roots' and the 'source roots' (See [PyCharm's content root documentation](https://www.jetbrains.com/help/pycharm/2016.3/content-root.html)).
 
 {{< figure src="/img/pythonpath_pycharm__project_settings.png" title="Project settings" >}}
 
+### Application preferences
 In the application preferences there are options to add content roots and source roots to the python console and django console. Source roots is off by default so that's good.
 
 {{< figure src="/img/pythonpath_pycharm__preferences.png" title="IntelliJ preferences" >}}
 
+### Configuration defaults
 Finally, there are per-project configuration defaults for 'Django server' and 'py.test'. Herein lies the problem, as for both the default is to add source roots to ``PYTHONPATH``. This is the one that masks the import errors as 'api' and 'config' folders were marked as source roots.
 
 {{< figure src="/img/pythonpath_pycharm__configuration_defaults.png" title="Configuration defaults" >}}
