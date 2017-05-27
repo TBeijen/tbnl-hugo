@@ -49,7 +49,7 @@ filename = "sitemap.xml"
 
 	# By setting homeMaxPosts, home page will show limited number of post and link to archive (/post/) 
 	# instead of paginated list of posts
-	homeMaxPosts = 2
+	homeMaxPosts = 3
 
 	# Use summary instead, if description is empty
 	useSummaryIfNoDescription = true
