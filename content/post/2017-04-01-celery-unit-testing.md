@@ -46,3 +46,10 @@ http://celery.readthedocs.io/en/latest/userguide/workers.html#writing-your-own-r
 
 
 Look into pytest MonkeyPatch. setattr, undo().
+
+
+
+SQlite3 locking when using factory boy and celery_worker fixture
+
+functional test, using ArticleFactory
+E       sqlite3.OperationalError: database table is locked: news
