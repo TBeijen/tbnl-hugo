@@ -29,7 +29,7 @@ In our office's VPN configuration, internet traffic is by default not routed ove
 ### The HA in HAProxy
 As we already had (good) experience with HAProxy, the most apparent approach was to replace the ELB by HAProxy running on an EC2 instance in one of our VPC's public subnets. However, ELBs are by design 'highly available', yet a single EC2 instance is not. So we needed at least 2 of them, in different availability zones. 
 
-TODO: Schematic of loadbalancers in public subnets of multiple AZs
+{{< figure src="/img/haproxy_healthchecks__aws_diagram.png" title="HAProxy loadbalancers in public subnets of multiple availability zones" >}}
 
 ### Route 53 healthchecks
 To prevent half of the traffic going to the /dev/null of the internet, this required having Route 53 health checks in place that will stop traffic going to a loadbalancer in case of failure or reboots due to maintenance. Straightforward if it weren't for the firewall rules that will only allow traffic originating from our VPN...
@@ -139,7 +139,7 @@ The important part is ``frontend route53_monitor``. What happens here:
 
 ## Route53 configuration
 
-The DNS part of the [Terraform](https://www.terraform.io/) configuration, comments per resource explaining the purpose:
+The DNS part of the [Terraform](https://www.terraform.io/docs/providers/aws/) configuration, comments per resource explaining the purpose:
 
 ```
 # Host-specific A records for both load-balancers
@@ -185,7 +185,13 @@ resource "aws_route53_record" "dashboard-group" {
 }
 ```
 
+## Wrapping it up
 
 As a result:
+
+* If one of the two loadbalancers goes down, it wil be removed from DNS. (Note that for planned maintenance we could disable the health check first, allowing it to handle requests until DNS directs traffic to the other loadbalancer)
+* If a loadbalancer can't reach any of the two dashboard webservers, it's health-check will report ``FAIL`` and it will be removed from DNS. As a result dashboard webservers can safely be restarted. Here too, for a more graceful experience, health check on the dashboard servers can be made to report ``FAIL`` before the service actually stops.
+
+That's it. This has been running to good satisfaction in our stack for over a year now. 
 
 
