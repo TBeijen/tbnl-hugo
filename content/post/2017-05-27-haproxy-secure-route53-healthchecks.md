@@ -12,6 +12,7 @@ tags:
   - Elastic IP
   - HAProxy
   - VPN
+  - Terraform
 description: 
 
 ---
@@ -124,15 +125,67 @@ listen stats
   stats hide-version
   stats uri /
   stats realm Strictly\ Private
-  stats auth username:<password>
+  stats auth user:supersecret
   stats refresh 5s
 ```
 
 The important part is ``frontend route53_monitor``. What happens here:
 
-* It binds to a different port than ``frontend dashboard``, allowing to apply different firewalling to each port.
+* It binds to a different port than ``frontend dashboard``, allowing to apply different firewall rules to each port.
 * Using [acl](http://cbonte.github.io/haproxy-dconv/1.5/configuration.html#7.1) and [nbsrv](http://cbonte.github.io/haproxy-dconv/1.5/configuration.html#7.3.2-nbsrv) it tests for the number of healthy backends, if below 1, it sets ``site_dead``.
 * It configures a monitor endpoint using [monitor-uri](http://cbonte.github.io/haproxy-dconv/1.5/configuration.html#4-monitor-uri).
 * Using [monitor fail](http://cbonte.github.io/haproxy-dconv/1.5/configuration.html#4-monitor%20fail), it configures the monitor to report failure based on the test result stored in ``site_dead``.
 * The route53_monitor frontend has no default_backend configured (and it's not configured in default section either), so any request on the monitor port other than ``/health`` will hit a 503.
+
+## Route53 configuration
+
+The DNS part of the [Terraform](https://www.terraform.io/) configuration, comments per resource explaining the purpose:
+
+```
+# Host-specific A records for both load-balancers
+resource "aws_route53_record" "dashboard-record" {
+   zone_id = "<my-zone-id>"
+   count = 2
+   name = "dashboard-lb-${format("%03d", count.index + 1)}.production.mydomain.nl"
+   type = "A"
+   ttl = "60"
+   records = ["${element(aws_instance.lb-dashboard.*.public_ip, count.index)}"]
+}
+
+# Health checks for each of the load balancers
+resource "aws_route53_health_check" "dashboard-healthcheck" {
+  ip_address = "${element(aws_instance.lb-dashboard.*.public_ip, count.index)}"
+  count = 2
+  port = 50000
+  type = "HTTP"
+  resource_path = "/health"
+  failure_threshold = "5"
+  request_interval = "30"
+  tags = {
+    Name = "dashboard-${format("%03d", count.index + 1)}.production"
+  }
+}
+
+# Group consisting of 2 alias records to the host records, with associated health checks, having weighted routing
+resource "aws_route53_record" "dashboard-group" {
+   zone_id = "<my-zone-id>"
+   count = 2
+   name = "dashboard.production.mydomain.nl"
+   type = "A"
+   weighted_routing_policy = {
+      weight = "50"
+   }
+   health_check_id = "${element(aws_route53_health_check.dashboard-healthcheck.*.id, count.index)}"
+   set_identifier = "dashboard${format("%03d", count.index + 1)}"
+   alias {
+     name = "${element(aws_route53_record.dashboard-record.*.fqdn, count.index)}"
+     zone_id = "<my-zone-id>"
+     evaluate_target_health = true
+   }
+}
+```
+
+
+As a result:
+
 
