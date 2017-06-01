@@ -16,7 +16,7 @@ tags:
 description: It's possible to configure HAProxy to have separate health check and service endpoints, allowing to set up different firewall rules for each.
 
 ---
-**TL;DR:** HAProxy provides powerful configuration options to decouple health checks from frontends. Scroll down for example config.
+**TL;DR:** It's possible to configure HAProxy to have separate health check and service endpoints, allowing to set up different firewall rules for each. Scroll down for configs.
 
 ## Case outline
 When designing a highly available service on EC2, AWS Elastic Loadbalancers are quite often a key component. A common setup is to have an internet facing ELB forward requests to EC2 instances that are in a private subnet, not directly accessible from the internet. Recently though, we encountered a scenario where we couldn't use ELBs as they can't have a fixed ip (Elastic IP in AWS terms).
