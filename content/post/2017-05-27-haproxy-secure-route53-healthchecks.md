@@ -16,23 +16,23 @@ tags:
 description: It's possible to configure HAProxy to have separate health check and service endpoints, allowing to set up different firewall rules for each.
 
 ---
-**TL;DR:** It's possible to configure HAProxy to have separate health check and service endpoints, allowing to set up different firewall rules for each. Scroll down for configs.
+**TL;DR:** It's possible to configure HAProxy to have separate health check and service endpoints, allowing to set up different firewall rules for each. Scroll down for config samples.
 
 ## Case outline
-When designing a highly available service on EC2, AWS Elastic Loadbalancers are quite often a key component. A common setup is to have an internet facing ELB forward requests to EC2 instances that are in a private subnet, not directly accessible from the internet. Recently though, we encountered a scenario where we couldn't use ELBs as they can't have a fixed ip (Elastic IP in AWS terms).
+When designing a highly available service on EC2, AWS Elastic Load balancers are quite often a key component. A common setup is to have an internet facing ELB forward requests to EC2 instances that are in a private subnet, not directly accessible from the internet. Recently though, we encountered a scenario where we couldn't use ELBs as they can't have a fixed IP (Elastic IP in AWS terms).
 
 ### The elastic IP requirement
-Originally the service, a dashboard of sorts, was restricted to the office network and a limited number of supplier office networks, so whitelisted to a set of ips. In these times of remote working, this was no longer a maintainable strategy so we needed to grant access to traffic originating from the office VPN, allowing access also to remote workers. 
+Originally the service, a dashboard of sorts, was restricted to the office network and a limited number of supplier office networks, so whitelisted to a set of IPs. In these times of remote working, this was no longer a maintainable strategy so we needed to grant access to traffic originating from the office VPN, allowing access also to remote workers. 
 
-In our office's VPN configuration, internet traffic is by default not routed over the VPN connection. So the office automation department needed to know what the ip's were, in order to configure VPN clients to route traffic to the service over the VPN as well. This way we could setup firewall rules to grant access to the VPN exit nodes, but it also meant we needed to look for alternatives to our ELBs.
+In our office's VPN configuration, internet traffic is by default not routed over the VPN connection. So the office automation department needed to know what the IPs were, in order to configure VPN clients to route traffic to the service over the VPN as well. This way we could setup firewall rules to grant access to the VPN exit nodes, but it also meant we needed to look for alternatives to our ELBs.
 
 ### The HA in HAProxy
 As we already had (good) experience with HAProxy, the most apparent approach was to replace the ELB by HAProxy running on an EC2 instance in one of our VPC's public subnets. However, ELBs are by design 'highly available', yet a single EC2 instance is not. So we needed at least 2 of them, in different availability zones. 
 
-{{< figure src="/img/haproxy_healthchecks__aws_diagram.png" title="AWS Diagram: HAProxy loadbalancers in public subnets of multiple availability zones" >}}
+{{< figure src="/img/haproxy_healthchecks__aws_diagram.png" title="AWS Diagram: HAProxy load balancers in public subnets of multiple availability zones" >}}
 
 ### Route 53 healthchecks
-To prevent half of the traffic going to the /dev/null of the internet, this required having Route 53 health checks in place that will stop traffic going to a loadbalancer in case of failure or reboots due to maintenance. Straightforward if it weren't for the firewall rules that will only allow traffic originating from our VPN...
+To prevent half of the traffic going to the /dev/null of the internet, this required having Route 53 health checks in place that will stop traffic going to a load balancer in case of failure or reboots due to maintenance. Straightforward if it weren't for the firewall rules that will only allow traffic originating from our VPN...
 
 ### Summarizing the case
 
@@ -46,17 +46,17 @@ Of course the situation would be easier if we could simply limit access to an in
 ## Possible solutions
 After brief research, possible solutions boiled down to:
 
-* Whitelist known Route 53 health check ip's.
+* Whitelist known Route 53 health check IPs.
 * Find a way to only publicly expose a monitor endpoint that reflects the service health.
 
-Whitelisting route 53 health checks, using the ip's refered to by the [AWS developer guide](https://ip-ranges.amazonaws.com/ip-ranges.json>) is arguable the cleanest solution. It introduces however, some 'moving parts':
+Whitelisting Route 53 health checks, using the IPs referred to by the [AWS developer guide](https://ip-ranges.amazonaws.com/ip-ranges.json>) is arguable the cleanest solution. It introduces however, some 'moving parts':
 
-* Periodically querying the route 53 health check ip list and updating a security group.
+* Periodically querying the Route 53 health check IP list and updating a security group.
 * Monitoring to ensure this mechanism works well.
 
-If possible, less moving parts is preferrable, especially as this in our stack is an uncommon requirement. So let's see what's possible.
+If possible, less moving parts is preferable, especially as this in our stack is an uncommon requirement. So let's see what's possible.
 
-## HAProxy healthchecks
+## HAProxy health checks
 
 As it turns out, HAProxy doesn't disappoint and has some very powerful configuration directives that allow decoupling the monitor from the frontend. 
 
@@ -130,9 +130,9 @@ The important part is ``frontend route53_monitor``. What happens here:
 * Using [acl](http://cbonte.github.io/haproxy-dconv/1.5/configuration.html#7.1) and [nbsrv](http://cbonte.github.io/haproxy-dconv/1.5/configuration.html#7.3.2-nbsrv) it tests for the number of healthy backends, if below 1, it sets ``site_dead``.
 * It configures a monitor endpoint using [monitor-uri](http://cbonte.github.io/haproxy-dconv/1.5/configuration.html#4-monitor-uri).
 * Using [monitor fail](http://cbonte.github.io/haproxy-dconv/1.5/configuration.html#4-monitor%20fail), it configures the monitor to report failure based on the test result stored in ``site_dead``.
-* The route53_monitor frontend has no default_backend configured (and it's not configured in default section either), so any request on the monitor port other than ``/health`` will hit a 503.
+* The route53_monitor frontend has no ``default_backend`` configured (and it's not configured in default section either), so any request on the monitor port other than ``/health`` will hit a 503.
 
-## Route53 configuration
+## Route 53 configuration
 
 The DNS part of the [Terraform](https://www.terraform.io/docs/providers/aws/) configuration, comments per resource explaining the purpose:
 
@@ -184,8 +184,8 @@ resource "aws_route53_record" "dashboard-group" {
 
 As a result:
 
-* If one of the two loadbalancers goes down, it wil be removed from DNS. (Note that for planned maintenance we could disable the health check first, allowing it to handle requests until DNS directs traffic to the other loadbalancer)
-* If a loadbalancer can't reach any of the two dashboard webservers, it's health-check will report ``FAIL`` and it will be removed from DNS. As a result dashboard webservers can safely be restarted. Here too, for a more graceful experience, health check on the dashboard servers can be made to report ``FAIL`` before the service actually stops.
-* If a loadbalancer can't reach any of the dashboard servers, it's health check will report ``FAIL`` and it will be removed from DNS.
+* If one of the two load balancers goes down, it will be removed from DNS. (Note that for planned maintenance we could disable the health check first, allowing it to handle requests until DNS directs traffic to the other load balancer)
+* If a load balancer can't reach any of the two dashboard web servers, it's health-check will report ``FAIL`` and it will be removed from DNS. As a result dashboard web servers can safely be restarted. Here too, for a more graceful experience, health check on the dashboard servers can be made to report ``FAIL`` before the service actually stops.
+* If a load balancer can't reach any of the dashboard servers, it's health check will report ``FAIL`` and it will be removed from DNS.
 
 As already mentioned, excluding health checks from access restrictions is arguably not the *best* solution. It's the trade off for having a simple, low-maintenance setup. Sometimes it's acceptable to 'let things become a problem first'. This setup has been running without any issues in our stack for over a year now. 
