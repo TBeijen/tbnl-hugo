@@ -39,18 +39,21 @@ A relational database that is web scale?[^footnote_webscale] One that defies the
 
 ### Firebase
 
+As customer case of Kubernetes, the NUsport app was presented. This presents users with a liveblog for several sports categories, containing text, images, videos and score updates. This technology was later implemented in the NU.nl ([Android](https://play.google.com/store/apps/details?id=nl.sanomamedia.android.nu&hl=nl)/[iOS](https://itunes.apple.com/nl/app/nu-nl/id382059927?mt=8)) app as well, which has an active userbase of well over a million.
 
+The main driver for our NUsport app to use Firebase was the requirement for real-time updates combined with short time to market. We can truly say Firebase allowed us to meet those requirements. Previously we have built similar functionality using Node.js and websockets but, especially considering sports data is 'same for everyone'[^footnote_nusport], Firebase helps in keeping things simple and focus on features first.
 
+The NUsport app uses 3 parts of the Firebase platform: Real-time database, Cloud messaging and Remote config. Using it at scale we went through some learnings:
+
+* **Bandwith**. Even though a timeline is small (<1 MB), and individual additions a lot smaller than that, having hundreds of thousands of users adds up. So be on top of that.
+* **Sharding**. For NUsport capacity was sufficient. For NU.nl we needed to shard to multiple Firebase databases because a single database was not sufficient for the amount of concurrent connections needed.
 
 ## Summarizing
 
+A very interesting event. Of course there is the 'we want you to use our product' factor, which is why it's free, but that's fine. Beyond the commercial aspect there's simply a lot of information to digest, also on a technical level. And discussing topics off-track with Googlers or people from the partner companies is inspiring and gives insights as well.
+
+With the seemingly increasing effort Google puts into it's cloud platform I'm curious how the size of the customer base of Google and of 'that other public cloud provider' will look like next year.
 
 
  [^footnote_webscale]: Little bit of pun intended. NoSQL has it's use cases, but for data that is more structured than flat.... look at relational databases first. 
-
-
-
-
-
-## Chats
-
+ [^footnote_nusport]: Clients can filter content, and there's some basic structuring preventing needless bandwith usage
