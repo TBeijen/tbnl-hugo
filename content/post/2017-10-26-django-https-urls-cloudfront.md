@@ -1,8 +1,8 @@
 ---
 title: 'Generating https urls in Django using CloudFront'
 author: Tibo Beijen
-date: 2017-08-25T16:00:00+02:00
-url: /2017/08/25/django-https-urls-cloudfront/
+date: 2017-10-26T20:00:00+02:00
+url: /2017/10/26/django-https-urls-cloudfront/
 categories:
   - articles
 tags:
@@ -13,13 +13,14 @@ tags:
   - Django
   - Django Rest Framework
   - Python
-description: Having Django generate absolute URLs using https has some challenges when set up behind CloudFront.
+description: Configure CloudFront to set the ``Cloudfront-Forwarded-Proto`` in order to allow a Django application to know the client's request protocol.
 
 ---
+**TL;DR:** Configure CloudFront to set the ``Cloudfront-Forwarded-Proto`` in order to allow a Django application to know the client's request protocol.
 
-Recently, while developing an API that makes use of [Django Rest Frameowork](http://www.django-rest-framework.org/) and is delivered using CloudFront, we noticed the absolute URLs it generated to be http, whereas the CloudFront distribution is https only. Not really surprising when thinking it through, as in our case Cloudfront did TLS termination and traffic between upstream components was HTTP (We'll look into that, as HTTPS is preferred).
+Recently, while developing an API that makes use of [Django Rest Framework](http://www.django-rest-framework.org/) and is delivered using CloudFront, we noticed the absolute URLs it generated to be HTTP, whereas the CloudFront distribution is HTTPS only. Not really surprising when thinking it through, as in our case Cloudfront did TLS termination and traffic between upstream components was HTTP (Yes, we'll look into that, HTTPS being preferred).
 
-URLs in pages (or JSON data) should match the protocol of the request. Typically you want the protocol to be determined based on facts (so the protocol the client request _has_) instead of configuration (the protocol you _assume the client request to have_). Less configuration. Easy for development setups that might be HTTP-only. No asumptions.
+URLs in pages (or JSON data) should match the protocol of the request. Typically you want the protocol to be determined based on facts (so the protocol the client request _has_) instead of configuration (the protocol you _assume the client request to have_). Less configuration. Easy for development setups that might be HTTP-only. No assumptions.
 
 ## X-Forwarded-Proto
 
@@ -54,13 +55,13 @@ Now this leaves for a lot of variations in what protocols are used between layer
 
 * For custom origins, [CloudFront can be configured](http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/HTTPandHTTPSRequests.html) to match the client protocol for backend requests, or use only HTTP or HTTPS.
 * Likewise, for ELBs listeners can be configured for HTTP and HTTPS, mirroring the client request, or always map to either HTTP or HTTPS on the instances (the application).
-* Any additional or alternate reverse proxies offer likewise flexibility, as briefly illustrated above.
+* Any additional or alternate reverse proxies offer similar flexibility, as briefly illustrated in the above configuration examples.
 
-The main take-away is that, to have reliable info in your application about the actual client request protocol, you'd either have to:
+The main take-away is that, to have reliable info in your application about the actual client's request protocol, you'd either have to:
 
 * Rigourously match the downstream request protocol accross all layers.
 * Use TCP mode wherever possible.
-* Forward incoming	``X-Forwarded-Proto`` headers. But that's not the best of practices, as that information shouldn't be provided by client but be based on the actual request protocol.
+* Forward incoming	``X-Forwarded-Proto`` headers. But that's not the best of practices, as that information shouldn't be _provided_ by client but be based on the _actual_ request protocol.
 * Determine the client request protocol at the layer nearest to the client, and propagate that in a way that isn't overwritten by upstream layers.
 
 That last option is exactly what is offered by CloudFront's ``Cloudfront-Forwarded-Proto`` header.
@@ -71,7 +72,7 @@ By default CloudFront doesn't set the ``Cloudfront-Forwarded-Proto`` header. Thi
 
 {{< figure src="/img/django_cloudfront__aws_behaviour_whitelist.png" title="AWS CloudFront Behaviour Configuration: Whitelist Headers" >}}
 
-Note the setting 'Cache Based on Selected Request Headers'. This has the not-so-fine-grained options _None (improves caching)_, _Whitelist_ and _All_. So, adding the the ``Cloudfront-Forwarded-Proto`` header to the whitelist not only causes the client's request protocol to be available to the application, it also configures CloudFront to cache based on client request protocol.
+Note the setting 'Cache Based on Selected Request Headers'. This has the options _None (improves caching)_, _Whitelist_ and _All_. So, adding the the ``Cloudfront-Forwarded-Proto`` header to the whitelist not only causes the client's request protocol to be available to the application, it also configures CloudFront to cache based on client request protocol.
 
 Typically this is a good thing as it:
 
@@ -80,7 +81,7 @@ Typically this is a good thing as it:
 
 ## Django configuration
 
-Having set up CloudFront as described, configuring a Django application accordingly is trivial by adding to ``settings``:
+Having set up CloudFront as described, [configuring a Django application](https://docs.djangoproject.com/en/1.11/ref/settings/#secure-proxy-ssl-header) accordingly is trivial by adding to ``settings``:
 
 ```
 SECURE_PROXY_SSL_HEADER = ('HTTP_CLOUDFRONT_FORWARDED_PROTO', 'https')
