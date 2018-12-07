@@ -42,7 +42,9 @@ Opening keynote drawing parallels between deep-sea diving and Devops, comparing 
 
 ### [Running Kubernetes in Production at Scale: Centralizing Operations and Governance](https://devopsconference.de/docker-kubernetes/running-kubernetes-in-production-at-scale-centralizing-operations-and-governance/)
 
-[Oleg Chunikhin](https://twitter.com/olgch) of [Kublr](https://kublr.com/) gave a technical run-through of [how Kublr works](https://kublr.com/how-it-works/). What I found especially interesting was that they had Prometheus running outside of the clusters, using a prometheus collector inside the individual cluster. During a chat later Oleg explained they use [federation](https://prometheus.io/docs/prometheus/latest/federation/) for that. Based on prior research I was under the impression that simply forwarding was not one of the adviced/typical use cases, but I'll definitely explore this further. There is definitely an advantage to having metrics available outside a cluster, as a recent mishap we experienced teached us.  (I'll blog about that later. Kubernetes failures are entertaining reads and based on other talks I'm in great company.)
+[Oleg Chunikhin](https://twitter.com/olgch) of [Kublr](https://kublr.com/) gave a technical run-through of [how Kublr works](https://kublr.com/how-it-works/). What I found especially interesting was that they had Prometheus running outside of the clusters, using a prometheus collector inside the individual cluster. In a brief chat we had later, Oleg explained they use [federation](https://prometheus.io/docs/prometheus/latest/federation/) for that. 
+
+Based on prior research I was under the impression that simply forwarding was not one of the adviced/typical use cases, but I'll definitely explore this further. There for sure is an advantage in having metrics available *outside* of a cluster, as a recent mishap we experienced teached us.  (I'll blog about that later. Kubernetes failures are entertaining reads and based on other talks we are in great company.)
 
 For backups [Heptio community tools](https://heptio.com/community/) were mentioned.
 
@@ -61,6 +63,14 @@ Some other mentions:
 * Definition of quality: Software that does exactly what the customer wants it to do at the speed at which the customer wants it to happen.
 
 And this slide, showing how much we've learned...
+
+<!--  -->
+<!--  -->
+<!--  -->
+**TODO: SLIDE**
+
+
+
 
 ### [OpenSource Pentesting & Security Analysis Tools: The DevOps-way…](https://devopsconference.de/security/opensource-pentesting-and-security-analysis-tools/)
 
@@ -81,7 +91,7 @@ Advantages of a service mesh include:
 * Tracing
 * Ability to test application resilience via fault injection
 
-Metaphorically the comparison between doing things 'the wrong way' and sticking a knife in your leg was made. Very apt in my opinion, you'll keep moving forward but it will be slow and hurts a lot. I'll keep that in mind if I need a non-technical answer to the question 'why is it again that we are doing this devops thing?'.
+Jokingly the comparison between doing things 'the wrong way' and sticking a knife in your leg was made. Very apt in my opinion, you'll keep moving forward but it will be slow and hurts a lot. I'll keep that in mind if I need a non-technical answer to the question of 'why would one be doing this devops thing?'.
 
 The tracability got me wondering how that holds up with GraphQL which tends to wrap errors in the response:
 
@@ -89,9 +99,26 @@ The tracability got me wondering how that holds up with GraphQL which tends to w
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 
+### [Continuous Integration/Continuous Delivery for Microservices: Rule them all](https://devopsconference.de/continuous-delivery/continuous-integration-continuous-delivery-for-microservices-rule-them-all/)
+
+A talk about the CI/CD setup of [LivePerson](https://www.liveperson.com/), a messaging platform for brands. Some numbers: 200 Microservices, 7000 deploys/year, 15000 builds/week, 5 DevOps engineers. They converged their setup to Maven and NPM, offering teams a end-to-end pipeline as service. One of the (commercial) services used in their pipeline is Checkmarx for security scanning.
+
+On my question on how to manage the integration testing aspect of 200 pipelines that cause a lot of parallel movement: It is a pain point, focus as much as possible on contract testing.
+
+### [Expert’s panel discussion](https://devopsconference.de/organizational-change/experts-panel-discussion/)
+
+A panel discussion on how to effictively achieve 'digital transformation' and establish 'devops culture'. Some highlights:
+
+* Don't copy the answers, copy the questions.
+* Consider transformation as a constant process.
+* Recipe for disaster: The [Peter principle](https://en.wikipedia.org/wiki/Peter_principle) in effect. Middle management getting a level down and doing micromanagement.
+* Netflix example: Teams have freedom of choice. There's the paved highway. And there's going custom as long as requirements are met.
+
+## Day 2
 
 
 
-
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">This feels like home: „engineering has anecdotes from daily stand up as a measure of success” 😂🤦‍♂️🤷‍♂️. Entertaining talk by <a href="https://twitter.com/jbaruch?ref_src=twsrc%5Etfw">@jbaruch</a> and <a href="https://twitter.com/ligolnik?ref_src=twsrc%5Etfw">@ligolnik</a> at <a href="https://twitter.com/hashtag/devopscon?src=hash&amp;ref_src=twsrc%5Etfw">#devopscon</a> <a href="https://t.co/VCIU0n02Ku">pic.twitter.com/VCIU0n02Ku</a></p>&mdash; Torsten Bøgh Köster (@tboeghk) <a href="https://twitter.com/tboeghk/status/1070229667267911680?ref_src=twsrc%5Etfw">December 5, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 
