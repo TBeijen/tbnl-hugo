@@ -213,20 +213,27 @@ _#Continuous Delivery_
 Hassy Veldstra of [Artillery.io](https://artillery.io/) how to effectively execute various types of performance tests, and integrate them into a CI/CD pipeline.
 
 Some specific types of performance tests:
+
 * Soak tests. Testing for a longer duration (1 - 2 hours) spotting memory leaks and the likes.
 * Spike tests. Rapid ramp-up (Similar to when [a news platform](https://www.nu.nl) sends a breaking news push message).
 
 Removing barriers:
+
 * Tools that everyone has access to
 * Tools that everyone can use
 
 Reading tip: Production-ready Microservices - Susan J. Fowler (O'Reilly)
 
 Organizing tests:
+
 * Artillery blog article: https://artillery.io/blog/end-to-end-performance-testing-microservices
 * Github template repo: https://github.com/artilleryio/acme-corp-api-tests
 
+### Misc
 
+* Minimize integration tests where possible, focus on contract testing instead.
+* Mutation testing as better measurement of test-suite quality than coverage.
+* Automate the process to make process flaws visible. Move from there.
 
 
 
