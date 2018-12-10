@@ -6,7 +6,7 @@ url: /2018/12/08/devopscon18-munich/
 categories:
   - articles
 tags:
-  - Devops
+  - DevOps
   - Conference
   - Munich
   - Kubernetes
@@ -14,7 +14,7 @@ tags:
 description: Recap of DevOpsCon 2018 conference in Munich.
 
 ---
-Tuesday 4th and wednesday 5th the [DevOps Conference 2018](https://devopsconference.de/) took place in Munich. With a program filled with talks addressing 'DevOps' topics such as CI/CD, Kubernetes, Security, Company culture and change, Microservices, I was lucky enough to attend. Below you'll find a slightly redacted version of the notes I took during the talks and off-track chats I had with several people.
+Tuesday 4th and wednesday 5th the [DevOps Conference 2018](https://devopsconference.de/) took place in Munich. Offering a program filled with talks addressing 'DevOps' topics such as CI/CD, Kubernetes, Security, Company culture and change, Microservices, I was lucky enough to attend. Below you'll find a slightly redacted version of the notes I took during the talks and off-track chats I had with several people.
 
 ## Day 1
 
@@ -22,9 +22,9 @@ Tuesday 4th and wednesday 5th the [DevOps Conference 2018](https://devopsconfere
 
 _#Business & Company Culture_
 
-Opening keynote drawing parallels between deep-sea diving and Devops, comparing aspects such as training, adapting, learning and chain of events that lead to incidents.
+Opening keynote drawing parallels between deep-sea diving and DevOps, comparing aspects such as training, adapting, learning and chain of events that lead to incidents.
 
-* Succes is when failure becomes routine and boring.
+* Success is when failure becomes routine and boring.
 * Security systems that aren't used do not exist.
 * Security systems that aren't tested do not exist either.
 * Evaluating risk: Gauge the magnitude of regret.
@@ -49,9 +49,9 @@ _#Docker & Kubernetes_
 
 [Oleg Chunikhin](https://twitter.com/olgch) of [Kublr](https://kublr.com/) gave a technical run-through of [how Kublr works](https://kublr.com/how-it-works/). 
 
-What I found especially interesting was that they had Prometheus running outside of the clusters, using a prometheus collector inside the individual cluster. In a brief chat we had later, Oleg explained they use [federation](https://prometheus.io/docs/prometheus/latest/federation/) for that. Based on prior research I was under the impression that simply forwarding was not one of the adviced/typical use cases, but I'll definitely explore this further. 
+What I found especially interesting was that Kublr runs Prometheus outside of the clusters, using a prometheus collector inside each individual cluster. In a brief chat we had later, Oleg explained they use [federation](https://prometheus.io/docs/prometheus/latest/federation/) for that. Based on prior research I was under the impression that forwarding all metrics was not one of the adviced/typical use cases, but I'll definitely explore this further. 
 
-There for sure is an advantage in having metrics available *outside* of a cluster, as a recent mishap we experienced teached us.  (I'll blog about that later. Kubernetes failures are entertaining reads and based on other talks we are in great company.)
+There for sure is an advantage in having metrics available *outside* of a cluster, as a recent mishap we experienced taught us.  (I'll blog about that later. Kubernetes failures are entertaining reads and based on other talks we are in great company.)
 
 For backups [Heptio community tools](https://heptio.com/community/) were mentioned.
 
@@ -67,8 +67,8 @@ Highly enjoyable talk on the challenges of delivering software fast. Following q
 Some other mentions:
 
 * Feedback loops should be fast! 12-15 minutes tops, otherwise too slow.
-* Value stream mapping
-* Microservices can encourage silos
+* Value stream mapping.
+* Microservices can encourage silos.
 * Definition of quality: Software that does exactly what the customer wants it to do at the speed at which the customer wants it to happen.
 
 And this slide, showing how much we've learned in the past 25 years:
@@ -98,13 +98,12 @@ Advantages of a service mesh include:
 * Tracing
 * Ability to test application resilience via fault injection
 
-Jokingly the comparison between doing things 'the wrong way' and sticking a knife in your leg was made. Very apt in my opinion, you'll keep moving forward but it will be slow and hurts a lot. I'll keep that in mind if I need a non-technical answer to the question of 'why would one be doing this devops thing?'.
+Jokingly the comparison between doing things 'the wrong way' and sticking a knife in your leg was made. Very apt in my opinion, you'll keep moving forward but it will be slow and hurts a lot. I'll keep that in mind if I need a non-technical answer to the question of 'why would one be doing this DevOps thing?'.
 
-The tracability got me wondering how that holds up with GraphQL which tends to wrap errors in the response:
+The tracability got me wondering how that holds up with GraphQL which tends to wrap errors in the response instead of returning an error http status:
 
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">gRPC has a similar problem and <a href="https://twitter.com/linkerd?ref_src=twsrc%5Etfw">@linkerd</a> shows both the http status code *and* the gRPC status code.</p>&mdash; Thomas (@grampelberg) <a href="https://twitter.com/grampelberg/status/1070005094089809921?ref_src=twsrc%5Etfw">December 4, 2018</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
 
 ### [Continuous Integration/Continuous Delivery for Microservices: Rule them all](https://devopsconference.de/continuous-delivery/continuous-integration-continuous-delivery-for-microservices-rule-them-all/)
 
@@ -118,7 +117,7 @@ On my question on how to manage the integration testing aspect of 200 pipelines 
 
 _#Business & Company Culture, #Organizational Change_
 
-A panel discussion on how to effictively achieve 'digital transformation' and establish 'devops culture'. Some highlights:
+A panel discussion on how to effectively achieve 'digital transformation' and establish 'DevOps culture'. Some highlights:
 
 * Don't copy the answers, copy the questions.
 * Consider transformation as a constant process.
@@ -131,7 +130,7 @@ A panel discussion on how to effictively achieve 'digital transformation' and es
 
 _#Logging, Monitoring & Analytics_
 
-Devops usually contains a lot of dashboards, however engineering teams are typically bad at measuring our effectiveness, as the slide below subtly shows:
+DevOps usually contains a lot of dashboards, however engineering teams are typically bad at measuring our effectiveness, as the slide below subtly shows:
 
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">This feels like home: „engineering has anecdotes from daily stand up as a measure of success” 😂🤦‍♂️🤷‍♂️. Entertaining talk by <a href="https://twitter.com/jbaruch?ref_src=twsrc%5Etfw">@jbaruch</a> and <a href="https://twitter.com/ligolnik?ref_src=twsrc%5Etfw">@ligolnik</a> at <a href="https://twitter.com/hashtag/devopscon?src=hash&amp;ref_src=twsrc%5Etfw">#devopscon</a> <a href="https://t.co/VCIU0n02Ku">pic.twitter.com/VCIU0n02Ku</a></p>&mdash; Torsten Bøgh Köster (@tboeghk) <a href="https://twitter.com/tboeghk/status/1070229667267911680?ref_src=twsrc%5Etfw">December 5, 2018</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -151,7 +150,7 @@ _#Docker & Kubernetes_
 Audi Business Innovation GmbH provides teams with a Kubernetes environment. Of course this didn't happen overnight and the road to it had it's share of bumps. In this talk a set of principles were outlined that will help any team that runs Kubernetes.
 
 * Audi's stack includes: Kops, Sonarqube, Artifactory, Sonatype Nexus.
-* Early-stage outages were related to in-place cluster upgrades, romana network plugin error, ingress/egress down.
+* Early-stage outages were related to in-place cluster upgrades, Romana network plugin error, ingress/egress down.
 * Audi mixes Kubernetes applications with AWS managed services such as RDS.
 * "Technology scales. Knowledge and people should scale as well".
 * Define service risk and recovery objectives.
@@ -161,9 +160,8 @@ Audi Business Innovation GmbH provides teams with a Kubernetes environment. Of c
   * Cluster state backup: [Heptio Ark](https://heptio.com/community/ark/).
   * EFS volumes: [BorgBackup](https://borgbackup.readthedocs.io/en/stable/), allowing incremental backups.
 
-* Consider image pull policy, preventing pull from unkown source, [BlackDuck](https://www.blackducksoftware.com/products/hub) can be used for scanning.
+* Consider image pull policy, preventing pull from unknown source, [BlackDuck](https://www.blackducksoftware.com/products/hub) can be used for scanning.
 * Focus on LTES, the 4 golden signals (Source: Google SRE book. Latency, Throughput, Error-rate, Saturation)
-
 
 ### [I deploy on Fridays (and maybe you should too)](https://devopsconference.de/continuous-delivery/i-deploy-on-fridays-and-maybe-you-should-too/)
 
@@ -233,11 +231,8 @@ Organizing tests:
 
 ### Miscellaneous
 
-Some pointers and insights obtained from chat with various attendants.
- 
+Some pointers and insights obtained from chat with various attendants:
+
 * Minimize integration tests where possible, focus on contract testing instead.
 * Mutation testing as better measurement of test-suite quality than coverage.
 * Automate the process to make process flaws visible. Move from there.
-
-
-
