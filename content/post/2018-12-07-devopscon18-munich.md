@@ -193,6 +193,8 @@ Some take-aways:
 
 _#Docker & Kubernetes_
 
+[Slides](https://www.slideshare.net/try_except_/running-kubernetes-in-production-a-million-ways-to-crash-your-cluster-devopscon-munich-2018)
+
 Zalando runs Kubernetes at scale (~100 clusters). In this talk some insights were given to what can go wrong and to how Zalando operates their clusters.
 
 
@@ -229,8 +231,10 @@ Organizing tests:
 * Artillery blog article: https://artillery.io/blog/end-to-end-performance-testing-microservices
 * Github template repo: https://github.com/artilleryio/acme-corp-api-tests
 
-### Misc
+### Miscellaneous
 
+Some pointers and insights obtained from chat with various attendants.
+ 
 * Minimize integration tests where possible, focus on contract testing instead.
 * Mutation testing as better measurement of test-suite quality than coverage.
 * Automate the process to make process flaws visible. Move from there.
