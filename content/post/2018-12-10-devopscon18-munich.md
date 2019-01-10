@@ -73,7 +73,7 @@ Some other mentions:
 
 And this slide, showing how much we've learned in the past 25 years:
 
-{{< figure src="/img/devopscon18__orchestration_slide.jpg" title="" >}}
+{{< figure src="/img/devopscon18__orchestration_slide.gif" title="Image taken from slides by Peter Caron" >}}
 
 ### [OpenSource Pentesting & Security Analysis Tools: The DevOps-way…](https://devopsconference.de/security/opensource-pentesting-and-security-analysis-tools/)
 
@@ -163,6 +163,17 @@ Audi Business Innovation GmbH provides teams with a Kubernetes environment. Of c
 * Consider image pull policy, preventing pull from unknown source, [BlackDuck](https://www.blackducksoftware.com/products/hub) can be used for scanning.
 * Focus on LTES, the 4 golden signals (Source: Google SRE book. Latency, Throughput, Error-rate, Saturation)
 
+The 7 principles adopted by Audi:
+
+1. Everything as code
+2. Have a deployment strategy
+3. Create backup & recovery strategy
+4. Agree on governance and resource management
+5. Define security and user management
+6. Implement monitoring and logging
+7. People and culture
+
+
 ### [I deploy on Fridays (and maybe you should too)](https://devopsconference.de/continuous-delivery/i-deploy-on-fridays-and-maybe-you-should-too/)
 
 _#Continuous Delivery_
@@ -236,3 +247,5 @@ Some pointers and insights obtained from chat with various attendants:
 * Minimize integration tests where possible, focus on contract testing instead.
 * Mutation testing as better measurement of test-suite quality than coverage.
 * Automate the process to make process flaws visible. Move from there.
+
+_Update 2019-01-10: Added 7 principles for production-ready Kubernetes (based on slides). Replaced 'how much we learned' photo by slide._ 
