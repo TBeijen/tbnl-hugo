@@ -11,7 +11,7 @@ tags:
   - Munich
   - Kubernetes
   - CI/CD
-description: Recap of DevOpsCon 2018 conference in Munich.
+description: Recap of the DevOpsCon 2018 conference in Munich.
 
 ---
 Tuesday 4th and wednesday 5th the [DevOps Conference 2018](https://devopsconference.de/) took place in Munich. Offering a program filled with talks addressing 'DevOps' topics such as CI/CD, Kubernetes, Security, Company culture and change, Microservices, I was lucky enough to attend. Below you'll find a slightly redacted version of the notes I took during the talks and off-track chats I had with several people.
