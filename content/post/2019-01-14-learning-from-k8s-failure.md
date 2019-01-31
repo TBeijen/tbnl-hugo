@@ -16,7 +16,7 @@ description: "Analyzing past Kubernetes cluster issues, but more importantly: Ma
 ---
 Since a number of months we ([NU.nl](https://www.nu.nl) development team) operate a small number of Kubernetes clusters. We see the potential of Kubernetes and how it can increase our productivity and how it can improve our CI/CD practices. Currently we run part of our logging and building toolset on Kubernetes, plus some small (internal) customer facing workloads, with the plan to move more applications there once we've build up knowledge and confidence.
 
-Recently our team faced some problems on one of the clusters. Not as severe as to bring down the cluster completely, but definitely affecting end user experience of some interally used tools and dashboards.
+Recently our team faced some problems on one of the clusters. Not as severe as to bring down the cluster completely, but definitely affecting the user experience of some interally used tools and dashboards.
 
 Coincidentally, around the same time I visited DevOpsCon 2018 in Munich, where the opening keynote ["Staying Alive: Patterns for Failure Management from the Bottom of the Ocean"](https://devopsconference.de/business-company-culture/staying-alive-patterns-for-failure-management-from-the-bottom-of-the-ocean/) related very well to this incident.
 
@@ -88,16 +88,59 @@ Those lines going up into nowhere are all pods running [ElastAlert](https://gith
 
 So, root cause identified, investigated and fixed. Incident closed, right? Keeping in mind the quote from before, there's is still 85% of learnings to be found, so let's dive in:
 
-
 ### No alerts fired
+
+Obviously we were working on alerting as the root cause was related to ElastAlert. Some data to act on is (currently) only available in Elasticsearch, like log messages (occurence of keywords) or systems outside of the Kubernetes cluster. Prometheus also has an alertmanager which we still need to set up. Besides those two sources we use New Relic for APM. Regardless of the sources and possibly the need to converge, it starts with defining alert rules.
+
+*Resolution:*
+
+* Define alerts related to resource usage, like CPU, Memory and disk space.
+* Continue research on alerting strategy that effectively combines possibly multiple sources.
 
 ### Grafana dashboard affected by cluster problems
 
+Prometheus and Grafana are very easy to set up in a Kubernetes cluster (Install some helm charts and you're pretty much up and running). However, if you can't reach your cluster, you're blind. 
+
+*Resolution:*
+
+* Consider exporting metrics outside of cluster and move Grafana out of cluster as well. This is not without downsides though as very well explained [in this article at robustperception.io](https://www.robustperception.io/federation-what-is-it-good-for). An advantage might be having a single go-to point for dashboards for multiple clusters. to my knowledge [Kublr](https://kublr.com/) uses a similar set-up to monitor multiple clusters.
+* Out-of-cluster location could be EC2 but also a separate Kubernetes cluster.
+
 ### Not fully benefitting from our ELK stack
+
+We are running an EC2-based ELK stack that ingests a big volume of Cloudfront logs. But also logs and metrics from the Kubernetes clusters, exported by filebeat and metricbeat daemonsets. So, the data we couldn't access via the in-cluster Grafana, existed in the ELK stack as well.... but either wasn't visualized properly or was overlooked.
+
+This in general is a somewhat tricky subject: Elasticsearch on the one hand is likely to be needed anyway for centralized logs and can do metrics as well so it _could_ be the one-stop solution. However at scale it's quite a beast to operate and onboarding could really benefit from more example dashboards (imo). 
+
+On the other hand, Prometheus is simple to set up, seems to be the default technology in the Kubernetes eco-system and, paired with Grafana's available dashboards, is very easy to get into.
+
+*Resolution:*
+
+* Either visualize important metrics in ELK or improve Prometheus/Grafana availability.
+* Improve metrics strategy.
+
+### Ops services affecting customer facing workloads
+
+Customer workloads and monitoring/logging tools sharing the same set of resources has the risk of an amplifying effect consuming all resources. Increased traffic, causing increased CPU/memory pressure, causing more logging/metric volume, causing even more CPU/memory pressure, etc.
+
+We were already planning to move all logging, monitoring and CI/CD tooling to a dedicated node group within the production cluster. Depending on our experience with that, having a dedicated 'tools' cluster is also an option. 
+
+*Resolution (was already planned):*
+
+* Isolate customer facing workloads from build, logging & monitoring workloads.
+
 
 ### No CPU & memory limits on ElastAlert pod
 
-### No default or enforced cpu & memory limits
+The Helm chart used to install ElastAlert [allows specifying resource requests and limits](https://github.com/helm/charts/blob/d3fd3f11578ebf74749b1b2c994c51d5199b8599/stable/elastalert/values.yaml#L33), however these do not have default values (not uncommon) and were overlooked by us.
+
+In order to enforce configuring resource limits we could have [configured default and limit memory requests for our namespace](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/#create-a-limitrange-and-a-pod). 
+
+*Resolution:*
+
+* Specify resource limits via Helm values.
+* Configure namespaces to have defaults en limits for memory requests.
+
 
 ### No team-wide awareness of the ElastAlert change that was deployed
 
