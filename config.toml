@@ -30,7 +30,7 @@ filename = "sitemap.xml"
 	# feel free to add a few information about you and your website.
 	name = "Tibo Beijen"
 	bio = "Python, JS and DevOps developer (not limited to). UX enthusiast. Coffee addict. Loud music aficionado."
-	description = "Your description of the blog"
+	description = "DevOps and programming related personal blog"
 	location = "" # optional
 	twitter = "TBeijen"
  	linkedin = ''
