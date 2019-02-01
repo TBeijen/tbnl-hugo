@@ -1,8 +1,8 @@
 ---
 title: 'Maximize learnings from a Kubernetes cluster failure'
 author: Tibo Beijen
-date: 2019-01-14T10:00:00+01:00
-url: /2019/01/14/learning-from-kubernetes-cluster-failure/
+date: 2019-02-01T13:00:00+01:00
+url: /2019/02/01/learning-from-kubernetes-cluster-failure/
 categories:
   - articles
 tags:
@@ -120,16 +120,6 @@ On the other hand, Prometheus is simple to set up, seems to be the default techn
 * Either visualize important metrics in ELK or improve Prometheus/Grafana availability.
 * Improve metrics strategy.
 
-### Ops services affecting customer facing workloads
-
-Customer workloads and monitoring/logging tools sharing the same set of resources has the risk of an amplifying effect consuming all resources. Increased traffic, causing increased CPU/memory pressure, causing more logging/metric volume, causing even more CPU/memory pressure, etc.
-
-We were already planning to move all logging, monitoring and CI/CD tooling to a dedicated node group within the production cluster. Depending on our experience with that, having a dedicated 'tools' cluster is also an option. 
-
-*Resolution (was already planned):*
-
-* Isolate customer facing workloads from build, logging & monitoring workloads.
-
 ### No CPU & memory limits on ElastAlert pod
 
 The Helm chart used to install ElastAlert [allows specifying resource requests and limits](https://github.com/helm/charts/blob/d3fd3f11578ebf74749b1b2c994c51d5199b8599/stable/elastalert/values.yaml#L33), however these do not have default values (not uncommon) and were overlooked by us.
@@ -141,6 +131,16 @@ In order to enforce configuring resource limits we could have [configured defaul
 * Specify resource limits via Helm values.
 * Configure namespaces to have defaults en limits for memory requests.
 
+### Ops services affecting customer facing workloads
+
+Customer workloads and monitoring/logging tools sharing the same set of resources has the risk of an amplifying effect consuming all resources. Increased traffic, causing increased CPU/memory pressure, causing more logging/metric volume, causing even more CPU/memory pressure, etc.
+
+We were already planning to move all logging, monitoring and CI/CD tooling to a dedicated node group within the production cluster. Depending on our experience with that, having a dedicated 'tools' cluster is also an option. 
+
+*Resolution (was already planned):*
+
+* Isolate customer facing workloads from build, logging & monitoring workloads.
+
 ### No team-wide awareness of the ElastAlert change that was deployed
 
 Although the new alert passed code review, the fact that it was merged and deployed was not known to everybody. More important, as it was installed via the command line by one of the team members, there was no immediate source of information that showed what applications in the cluster might have been updated.
@@ -148,7 +148,7 @@ Although the new alert passed code review, the fact that it was merged and deplo
 *Resolution:*
 
 * Deploy everything via automation (e.g. Jenkins pipelines)
-* Consider a [GitOps](https://thenewstack.io/gitops-git-push-all-the-things/) approach for deploying new application versions: 'state to be' and history of changes using a developer-friendly tool.
+* Consider a [GitOps](https://thenewstack.io/gitops-git-push-all-the-things/) approach for deploying new application versions: 'state to be' and history of changes in code, using a tool well known by developers.
 
 ### No smoke tests
 
@@ -160,7 +160,7 @@ If we had deployed the ElastAlert update using a pipeline, we could have added a
 
 ### Knowledge of operating Kubernetes limited to part of team
 
-Our team (as most teams) consist of people with various levels of expertise on different topics. Some have more Cloud & DevOps experience, some are front-end or Django experts, etc. As Kubernetes is quite new technology, and certainly for our team, knowledge was not as wide-spread as is desirable. As with all technologies practiced by Agile teams: DevOps should not be limited to a single (part of a) team. Luckily experienced team members were available to assist the on-call team member that had little infrastructure experience.
+Our team (as most teams) consist of people with various levels of expertise on different topics. Some have more Cloud & DevOps experience, some are front-end or Django experts, etc. As Kubernetes is quite new technology, and certainly for our team, knowledge was not as widespread as is desirable. As with all technologies practiced by Agile teams: DevOps should not be limited to a single (part of a) team. Luckily experienced team members were available to assist the on-call team member that had little infrastructure experience.
 
 *Resolution (was already planned):*
 
