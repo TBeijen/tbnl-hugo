@@ -11,12 +11,13 @@ tags:
   - Agile
   - Failure management
   - Company Culture
-description: "Analyzing past Kubernetes cluster issues, but more importantly: Maximize learnings."
+  - Post mortem
+description: "Analyzing a seemingly simple Kubernetes cluster problem and, more importantly, maximize learnings."
 
 ---
-Since a number of months we ([NU.nl](https://www.nu.nl) development team) operate a small number of Kubernetes clusters. We see the potential of Kubernetes and how it can increase our productivity and how it can improve our CI/CD practices. Currently we run part of our logging and building toolset on Kubernetes, plus some small (internal) customer facing workloads, with the plan to move more applications there once we've build up knowledge and confidence.
+Since a number of months we ([NU.nl](https://www.nu.nl) development team) operate a small number of Kubernetes clusters. We see the potential of Kubernetes and how it can increase our productivity and how it can improve our CI/CD practices. Currently we run part of our logging and building toolset on Kubernetes, plus some small (internal) customer facing workloads, with the plan to move more applications there once we have build up knowledge and confidence.
 
-Recently our team faced some problems on one of the clusters. Not as severe as to bring down the cluster completely, but definitely affecting the user experience of some interally used tools and dashboards.
+Recently our team faced some problems on one of the clusters. Not as severe as to bring down the cluster completely, but definitely affecting the user experience of some internally used tools and dashboards.
 
 Coincidentally, around the same time I visited DevOpsCon 2018 in Munich, where the opening keynote ["Staying Alive: Patterns for Failure Management from the Bottom of the Ocean"](https://devopsconference.de/business-company-culture/staying-alive-patterns-for-failure-management-from-the-bottom-of-the-ocean/) related very well to this incident.
 
@@ -82,7 +83,7 @@ It _did_ result however, in Prometheus and Grafana to be scheduled at a node tha
 
 {{< figure src="/img/learning_from_k8s_failure_grafana_pod_memory.png" title="Pods memory usage, during and after incident" >}}
 
-Those lines going up into nowhere are all pods running [ElastAlert](https://github.com/Yelp/elastalert). For logs we have an Elasticsearch cluster running, and recently we had been experimenting with ElastAlert to trigger alerts based on logs. One of the alerts that was introduced shortly before the incident was an alert that would fire if our ``Cloudfront-*`` indexes would not receive new documents for a certain period. As the throughput of that Cloudfront distribution is a couple of millions of request/hour, this apparently caused an enormous ramp up in memory usage. In hindisght, [digging deeper into documentation](https://elastalert.readthedocs.io/en/latest/ruletypes.html#max-query-size), we'd better have used ``use_count_query`` and/or ``max_query_size``.
+Those lines going up into nowhere are all pods running [ElastAlert](https://github.com/Yelp/elastalert). For logs we have an Elasticsearch cluster running, and recently we had been experimenting with ElastAlert to trigger alerts based on logs. One of the alerts that was introduced shortly before the incident was an alert that would fire if our ``Cloudfront-*`` indexes would not receive new documents for a certain period. As the throughput of that Cloudfront distribution is a couple of millions of request/hour, this apparently caused an enormous ramp up in memory usage. In hindsight, [digging deeper into documentation](https://elastalert.readthedocs.io/en/latest/ruletypes.html#max-query-size), we'd better have used ``use_count_query`` and/or ``max_query_size``.
 
 ## Cascade of failures
 
@@ -106,7 +107,7 @@ Prometheus and Grafana are very easy to set up in a Kubernetes cluster (Install 
 * Consider exporting metrics outside of cluster and move Grafana out of cluster as well. This is not without downsides though as very well explained [in this article at robustperception.io](https://www.robustperception.io/federation-what-is-it-good-for). An advantage might be having a single go-to point for dashboards for multiple clusters. to my knowledge [Kublr](https://kublr.com/) uses a similar set-up to monitor multiple clusters.
 * Out-of-cluster location could be EC2 but also a separate Kubernetes cluster.
 
-### Not fully benefitting from our ELK stack
+### Not fully benefiting from our ELK stack
 
 We are running an EC2-based ELK stack that ingests a big volume of Cloudfront logs. But also logs and metrics from the Kubernetes clusters, exported by filebeat and metricbeat daemonsets. So, the data we couldn't access via the in-cluster Grafana, existed in the ELK stack as well.... but either wasn't visualized properly or was overlooked.
 
@@ -129,7 +130,6 @@ We were already planning to move all logging, monitoring and CI/CD tooling to a 
 
 * Isolate customer facing workloads from build, logging & monitoring workloads.
 
-
 ### No CPU & memory limits on ElastAlert pod
 
 The Helm chart used to install ElastAlert [allows specifying resource requests and limits](https://github.com/helm/charts/blob/d3fd3f11578ebf74749b1b2c994c51d5199b8599/stable/elastalert/values.yaml#L33), however these do not have default values (not uncommon) and were overlooked by us.
@@ -141,26 +141,38 @@ In order to enforce configuring resource limits we could have [configured defaul
 * Specify resource limits via Helm values.
 * Configure namespaces to have defaults en limits for memory requests.
 
-
 ### No team-wide awareness of the ElastAlert change that was deployed
+
+Although the new alert passed code review, the fact that it was merged and deployed was not known to everybody. More important, as it was installed via the command line by one of the team members, there was no immediate source of information that showed what applications in the cluster might have been updated.
+
+*Resolution:*
+
+* Deploy everything via automation (e.g. Jenkins pipelines)
+* Consider a [GitOps](https://thenewstack.io/gitops-git-push-all-the-things/) approach for deploying new application versions: 'state to be' and history of changes using a developer-friendly tool.
 
 ### No smoke tests
 
+If we had deployed the ElastAlert update using a pipeline, we could have added a 'smoke test' step _after_ the deploy. This could have signalled excessive memory usage, or pod restarts due to the pod exceeding configured memory limits.
+
+*Resolution:*
+
+* Deploy via a pipeline that includes a smoke test step.
+
 ### Knowledge of operating Kubernetes limited to part of team
 
+Our team (as most teams) consist of people with various levels of expertise on different topics. Some have more Cloud & DevOps experience, some are front-end or Django experts, etc. As Kubernetes is quite new technology, and certainly for our team, knowledge was not as wide-spread as is desirable. As with all technologies practiced by Agile teams: DevOps should not be limited to a single (part of a) team. Luckily experienced team members were available to assist the on-call team member that had little infrastructure experience.
 
+*Resolution (was already planned):*
 
-Better dashboarding & alerting on events
+* Ensuring Kubernetes-related work (cloud infrastructure-related in general actually) is part of team sprints and is picked up by all team members, pairing with more experienced members.
+* Workshops deep-diving into certain topics.
 
-No cpu & memory limits
+## Wrap up
 
-Smoke tests.
+As becomes quite apparent, fixing the ElastAlert problem itself was just the tip of the iceberg. There was a lot more to learn from this seemingly simple incident. Most points listed in this article were already on our radar in one way or the other but their importance was emphasized. 
 
+Turning these learnings into scrum (or kanban) items will allow us to improve our platform and practices in a focused way and measure our progress. 
 
+Learning and improving as a team requires a company culture that allows 'blameless post mortems' and does not merely focus on 'number of incidents' or 'time to resolve'. To finish with a quote [heard at a DevOps conference](https://devopsconference.de/continuous-delivery/i-deploy-on-fridays-and-maybe-you-should-too/):
 
-
-Wrapup
-- not even fixed on root cause
-- company culture. Importance of blameless post mortems.
-
-
+ > Success consists of going from failure to failure without loss of enthusiasm - Winston Churchill
