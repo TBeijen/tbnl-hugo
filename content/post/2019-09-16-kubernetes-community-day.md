@@ -40,4 +40,45 @@ Some take-aways:
   * OPA (Kubernetes)
   * Sentinel (Terraform)
 
+### Booking.com (ightning)
 
+* Uses self-developed tool [Shipper](https://github.com/bookingcom/shipper) for rollouts. Multi-cluster, multi-region, multi-cloud.
+
+### ArgoCD
+
+* A GitOps operator.
+* Doesn't use tiller. Uses helm template.
+
+### Azure
+
+* True hybrid cloud: [Azure Stack](https://azure.microsoft.com/en-us/overview/azure-stack/). Use case: Installing Azure on remote location DCs where bandwith is limited, while at the same time providing a uniform interface with the 'real' cloud.
+
+### Jfrog
+
+* Deploys artifact for every branch. Question from public: Just that service? Full stack of related services? Interesting subject.
+
+Useful commands:
+```
+# logs for containers that are already gone
+kubectl logs -p -c
+
+# CLI cluster management interface
+k9s
+
+# debugging helm
+helm template
+helm install --debug --dry-run
+helm get <release>
+```
+
+### Keynote/misc.
+
+* Istio is not going to solve your 'service mess'
+* 'Edge' (What is 'edge' anyway?) Kubernetes projects: Kind, K3S
+* [Crossplane](https://github.com/crossplaneio/crossplane) - Cloud-agnostic service catalogue ('Give me a HA Postgres DB', instead of 'Give me a RDS cluster')
+
+### Environment
+
+* [Climateaction.tech](https://climateaction.tech/)
+* [DigitalClimateStrike](https://digital.globalclimatestrike.net/) (sept. 20th)
+* Nerdalize (in the process of relaunch) - Delft startup using server heating to heat homes.
