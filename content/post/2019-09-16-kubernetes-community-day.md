@@ -34,7 +34,7 @@ Some take-aways:
 ### ABN
 
 * 3-stage pipeline: Application, Docker image & Cloud delivery
-* Uses Foritfy for secure coding scan
+* Uses Fortify for secure coding scan
 * Policy enforcement:
 
   * OPA (Kubernetes)
