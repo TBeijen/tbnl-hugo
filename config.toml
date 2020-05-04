@@ -28,8 +28,9 @@ filename = "sitemap.xml"
 	# To provide some metadata for search engines and the about section in the footer
 	# feel free to add a few information about you and your website.
 	name = "Tibo Beijen"
+	author = "Tibo Beijen"
 	bio = "Python, JS and DevOps developer (not limited to). UX enthusiast. Coffee addict. Loud music aficionado."
-	description = "DevOps and programming related personal blog"
+	description = "DevOps and programming related personal blog of Tibo Beijen"
 	location = "" # optional
 	twitter = "TBeijen"
  	linkedin = 'tibobeijen'
