@@ -1,0 +1,5 @@
+# Enable Google Analytics be inserting your tracking code
+googleAnalytics = "UA-6241889-1"
+
+# Allow robots. Allow by leaving blank. Disallow by setting value to noindex
+metaRobots = ""
