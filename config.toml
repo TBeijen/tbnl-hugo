@@ -2,8 +2,7 @@ baseurl = "https://www.dev.tibobeijen.nl/"
 languageCode = "en-us"
 title = "TBNL"
 theme = "hugo-steam-theme"
-# theme = "startbootstrap-clean-blog"
-disqusShortname = "tibobeijen-nl"
+# disqusShortname = "tibobeijen-nl"
 paginate = 10
 
 [taxonomies]
@@ -33,7 +32,7 @@ filename = "sitemap.xml"
 	description = "DevOps and programming related personal blog"
 	location = "" # optional
 	twitter = "TBeijen"
- 	linkedin = ''
+ 	linkedin = 'tibobeijen'
  	googleplus = ''
  	facebook = ''
  	instagram = ''
