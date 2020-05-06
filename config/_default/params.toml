@@ -45,5 +45,5 @@ backtotopStr = "Back to top"
 shareStr = "Share"
 pageNotFoundTitle = "404 - Page not found"
 
-# Allow robots. Allow by leaving blank. Disallow by setting value to noindex
-metaRobots = "noindex"
+# Set to true to block index (meta tag & robots.txt)
+blockIndex = true
