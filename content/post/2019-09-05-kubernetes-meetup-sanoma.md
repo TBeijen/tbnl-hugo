@@ -11,6 +11,7 @@ tags:
   - DevOps
   - Kubernetes
   - NU.nl
+  - Presentation
 description: "Slides of the presentation I gave about Kubernetes practices and learnings at NU.nl."
 
 ---
