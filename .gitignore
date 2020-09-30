@@ -1,3 +1,6 @@
 /public/
 .vscode/
 *.code-workspace
+
+# image source files
+source/
