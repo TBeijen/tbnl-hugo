@@ -12,6 +12,8 @@ tags:
   - Amsterdam
   - KCD19
 description: "Short recap of the Kubernetes Community Day that took place 2019."
+images:
+- foobar.gif
 ---
 
 Friday sept. 13th the small conference 'Kubernetes Community Day 2019' took place in Pakhuis de Zwijger in Amsterdam.
