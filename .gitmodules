@@ -1,4 +1,4 @@
 [submodule "themes/hugo-steam-theme"]
 	path = themes/hugo-steam-theme
 	url = https://github.com/TBeijen/hugo-steam-theme.git
-	branch = 14128d00f9817ccad42bce397de3baa62a79f32e
+	branch = 68b885686a10a76a8c61fe20226f5f3fb5a41a5f
