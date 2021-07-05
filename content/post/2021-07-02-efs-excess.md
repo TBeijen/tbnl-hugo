@@ -12,6 +12,8 @@ tags:
   - Troubleshooting
   - Kubernetes
   - EKS
+  - Sitespeed
+  - Graphite
 description: "Disovering terabytes of excessive data, on our bill first, and cleaning it up."
 
 ---
@@ -26,6 +28,8 @@ As it appeared we were using around 3 terabyte of data.
 We use EFS as our go-to persistent storage solution for applications in EKS, it's main benefit being that it spans all availability zones so scheduling of pods remains simple. Nearly all applications are stateless and use Elasticache or RDS for persistent storage, so the number of applications that use persistent storage are limited, and for the applications that _do_ use it, requirements are not high. Examples of applications that use EFS include Jenkins, Grafana and Prometheus.
 
 We provision an EFS volume and configure [efs-provisioner](https://github.com/kubernetes-retired/external-storage/tree/master/aws/efs) accordingly for each EKS cluster (We'll probably switch to [EFS CSI Driver](https://github.com/kubernetes-sigs/aws-efs-csi-driver) or [EFS CSI dynamic provisioning](https://aws.amazon.com/blogs/containers/introducing-efs-csi-dynamic-provisioning/) at some point). The beauty is that providing an application with EFS storage is as simple as specifying a storage class. A side-effect is that AWS tags give no additional information as to what application in the cluster is using excessive storage.
+
+### Accessing EFS
 
 So, we can peek into the individual EFS PVCs currently used by pods. But it's quite a hassle and maybe data was added by an application that no longer exists. So the most thorough way is to mount the entire EFS volume and explore that.
 
@@ -93,4 +97,50 @@ mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2
 Note:
 * In the above example I use the `amazon/aws-cli` image. Use any image you are familiar with that provides a shell.
 * Use a container running the user root. Normally not the best of practices but here you need to be able to navigate a filesystem with varying ownership.
+
+### Looking around
+
+Looking at the efs mount you can clearly see directories that map to PVCs in the cluster:
+
+```
+# ls -al /mnt/efs
+# (example result)
+drwxrws--x  3 root 40003 6144 Jul  6  2020 sitespeed-grafana-pvc-pvc-28782e8e-bf8c-11ea-8b69-0249b4a9a724
+drwxrws--x  3 root 40004 6144 Jul  6  2020 sitespeed-graphite-pvc-pvc-28782b57-bf8c-11ea-8b69-0249b4a9a724
+drwxrws--x  5 root 40005 6144 Jul  6  2020 sitespeed-influxdb-pvc-pvc-28781b92-bf8c-11ea-8b69-0249b4a9a724
+```
+
+The most straightforward way to check usage would be running something like `du -h -d1 ./` from `/mnt/efs`. But given the amount of storage used this will probably never complete unless you're lucky and the disk usage is a limited number of large files. So use a combination of:
+
+* Exlusion. Any folder quickly returning a result from `du` (that's not a very large amount) is not the one we're looking for.
+* Drill down. Enter any directory where `du` does not give a result within a reasonable time and explore its contents.
+* Use commands like `ls -al` or `ls -al |wc -l` to get an impression on the amount of files and directories within a directory.
+
+### Findings
+
+As it turned out, the PVC used by the sitespeed graphite component was the one holding terabytes of data. [We](https://www.nu.nl/) use Sitespeed to measure browser performance of our site and several similar sites. Graphite stores metrics in a whisper database, which on disk is stored as ~150Kb sized files in a directory structure:
+
+```
+# example directory:
+<pvc-root>/whisper/sitespeed_io/desktop/summary/www_nu_nl/chrome/cable/aggregateassets
+
+# ...containing hundreds of thousand subfolders like this, each containing about 1.5Mb of data, example:
+<pvc-root>/.../aggregateassets/https___www_nu_nl_static_bundles_js_app_0fef8dda_js
+```
+
+This raises some questions:
+* Can we safely delete old files?
+* Why aren't old files deleted in the first place?
+
+About the first question, [several](https://answers.launchpad.net/graphite/+question/157065) resources (albeit quite dated) [suggest](https://stackoverflow.com/a/36014898) that old metrics can simply be removed by deleting old `*.wsp` files. 
+
+The reason Whisper data is not cleaned up is not clear yet. We're probably overlooking something since our `storage_schemas.conf` suggests data shouldn't exceed the age of 30 days. ([Sitespeed docs](https://www.sitespeed.io/documentation/sitespeed.io/graphite/#graphite-for-production-important) and [Graphite docs](https://graphite.readthedocs.io/en/latest/config-carbon.html#storage-schemas-conf)). That's one for the backlog, assuming deleting old files provides an intermediate solution.
+
+## Fixing
+
+Since it's EFS, we can't access the underlying storage other than via the network, to quickly delete entire folders. Deleting content boils down to iterating and deleting individual files, which is slow.
+
+Another theoretical option would be to discard the entiere EFS volume and move the contents that we want to keep to a new volume. However, determining what Graphite data to keep (although starting with an empty DB is an option here) is also time consuming. Most importantly, replacing the underlying nfs volume of several PVCs that are actively used is a surgical opereration that would need thorough testing.
+
+
 
