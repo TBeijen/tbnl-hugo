@@ -180,4 +180,4 @@ Take-aways:
 
 As it shows, not all days at the office are equal: There's building, but sometimes there needs to be (less exciting) cleaning. There seems to be no magic trick to speed up a EFS clean-up operation like this, outside of perhaps swapping out the EFS volume that backs the storage class. Perhaps some of the described steps save somebody some time, or at the very least provide a mildly entertaining read.
 
-I wouldn't be surprised if there is more efficient ways to handle this type of problem, so if you have a good tip to spare or other feedback, [find me on Twitter](https://twitter.com/TBeijen).
+I wouldn't be surprised if there are more efficient ways to handle this type of problem, so if you have a good tip to spare or other feedback, [find me on Twitter](https://twitter.com/TBeijen).
