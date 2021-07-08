@@ -14,11 +14,11 @@ tags:
   - Kops
   - EKS
   - Presentation
-description: "Slides of the presentation I gave at a developer.overheid.nl meetup on the topic of moving from Kops to Eks."
+description: "Slides of the presentation I gave at a developer.overheid.nl meetup on the topic of moving from Kops to EKS."
 thumbnail: img/2020-09-30-preview.png
 
 ---
-Slides of the presentation I gave at a developer.overheid.nl meetup on the topic of moving from Kops to Eks.
+Slides of the presentation I gave at a developer.overheid.nl meetup on the topic of moving from Kops to EKS.
 
 [This meetup](https://www.meetup.com/developer-overheid-nl/events/272400965/) took place (online) at Sept. 29, 2020.
 
