@@ -1,8 +1,8 @@
 ---
 title: 'EFS Excess - Cleaning up terabytes of data'
 author: Tibo Beijen
-date: 2021-07-02T08:00:00+01:00
-url: /2021/07/02/efs-excess
+date: 2021-07-08T05:00:00+01:00
+url: /2021/07/08/efs-excess
 categories:
   - articles
 tags:
