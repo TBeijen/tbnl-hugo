@@ -46,18 +46,18 @@ Compared to Cloudfront, Akamai has some advanced concepts that need to be fitted
 
 ### Activation
 
-An Akamai 'property' (what in Cloudfront is called a 'distribution') has versions of which one is active at any moment, typically the most recent one. When modifying a configuration of which the latest version is active, this results in a new property version which can be activated. 
+An Akamai 'property' (what in Cloudfront is called a 'distribution') has versions of which one is active at any moment, typically the most recent one. When modifying a configuration of which the latest version is active, this results in a new property version which can be activated when ready. 
 
 ### The staging network
 
-Akamai provides 2 networks: Production and staging. Any property version can be activated on the staging and production network independently. The staging network is feature-complete but doesn't provide the performance of the production network. If the production network would use `mysite.com.edgekey.net` then the staging network would be accessible using `mysite.com.edgekey-staging.net`. This [could be used by modifying](https://learn.akamai.com/en-us/webhelp/ion/web-performance-getting-started-for-http-properties/GUID-094B3C1E-0205-4104-A091-36FD4E28362D.html) the `/etc/hosts` file.
+Akamai provides 2 networks: Production and staging. Property versions can be activated on the staging and production networks independently. The staging network is feature-complete but doesn't provide the performance of the production network. If the production network would use `mysite.com.edgekey.net` then the staging network would be accessible using `mysite.com.edgekey-staging.net`. This [can be used by modifying](https://learn.akamai.com/en-us/webhelp/ion/web-performance-getting-started-for-http-properties/GUID-094B3C1E-0205-4104-A091-36FD4E28362D.html) the `/etc/hosts` file, to allow testing before activating the version on the production network.
 
 ### Adapting to IaC
 
-One can observe that both of the above concepts seem to originate from a more traditional late acceptance testing practice. In an IaC practice they loose some of their relevance and can even cause ambiguity that can be considered undesirable:
+One can observe that both of the above concepts seem to originate from a more traditional acceptance testing practice happening late in the delivery cycle. In an IaC practice they loose some of their relevance and can even cause ambiguity that can be considered undesirable:
 
-* Configuration versions are already present by having configuration in source control. The active version is determined by the branching model that is used, commonly 'latest master'.
-* The Akamai staging network can be used to test a property version, but it's not really a staging environment since it uses the same production origins. [^footnote_staging_network] To illustrate: One could only test the integration of an application and a CDN change _after_ deploying the application to production. So for test, let alone multiple test (feature) environments, more than one property is needed.
+* Configuration versions are already present by having configuration in source control. The active version is determined by the branching model that is used (commonly 'latest master'), combined with any automation that exists.
+* The Akamai staging network can be used to test a property version, but it's not really a staging environment since it uses the same production origins. [^footnote_staging_network] To illustrate: One could only test the integration of an application and a CDN change _after_ deploying the application. This limits the scope of what can be tested using the staging network. So for test, let alone multiple test (feature) environments, more than one property is needed.
 
 What we found works well:
 
@@ -67,11 +67,69 @@ What we found works well:
 
 This way the delivery of Akamai config changes is identical to that of application changes.
 
-Note that it still allows shit-hits-the-fan rollbacks: The first hour after activating a production property version, there's a quick fallback option. This can be activated, after which the active version in IaC can be aligned with the actual state. 
+Note that it still allows shit-hits-the-fan rollbacks: The first hour after activating a production property version, there's a quick fallback option. This can be activated, after which the active version defined in IaC can be aligned with the actual active version. 
 
 ## Terraform
 
-## Quirks
+In general the Terraform module does a fine job in translating declarative Terraform config into Akamai API actions. Some things to consider:
+
+### Version to be activated
+An activation is a [separate Terraform resource](https://registry.terraform.io/providers/akamai/akamai/latest/docs/resources/property_activation). What happens under the hood is that if the version changes it will use Akamai's Property API (PAPI) to [create a new activation](https://developer.akamai.com/api/core_features/property_manager/v1.html#postpropertyactivations).
+
+The [Terraform property resource](https://registry.terraform.io/providers/akamai/akamai/latest/docs/resources/property) has 3 attributes related to versions: `latest_version`, `production_version` and `staging_version`. These are determined _after_ the property has been updated, _before_ any activation has finished. 
+
+We take 'always activating latest' as a starting point. However, scenarios can exist where you want to pin a version. One possible way to accomplish this is a setting a `local` like this:
+
+```
+locals {
+  production_version_to_activate = (var.production_activate_latest == true ? 
+    akamai_property.property.latest_version : 
+    (var.production_pinned_version > 0 ? var.production_pinned_version : akamai_property.property.production_version))
+}
+```
+
+Having variable defaults:
+
+```
+variable "production_pinned_version" {
+  description = "Pin PRODUCTION network activation to this version. Set to 0 to always use previous property version on production (don't activate any property changes)."
+  type        = number
+  default     = 0
+}
+
+variable "production_activate_latest" {
+  description = "Apply latest version to production. This supersedes any pinned version so disable if wanting to stay at a specific version."
+  default     = true
+}
+```
+
+The set `tfvars` for various scenarios following below examples:
+
+```
+# Directly activate latest property version (default)
+production_activate_latest   = true
+
+# Stick to previously active version (update the property, activate later, or via GUI)
+production_activate_latest   = false
+
+# Activate specific version (e.g. reverting to known to work version)
+production_pinned_version    = 7
+production_activate_latest   = false
+```
+
+### Slow activations
+
+Activating the staging network takes about 2 to 3 mins. Activating production typically takes between 9 and 11 minutes. To shorten the feedback loop, one can configure DNS for the test environment to use Akamai's staging network, and avoid activating the production network altogether. Example:
+
+```
+test.mysite.com CNAME test.mysite.com.edgekey-staging.net
+```
+
+Given low traffic, the cache-hit ratio on test usually can't be compared to production anyway, so not having production performance would normally not be an issue.
+
+### Implicit edge hostnames
+
+
 
 ## Final thoughts
 
