@@ -37,7 +37,7 @@ And:
 
 So, how does a CDN (any CDN, be it Cloudfront, Akamai, Fastly, you name it) fit into this shift left approach? Very well actually, as long as:
 
-* The CDN isn't limited to production only but has is present in every environment as early as possible in the delivery lifecycle. [^footnote_local_cdn]
+* The CDN isn't limited to production only but has is present in every environment as early as possible in the development lifecycle. [^footnote_local_cdn]
 * Setting up and updating the CDN should be no different than any other code or infra change. As [Martin Fowler says](https://martinfowler.com/bliki/FrequencyReducesDifficulty.html): "If it hurts, do it more often".
 
 ## Akamai concepts
@@ -54,7 +54,7 @@ Akamai provides 2 networks: Production and staging. Property versions can be act
 
 ### Adapting to IaC
 
-One can observe that both of the above concepts seem to originate from a more traditional acceptance testing practice happening late in the delivery cycle. In an IaC practice they loose some of their relevance and can even cause ambiguity that can be considered undesirable:
+One can observe that both of the above concepts seem to originate from a more traditional acceptance testing practice happening late in the development lifecycle. In an IaC practice they loose some of their relevance and can even cause ambiguity that can be considered undesirable:
 
 * Configuration versions are already present by having configuration in source control. The active version is determined by the branching model that is used (commonly 'latest master'), combined with any automation that exists.
 * The Akamai staging network can be used to test a property version, but it's not really a staging environment since it uses the same production origins. [^footnote_staging_network] To illustrate: One could only test the integration of an application and a CDN change _after_ deploying the application. This limits the scope of what can be tested using the staging network. So for test, let alone multiple test (feature) environments, more than one property is needed.
@@ -67,11 +67,11 @@ What we found works well:
 
 This way the delivery of Akamai config changes is identical to that of application changes.
 
-Note that it still allows shit-hits-the-fan rollbacks: The first hour after activating a production property version, there's a quick fallback option. This can be activated, after which the active version defined in IaC can be aligned with the actual active version. 
+Note that it still allows shit-hits-the-fan rollbacks: The first hour after activating a production property version, there's a quick fallback option. This can be activated (stop the bleeding), after which the active version defined in IaC can be aligned with the actual active version (proper surgery). 
 
 ## Terraform
 
-In general the Terraform module does a fine job in translating declarative Terraform config into Akamai API actions. Some things to consider:
+Overall the Terraform module does a fine job in translating declarative Terraform config into Akamai API actions. There are some things to consider:
 
 ### Version to be activated
 An activation is a [separate Terraform resource](https://registry.terraform.io/providers/akamai/akamai/latest/docs/resources/property_activation). What happens under the hood is that if the version changes it will use Akamai's Property API (PAPI) to [create a new activation](https://developer.akamai.com/api/core_features/property_manager/v1.html#postpropertyactivations).
@@ -91,6 +91,7 @@ locals {
 Having variable defaults:
 
 ```
+# Note: Similar variables would exist for staging network
 variable "production_pinned_version" {
   description = "Pin PRODUCTION network activation to this version. Set to 0 to always use previous property version on production (don't activate any property changes)."
   type        = number
@@ -129,12 +130,21 @@ Given low traffic, the cache-hit ratio on test usually can't be compared to prod
 
 ### Implicit edge hostnames
 
+The [edge hostname](https://registry.terraform.io/providers/akamai/akamai/latest/docs/resources/edge_hostname) resource requires to set a certificate enrollment ID when using enhanced TLS (edge hostnames ending in `edgekey.net`). However, if you're a 'Secure by default' customer, you _can_ (not: must) [use default certificates](https://learn.akamai.com/en-us/learn_akamai/getting_started_with_akamai_developers/core_features/create_edgehostnames.html#cpsprerequisitefortls). In that case the edge hostname will be [created implicitly by the property manager API](https://developer.akamai.com/api/core_features/property_manager/v1.html#postedgehostnames).
 
+As a result the edge hostname that is created is not managed via Terraform. Most of the [edge hostname attributes](https://registry.terraform.io/providers/akamai/akamai/latest/docs/resources/edge_hostname#argument-reference) hardly ever needs to be changed, but for [ip_behavior](https://registry.terraform.io/providers/akamai/akamai/latest/docs/resources/edge_hostname#ip_behavior) this can be a problem ([Github issue](https://github.com/akamai/terraform-provider-akamai/issues/268)).
 
 ## Final thoughts
 
+The main take-away is: Treat a CDN like any other cloud resource, making sure to have representative environments as early as possible in the development lifecycle, whether it is via Terraform, the [Akamai CLI](https://developer.akamai.com/cli) or another tool of choice. 
 
-Confidence in provisioning `1...n` near-identical CDN properties instead of using Akamai's staging network to test very close to final production release.
+Shift-left in the context of Akamai results in achieving confidence in provisioning `1...n` near-identical CDN properties reducing the need for the Akamai's staging network, ultimately speeding up the delivery process.
+
+Worth noting is that end-to-end tests in a caching setup can be challenging to keep fast due to cache ttl. This can be mitigated via cachebusters, reduced `max-age` values in response headers or other constructs. 
+
+A representative test environment with carefully considered exceptions still beats shifting right.
+
+Thanks for reading! If you have feedback or comments, be sure to [find me on Twitter](https://twitter.com/TBeijen).
 
 
 [^footnote_local_cdn]: For a CDN, representative _local_ development seems a bit far-fetched, but once you deploy, having a representative environment should be the goal.
