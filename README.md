@@ -9,7 +9,7 @@ docker run --rm -ti -v $(pwd):$(pwd) -w $(pwd) -p 1313:1313 cage1016/docker-hugo
 Specific local version:
 
 ```
-hugo-0.62.2 server -w --bind=0.0.0.0 ./
+hugo-0.62.2 server -w --buildFuture --buildDrafts --bind=0.0.0.0 ./
 ```
 
 TODO
