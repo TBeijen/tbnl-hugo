@@ -8,6 +8,8 @@ categories:
 tags:
   - Akamai
   - Terraform
+  - IaC
+  - Shift-left testing
   - Testing
 description: "Using Terraform to provision Akamai properties in a shift left testing practice."
 thumbnail: img/akamai-terraform-shift-left-launchable.png
@@ -15,7 +17,9 @@ draft: true
 
 ---
 
-Recently we migrated our CDNs from Cloudfront to Akamai. We use Terraform for infrastructure as code (IaC) and luckily it supports Akamai as well. Nevertheless there were some challenges, like what to do with Akamai's 'staging network' in a test-early, test-often approach? (Spoiler alert: Don't use the staging network) and the concept of activating a property version. All in all it was a smooth transition and the challenges were mostly about learning the ins and outs of Akamai.
+Recently [we](https://www.nu.nl) migrated our CDNs from Cloudfront to Akamai. We use Terraform for infrastructure as code (IaC) and luckily it supports Akamai as well. Since we had Cloudfront distributions for pretty much every environment, it served as a good moment to reflect on what we've taken for granted in the past years. Especially since Akamai has the concept of a 'staging network' which doesn't naturally seem to fit in a test-early, test-often approach (Spoiler alert: We don't use the staging network).
+
+{{< figure src="/img/akamai-terraform-shift-left-header.png" title="CDNs to the left. Source: Flickr - Benny Mazur (2007), via pedbikesafe.org" >}}
 
 ## Shift Left testing
 
@@ -67,16 +71,16 @@ What we found works well:
 
 This way the delivery of Akamai config changes is identical to that of application changes.
 
-Note that it still allows shit-hits-the-fan rollbacks: The first hour after activating a production property version, there's a quick fallback option. This can be activated (stop the bleeding), after which the active version defined in IaC can be aligned with the actual active version (proper surgery). 
+Note that it still allows shit-hits-the-fan rollbacks: The first hour after activating a production property version, there's a quick fallback option. This can be activated (stop the bleeding), after which the active version defined in IaC can be aligned with the actual active version and a fix can be worked on (proper surgery). 
 
 ## Terraform
 
-Overall the Terraform module does a fine job in translating declarative Terraform config into Akamai API actions. There are some things to consider:
+Overall the Terraform module does a fine job in translating declarative Terraform config into Akamai API actions. There are however some things to consider:
 
 ### Version to be activated
 An activation is a [separate Terraform resource](https://registry.terraform.io/providers/akamai/akamai/latest/docs/resources/property_activation). What happens under the hood is that if the version changes it will use Akamai's Property API (PAPI) to [create a new activation](https://developer.akamai.com/api/core_features/property_manager/v1.html#postpropertyactivations).
 
-The [Terraform property resource](https://registry.terraform.io/providers/akamai/akamai/latest/docs/resources/property) has 3 attributes related to versions: `latest_version`, `production_version` and `staging_version`. These are determined _after_ the property has been updated, _before_ any activation has finished. 
+The [Terraform property resource](https://registry.terraform.io/providers/akamai/akamai/latest/docs/resources/property) has 3 attributes related to versions: `latest_version`, `production_version` and `staging_version`. These are determined _after_ the property has been updated, but _before_ any activation has finished. 
 
 We take 'always activating latest' as a starting point. However, scenarios can exist where you want to pin a version. One possible way to accomplish this is a setting a `local` like this:
 
@@ -104,7 +108,7 @@ variable "production_activate_latest" {
 }
 ```
 
-The set `tfvars` for various scenarios following below examples:
+This way  `tfvars` can be set for various scenarios following below examples:
 
 ```
 # Directly activate latest property version (default)
@@ -138,7 +142,7 @@ As a result the edge hostname that is created is not managed via Terraform. Most
 
 The main take-away is: Treat a CDN like any other cloud resource, making sure to have representative environments as early as possible in the development lifecycle, whether it is via Terraform, the [Akamai CLI](https://developer.akamai.com/cli) or another tool of choice. 
 
-Shift-left in the context of Akamai results in achieving confidence in provisioning `1...n` near-identical CDN properties reducing the need for the Akamai's staging network, ultimately speeding up the delivery process.
+Shift-left in the context of Akamai results in achieving confidence in provisioning `1...n` near-identical CDN properties, reducing the need for the Akamai's staging network and ultimately speeding up the delivery process.
 
 Worth noting is that end-to-end tests in a caching setup can be challenging to keep fast due to cache ttl. This can be mitigated via cachebusters, reduced `max-age` values in response headers or other constructs. 
 
