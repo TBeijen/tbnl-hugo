@@ -1,23 +1,24 @@
 ---
 title: 'Shifting Akamai to the left using Terraform'
 author: Tibo Beijen
-date: 2021-12-01T10:00:00+01:00
-url: /2021/12/01/shift-left-akamai-terraform
+date: 2021-12-03T10:00:00+01:00
+url: /2021/12/03/shift-left-akamai-terraform
 categories:
   - articles
 tags:
+  - DevOps
   - Akamai
   - Terraform
   - IaC
   - Shift-left testing
   - Testing
 description: "Using Terraform to provision Akamai properties in a shift left testing practice."
-thumbnail: img/akamai-terraform-shift-left-launchable.png
+thumbnail: img/akamai-terraform-shift-left-header.png
 draft: true
 
 ---
 
-Recently [we](https://www.nu.nl) migrated our CDNs from Cloudfront to Akamai. We use Terraform for infrastructure as code (IaC) and luckily it supports Akamai as well. Since we had Cloudfront distributions for pretty much every environment, it served as a good moment to reflect on what we've taken for granted in the past years. Especially since Akamai has the concept of a 'staging network' which doesn't naturally seem to fit in a test-early, test-often approach (Spoiler alert: We don't use the staging network).
+Recently [we](https://www.nu.nl) migrated our CDNs from Cloudfront to Akamai. We use Terraform for infrastructure as code (IaC) and luckily it supports Akamai as well. Since we had Cloudfront distributions for pretty much every environment, it served as a good moment to reflect on what we've taken for granted in the past years, especially since Akamai has the concept of a 'staging network' which doesn't naturally seem to fit in a test-early, test-often approach (Spoiler alert: We don't use the staging network).
 
 {{< figure src="/img/akamai-terraform-shift-left-header.png" title="CDNs to the left. Source: Flickr - Benny Mazur (2007), via pedbikesafe.org" >}}
 
@@ -41,7 +42,7 @@ And:
 
 So, how does a CDN (any CDN, be it Cloudfront, Akamai, Fastly, you name it) fit into this shift left approach? Very well actually, as long as:
 
-* The CDN isn't limited to production only but has is present in every environment as early as possible in the development lifecycle. [^footnote_local_cdn]
+* The CDN isn't limited to production only but is present in every environment as early as possible in the development lifecycle. [^footnote_local_cdn]
 * Setting up and updating the CDN should be no different than any other code or infra change. As [Martin Fowler says](https://martinfowler.com/bliki/FrequencyReducesDifficulty.html): "If it hurts, do it more often".
 
 ## Akamai concepts
@@ -54,14 +55,14 @@ An Akamai 'property' (what in Cloudfront is called a 'distribution') has version
 
 ### The staging network
 
-Akamai provides 2 networks: Production and staging. Property versions can be activated on the staging and production networks independently. The staging network is feature-complete but doesn't provide the performance of the production network. If the production network would use `mysite.com.edgekey.net` then the staging network would be accessible using `mysite.com.edgekey-staging.net`. This [can be used by modifying](https://learn.akamai.com/en-us/webhelp/ion/web-performance-getting-started-for-http-properties/GUID-094B3C1E-0205-4104-A091-36FD4E28362D.html) the `/etc/hosts` file, to allow testing before activating the version on the production network.
+Akamai provides two networks: Production and staging. Property versions can be activated on the staging and production networks independently. The staging network is feature-complete but doesn't provide the performance of the production network. If the production network would use `mysite.com.edgekey.net` then the staging network would be accessible using `mysite.com.edgekey-staging.net`. This [can be used by modifying](https://learn.akamai.com/en-us/webhelp/ion/web-performance-getting-started-for-http-properties/GUID-094B3C1E-0205-4104-A091-36FD4E28362D.html) the `/etc/hosts` file, to allow testing before activating the version on the production network.
 
 ### Adapting to IaC
 
 One can observe that both of the above concepts seem to originate from a more traditional acceptance testing practice happening late in the development lifecycle. In an IaC practice they loose some of their relevance and can even cause ambiguity that can be considered undesirable:
 
 * Configuration versions are already present by having configuration in source control. The active version is determined by the branching model that is used (commonly 'latest master'), combined with any automation that exists.
-* The Akamai staging network can be used to test a property version, but it's not really a staging environment since it uses the same production origins. [^footnote_staging_network] To illustrate: One could only test the integration of an application and a CDN change _after_ deploying the application. This limits the scope of what can be tested using the staging network. So for test, let alone multiple test (feature) environments, more than one property is needed.
+* The Akamai staging network can be used to test a property version, but it's not really a staging environment since it uses the _production_ origins. [^footnote_staging_network] To illustrate: One could only test the integration of an application and a CDN change _after_ deploying the application to production. This limits the scope of what can be tested using the staging network. So for test, let alone multiple test (feature) environments, more than one property is needed.
 
 What we found works well:
 
