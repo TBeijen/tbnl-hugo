@@ -14,7 +14,6 @@ tags:
   - Testing
 description: "Using Terraform to provision Akamai properties in a shift left testing practice."
 thumbnail: img/akamai-terraform-shift-left-header.png
-draft: true
 
 ---
 
