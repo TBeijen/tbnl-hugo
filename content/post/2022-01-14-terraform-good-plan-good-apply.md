@@ -2,7 +2,7 @@
 title: 'Terraform: Good plan = good apply'
 author: Tibo Beijen
 date: 2022-01-14T13:00:00+01:00
-url: /2022/01/14/terraform-smooth-apply-careful-plan
+url: /2022/01/14/terraform-good-plan-good-apply
 categories:
   - articles
 tags:
