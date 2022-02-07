@@ -5,7 +5,7 @@ menu  = "main"
 +++
 
 ### The professional
-I'm employed as lead developer / architect of the web team of [NU.nl][2] (Part of [DPG Media][1]), the largest news site in the Netherlands. I do DevOps, Kubernetes, AWS Cloud engineering, Python, Javascript and quite some other buzzwords. 
+I'm employed as lead developer / architect of the web team of [NU.nl][2] (Part of [DPG Media][1]), the largest news site in the Netherlands. I do DevOps, AWS Cloud engineering, Kubernetes, Python, Javascript and quite some other buzzwords. 
 
 I studied [Industrial Design Engineering][3] so I'm comfortable with talking about UI and UX and care about pixels also.
 

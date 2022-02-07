@@ -79,7 +79,7 @@ To remedy the routing problem, custom networking can be enabled in the VPC CNI p
 
 {{< figure height="250" src="/img/eks_private_ips_secondary_custom_nw.drawio.png" title="Secondary CIDR block + Custom networking" >}}
 
-Setting up secondary CIDR blocks and custom networking is described in the [AWS knowledge center](https://aws.amazon.com/premiumsupport/knowledge-center/eks-multiple-cidr-ranges/) and also in the [Amazon EKS Workshop](https://www.eksworkshop.com/beginner/160_advanced-networking/secondary_cidr/)
+Setting up secondary CIDR blocks and custom networking is described in the [AWS knowledge center](https://aws.amazon.com/premiumsupport/knowledge-center/eks-multiple-cidr-ranges/) and also in the [Amazon EKS Workshop](https://www.eksworkshop.com/beginner/160_advanced-networking/secondary_cidr/).
 
 Be aware that Source Network Address Translation [is disabled when using security groups for pods](https://docs.aws.amazon.com/eks/latest/userguide/security-groups-for-pods.html)[^footnote_sg_pods]: 
 
@@ -91,15 +91,29 @@ Be aware that Source Network Address Translation [is disabled when using securit
 
 ### Secondary cidr + private NAT gateway
 
-{{< figure height="250" src="/img/eks_private_ips_secondary_private_natgw.drawio.png" title="Secondary CIDR block + Custom networking" >}}
+Instead of configuring custom networking, it is also possible to solve the routing problem by using a private NAT gateway. Unlike a public NAT gateway, it is placed in a private subnet and is not linked to an internet gateway.
 
-https://aws.amazon.com/blogs/networking-and-content-delivery/how-to-solve-private-ip-exhaustion-with-private-nat-solution/
+This way nodes _and_ pods can run in the secondary CIDR block, and the routing problem is solved outside of EKS.
+
+{{< figure height="250" src="/img/eks_private_ips_secondary_private_natgw.drawio.png" title="Secondary CIDR block + Custom networking" >}}
 
 * Pro: Straightforward default VPC CNI network configuration
 * Pro: Can be used with security group for pods
 * Con: NAT gateway incurs cost
 
-## Controlling cost
+## Routing and controlling cost
+
+### One NAT gateway is enough
+
+Let's take a look at the most basic route table one can set up for the secondary private subnet:
+
+```
+10.150.40.0/21  local	
+100.64.0.0/16   local	
+0.0.0.0/0       nat-<private-id>
+```
+
+This puts any non-VPC traffic into the primary private subnet, and lets the route table that is configured there do the rest. Simple, but there is a catch[^footnote_use_all_the_natgws] which we can observe when testing internet connectivity from a node.
 
 ```
 [ec2-user@ip-100-64-43-196 ~]$ ping www.google.com
@@ -117,12 +131,38 @@ PING www.google.com (74.125.193.147) 56(84) bytes of data.
 ^C
 ```
 
-## Trade-offs
+Looking at the trace, and at the NAT gateways that exist, we can see that traffic passes the private _and_ the NAT gateway.
+
+A careful observer might have noticed the green line in the traffic diagram bypasses the private NAT gateway. To accomplish this one needs to adjust the routing table by only directing private network traffic to the private NAT gateway:
+
+```
+10.150.40.0/21  local	
+100.64.0.0/16   local	
+10.0.0.0/8      nat-<private-id>
+0.0.0.0/0       nat-<public-id>
+```
+
+Halving the amount of traffic passing through NAT gateways is halving the cost (ignoring the fixed fee of a NAT gateway).
+
+### VPC endpoints and peering connections
+
+The above illustrates that it is important to replicate route table entries for VPC endpoints and peering connections, that exist in the primary private subnets, to avoid traffic unneccessarily passing through the private NAT gateway. It will (probably) work but it brings unneeded cost.
+
+A reminder: Since the planets that are DNS, routing and security groups need to align, be sure to grant the secondary CIDR range access to any VPC endpoint of the type 'Interface' that exist in the VPC. Not doing so will have DNS return a VPC-local ip which will _not_ go through the private NAT gateway.
+
+## Concluding
+
+Private NAT gateways can be an alternative to custom networking when running EKS pods in secondary CIDR ranges. As always, there are trade-offs that need to be considered, including:
 
 * Amount of network traffic going over Transit Gateway and by that the private NAT gateway
 * Ability to use security groups for pods
 * Complexity of set-up
 
+The above should give some insight in the world of EKS networking, and hopefully provide pointers to what to investigate more deeply and what pitfalls to avoid. As always, feel free to [reach out on Twitter](https://twitter.com/TBeijen) to discuss!
+
 [^footnote_vpc_cni_workings]: This is described in great detail in this blog post: <https://betterprogramming.pub/amazon-eks-is-eating-my-ips-e18ea057e045>
 
 [^footnote_sg_pods]: Disclaimer: We haven't yet enabled security groups for pods so this is theoretical. However, following the described logic of 'No NAT = no route to the internet', we can assume similar restrictions to apply to external private networks.
+
+[^footnote_use_all_the_natgws]: Using more NAT gateways then needed can be a [serious waste of money](https://twitter.com/QuinnyPig/status/1433949394915639300).
+
