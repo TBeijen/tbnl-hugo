@@ -12,7 +12,10 @@ I studied [Industrial Design Engineering][3] so I'm comfortable with talking abo
 In my opinion one of the hardest challenges in IT, besides obviously naming things and cache invalidation, is coming up with solutions that balance simplicity, flexibility and ruggedness.
 
 ### The guy
-I run (quite a lot) and play tennis (occasionally). I love to hangout with my girlfriend and kids. I'm a cat person (not neccessarily hating dogs). Furthermore I like the caffeinating effect of loud music, when coding or otherwise (As a tribute, the color scheme of this site is based on the cover of [one of my favorite albums][4]). 
+I run (quite a lot) and play tennis (occasionally). I love to hangout with my girlfriend and kids. I'm a cat person (not neccessarily hating dogs). Furthermore I like the caffeinating effect of heavy music, when coding or otherwise (As a tribute, the color scheme of this site is based on the cover of [one of my favorite albums][4]). Lastly, my dark age has ended and I can be considered an adult fan of Lego (AFOL).
+
+### Disclaimer
+Opinions are my own and could be subject to change (never stop learning).
 
  [1]: https://www.dpgmedia.nl/
  [2]: https://www.nu.nl/

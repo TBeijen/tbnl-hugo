@@ -12,7 +12,7 @@ tags:
   - VPC
   - Networking
 description: "How secondary CIDR blocks and private NAT gateways provide an alternative to custom networking, when needing to feed EKS routable ips in an enterprise multi-VPC set up."
-thumbnail: img/terraform-good-plan-good-apply-header.png
+thumbnail: img/eks_private_ips_header.jpg
 
 ---
 ## EKS and its hunger for IP addresses
@@ -33,6 +33,9 @@ Now if we look at the [list of available IP address per ENI](https://docs.aws.am
 * Managed services also need IP addresses...
 
 We can see where this is going. So, creating `/16` VPCs it is then? Probably not.
+
+{{< figure src="/img/eks_private_ips_header_wide.jpg" title="Feeding the clusters" >}}
+
 
 ## Multiple VPCs
 
@@ -164,5 +167,4 @@ The above should give some insight in the world of EKS networking, and hopefully
 
 [^footnote_sg_pods]: Disclaimer: We haven't yet enabled security groups for pods so this is theoretical. However, following the described logic of 'No NAT = no route to the internet', we can assume similar restrictions to apply to external private networks.
 
-[^footnote_use_all_the_natgws]: Using more NAT gateways then needed can be a [serious waste of money](https://twitter.com/QuinnyPig/status/1433949394915639300).
-
+[^footnote_use_all_the_natgws]: Using more NAT gateways then needed can be a [serious waste of money](https://twitter.com/QuinnyPig/status/1433949394915639300) and be subject to snark.
