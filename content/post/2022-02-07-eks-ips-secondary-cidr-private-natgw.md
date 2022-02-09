@@ -1,5 +1,5 @@
 ---
-title: 'EKS and the quest for ips: Secondary CIDRs and private NAT gateways'
+title: 'EKS and the quest for IP addresses: Secondary CIDR ranges and private NAT gateways'
 author: Tibo Beijen
 date: 2022-02-07T10:00:00+01:00
 url: /2022/02/07/eks-ips-secondary-cidr-private-natgw
@@ -11,24 +11,24 @@ tags:
   - EKS
   - VPC
   - Networking
-description: "How secondary CIDR blocks and private NAT gateways provide an alternative to custom networking, when needing to feed EKS routable ips in an enterprise multi-VPC set up."
+description: "How secondary CIDR ranges and private NAT gateways provide an alternative to custom networking, when needing to feed EKS routable ips in an enterprise multi-VPC set up."
 thumbnail: img/eks_private_ips_header.jpg
 
 ---
 ## EKS and its hunger for IP addresses
 
-Kubernetes allows running highly diverse workloads with similar effort. From a user perspective there's little difference between running 2 pods on a node, each consuming 2 vCPU, and running tens of pods each consuming 0.05 vCPU. Looking at the network however, there is a big difference: Each pod needs to have a unique IP addres. In most Kubernetes implementations there is a CNI plugin that allocates each pod an IP address in an IP space that's _internal_ to the cluster. 
+Kubernetes allows running highly diverse workloads with similar effort. From a user perspective there's little difference between running 2 pods on a node, each consuming 2 vCPU, and running tens of pods each consuming 0.05 vCPU. Looking at the network however, there is a big difference: Each pod needs to have a unique IP address. In most Kubernetes implementations there is a CNI plugin that allocates each pod an IP address in an IP space that is _internal_ to the cluster. 
 
 EKS, the managed Kubernetes offering by AWS, [by default](https://docs.aws.amazon.com/eks/latest/userguide/pod-networking.html) uses the [Amazon VPC CNI plugin for Kubernetes](https://github.com/aws/amazon-vpc-cni-k8s). Different to most networking implementations, this assigns each pod a dedicated IP address in the VPC, the network the nodes reside in.
 
-What the VPC CNI plugin does [^footnote_vpc_cni_workings], boils down to this:
+What the VPC CNI plugin does [^footnote_vpc_cni_workings] boils down to this:
 * It keeps a number of network interfaces (ENIs) and IP addresses 'warm' on each node, to be able to quickly assign IP addresses to new pods.
 * By default it keeps an entire spare ENI warm.
-* This means that any node effectively claims 2 ENIs * ip-per-ENI, since there will always be at least one daemonset, claiming an IP address of the first ENI.
+* This means that any node effectively claims `2 ENIs * ips-per-ENI`, since there will always be at least one daemonset claiming an IP address of the first ENI.
 
-Now if we look at the [list of available IP address per ENI](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html#AvailableIpPerENI) and calculate an example:
+Now if we look at the [list of available IP addresses per ENI](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html#AvailableIpPerENI) and calculate an example:
 * EC2 type `m5.xlarge`, 15 IP addresses per ENI. 30 IP addresses at minimum per node.
-* Say, we have 50 nodes running. That's 1500 private addresses taken. (For perspective: That's ~$7000/month on-demand).
+* Say, we have 50 nodes running. That's 1500 private addresses taken. (For perspective: That's ~$7000/month worth of on-demand EC2 compute).
 * Say, we have `/21` VPC, providing 3 `/23` private subnets. That's `3 x 512 = 1536` available IP addresses.
 * Managed services also need IP addresses...
 
@@ -42,15 +42,15 @@ We can see where this is going. So, creating `/16` VPCs it is then? Probably not
 In a lot of organizations there is not just one VPC. The networking landscape might be a combination of:
 
 * Multiple AWS accounts and VPCs in one or more regions
-* Datacenters
+* Data centers
 * Office networks
 * Peered services, like DBaaS from providers other than AWS
 
-There are [many ways](https://docs.aws.amazon.com/whitepapers/latest/aws-vpc-connectivity-options/welcome.html) to connect VPCs and other networks. The larger the CIDR block is that needs to be routable from outside the VPC, the more likely it becomes that there is overlap.
+There are [many ways](https://docs.aws.amazon.com/whitepapers/latest/aws-vpc-connectivity-options/welcome.html) to connect VPCs and other networks. The larger the CIDR range is that needs to be routable from outside the VPC, the more likely it becomes that there is overlap.
 
-As a result, in larger organizations, individual AWS accounts are typically provided a VPC with a relatively small CIDR block, that fits in the larger networking plan. To still have 'lots of ips', AWS VPCs [can be configured with](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html#VPC_Sizing) with secondary CIDR blocks.
+As a result, in larger organizations, individual AWS accounts are typically provided a VPC with a relatively small CIDR range, that fits in the larger networking plan. To still have 'lots of ips', AWS VPCs [can be configured with](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html#VPC_Sizing) with secondary CIDR ranges.
 
-This solves the IP space problem, however does not by itself solve the routing problem. The secondary CIDR block would still need to be unqiue in the total networking landscape to be routable from outside the VPC. This could not be a problem if workloads in the secondary CIDR _only_ need to connect to resources within the VPC. But this very often is not the case.
+This solves the IP space problem, however does not by itself solve the routing problem. The secondary CIDR range would still need to be unique in the total networking landscape to be routable from outside the VPC. This could not be an actual problem if workloads in the secondary CIDR _only_ need to connect to resources within the VPC but this very often is not the case.
 
 Quite recently AWS introduced [Private NAT gateways](https://aws.amazon.com/blogs/networking-and-content-delivery/how-to-solve-private-ip-exhaustion-with-private-nat-solution/) which, together with custom networking, are options to facilitate routable EKS pods in secondary CIDR ranges.
 
@@ -60,29 +60,29 @@ Let's go over some VPC setups to illustrate the problem and see how we can run E
 
 ### Basic
 
-A basic VPC consists of a single CIDR block, some private and public subnets, a NAT gateway and an Internet Gateway. Depending on the primary CIDR block size this might be sufficient, but in the scope of larger organizations let's assume a relatively small CIDR block.
+A basic VPC consists of a single CIDR range, some private and public subnets, a NAT gateway and an Internet Gateway. Depending on the primary CIDR range size this might be sufficient, but in the scope of larger organizations let's assume a relatively small CIDR range.
 
 {{< figure height="250" src="/img/eks_private_ips_basic.drawio.png" title="Basic VPC" >}}
 
 * Pro: Simple
 * Con: Private IP exhaustion 
 
-### Secondary cidr
+### Secondary CIDR range
 
-Next step. Adding secondary CIDR block. Placing nodes and pods in the secondary subnets. This _could_ work if workloads never need to connect to resources in private networks outside the VPC, which is unlikely. Theoretically pods would be able to send packets to other VPCs but there is no route back.
+Next step: Adding a secondary CIDR range, placing nodes and pods in the secondary subnets. This _could_ work if workloads never need to connect to resources in private networks outside the VPC, which is unlikely. Theoretically pods would be able to send packets to other VPCs but there is no route back.
 
 {{< figure height="250" src="/img/eks_private_ips_secondary.drawio.png" title="Secondary CIDR block" >}}
 
 * Pro: Simple
 * Con: No route between pods and private resources outside the VPC
 
-### Secondary cidr + custom networking
+### Secondary CIDR range + custom networking
 
 To remedy the routing problem, custom networking can be enabled in the VPC CNI plugin. This allows placing the nodes and pods in different subnets. Nodes go into the primary private subnets, pods go into the secondary private subnet. This solves the routing problem since by default, for traffic to external networks, the CNI plugin translates the pods IP address to the primary IP address of the node (SNAT). In this setup those nodes are in routable subnets.
 
-{{< figure height="250" src="/img/eks_private_ips_secondary_custom_nw.drawio.png" title="Secondary CIDR block + Custom networking" >}}
+{{< figure height="250" src="/img/eks_private_ips_secondary_custom_nw.drawio.png" title="Secondary CIDR range + Custom networking" >}}
 
-Setting up secondary CIDR blocks and custom networking is described in the [AWS knowledge center](https://aws.amazon.com/premiumsupport/knowledge-center/eks-multiple-cidr-ranges/) and also in the [Amazon EKS Workshop](https://www.eksworkshop.com/beginner/160_advanced-networking/secondary_cidr/).
+Setting up secondary CIDR ranges and custom networking is described in the [AWS knowledge center](https://aws.amazon.com/premiumsupport/knowledge-center/eks-multiple-cidr-ranges/) and also in the [Amazon EKS Workshop](https://www.eksworkshop.com/beginner/160_advanced-networking/secondary_cidr/).
 
 Be aware that Source Network Address Translation [is disabled when using security groups for pods](https://docs.aws.amazon.com/eks/latest/userguide/security-groups-for-pods.html)[^footnote_sg_pods]: 
 
@@ -96,9 +96,9 @@ Be aware that Source Network Address Translation [is disabled when using securit
 
 Instead of configuring custom networking, it is also possible to solve the routing problem by using a private NAT gateway. Unlike a public NAT gateway, it is placed in a private subnet and is not linked to an internet gateway.
 
-This way nodes _and_ pods can run in the secondary CIDR block, and the routing problem is solved outside of EKS.
+This way nodes _and_ pods can run in the secondary CIDR range, and the routing problem is solved outside of EKS.
 
-{{< figure height="250" src="/img/eks_private_ips_secondary_private_natgw.drawio.png" title="Secondary CIDR block + Custom networking" >}}
+{{< figure height="250" src="/img/eks_private_ips_secondary_private_natgw.drawio.png" title="Secondary CIDR range + Custom networking" >}}
 
 * Pro: Straightforward default VPC CNI network configuration
 * Pro: Can be used with security group for pods
@@ -136,7 +136,9 @@ PING www.google.com (74.125.193.147) 56(84) bytes of data.
 
 Looking at the trace, and at the NAT gateways that exist, we can see that traffic passes the private _and_ the NAT gateway.
 
-A careful observer might have noticed the green line in the traffic diagram bypasses the private NAT gateway. To accomplish this one needs to adjust the routing table by only directing private network traffic to the private NAT gateway:
+{{< figure src="/img/eks_private_ips_natgws.png" title="NAT gateways that exist" >}}
+
+A careful observer might have noticed the green line in the traffic diagram bypasses the private NAT gateway. To accomplish this one needs to adjust the routing table by _only_ directing private network traffic to the private NAT gateway:
 
 ```
 10.150.40.0/21  local	
@@ -149,9 +151,9 @@ Halving the amount of traffic passing through NAT gateways is halving the cost (
 
 ### VPC endpoints and peering connections
 
-The above illustrates that it is important to replicate route table entries for VPC endpoints and peering connections, that exist in the primary private subnets, to avoid traffic unneccessarily passing through the private NAT gateway. It will (probably) work but it brings unneeded cost.
+The above illustrates that it is important to replicate route table entries for VPC endpoints and peering connections, that exist in the primary private subnets, to avoid traffic unnecessarily passing through the private NAT gateway. It will (probably) work but it brings unneeded cost.
 
-A reminder: Since the planets that are DNS, routing and security groups need to align, be sure to grant the secondary CIDR range access to any VPC endpoint of the type 'Interface' that exist in the VPC. Not doing so will have DNS return a VPC-local ip which will _not_ go through the private NAT gateway.
+A reminder: Since the planets that are DNS, routing and security groups need to align, be sure to grant the secondary CIDR range access to any VPC endpoint of the type 'Interface' that exist in the VPC. Not doing so will have DNS return a VPC-local ip which will _not_ go through the private NAT gateway and hence will be blocked by the security group on the VPC endpoint.
 
 ## Concluding
 
@@ -161,7 +163,7 @@ Private NAT gateways can be an alternative to custom networking when running EKS
 * Ability to use security groups for pods
 * Complexity of set-up
 
-The above should give some insight in the world of EKS networking, and hopefully provide pointers to what to investigate more deeply and what pitfalls to avoid. As always, feel free to [reach out on Twitter](https://twitter.com/TBeijen) to discuss!
+The above should give some insight in the world of EKS networking and hopefully provides pointers to what to investigate more deeply and what pitfalls to avoid. As always, feel free to [reach out on Twitter](https://twitter.com/TBeijen) to discuss!
 
 [^footnote_vpc_cni_workings]: This is described in great detail in this blog post: <https://betterprogramming.pub/amazon-eks-is-eating-my-ips-e18ea057e045>
 
