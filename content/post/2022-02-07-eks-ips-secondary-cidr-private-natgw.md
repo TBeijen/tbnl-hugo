@@ -11,7 +11,7 @@ tags:
   - EKS
   - VPC
   - Networking
-description: "How secondary CIDR ranges and private NAT gateways provide an alternative to custom networking, when needing to feed EKS routable ips in an enterprise multi-VPC set up."
+description: "How secondary CIDR ranges and private NAT gateways provide an alternative to custom networking, when needing to feed EKS routable IP addresses in an enterprise multi-VPC set up."
 thumbnail: img/eks_private_ips_header.jpg
 
 ---
