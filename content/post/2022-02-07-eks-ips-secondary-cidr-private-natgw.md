@@ -1,8 +1,8 @@
 ---
 title: 'EKS and the quest for IP addresses: Secondary CIDR ranges and private NAT gateways'
 author: Tibo Beijen
-date: 2022-02-07T10:00:00+01:00
-url: /2022/02/07/eks-ips-secondary-cidr-private-natgw
+date: 2022-02-09T10:00:00+01:00
+url: /2022/02/09/eks-ips-secondary-cidr-private-natgw
 categories:
   - articles
 tags:
@@ -136,9 +136,9 @@ PING www.google.com (74.125.193.147) 56(84) bytes of data.
 
 Looking at the trace, and at the NAT gateways that exist, we can see that traffic passes the private _and_ the NAT gateway.
 
-{{< figure src="/img/eks_private_ips_natgws.png" title="NAT gateways that exist" >}}
+{{< figure src="/img/eks_private_ips_natgws.png" title="NAT gateways that exist in the VPC" >}}
 
-A careful observer might have noticed the green line in the traffic diagram bypasses the private NAT gateway. To accomplish this one needs to adjust the routing table by _only_ directing private network traffic to the private NAT gateway:
+A careful observer might have noticed the green line in the traffic diagram bypassing the private NAT gateway. To accomplish this one needs to adjust the routing table by _only_ directing private network traffic to the private NAT gateway:
 
 ```
 10.150.40.0/21  local	
@@ -153,7 +153,7 @@ Halving the amount of traffic passing through NAT gateways is halving the cost (
 
 The above illustrates that it is important to replicate route table entries for VPC endpoints and peering connections, that exist in the primary private subnets, to avoid traffic unnecessarily passing through the private NAT gateway. It will (probably) work but it brings unneeded cost.
 
-A reminder: Since the planets that are DNS, routing and security groups need to align, be sure to grant the secondary CIDR range access to any VPC endpoint of the type 'Interface' that exist in the VPC. Not doing so will have DNS return a VPC-local ip which will _not_ go through the private NAT gateway and hence will be blocked by the security group on the VPC endpoint.
+A reminder: Since the planets that are DNS, routing and security groups need to align, be sure to grant the secondary CIDR range access to any VPC endpoint of the type 'Interface' that exist in the VPC. Not doing so will have DNS return a VPC-local IP address which will _not_ go through the private NAT gateway and hence will be blocked by the security group on the VPC endpoint.
 
 ## Concluding
 
