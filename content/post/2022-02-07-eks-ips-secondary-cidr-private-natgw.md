@@ -71,7 +71,7 @@ A basic VPC consists of a single CIDR range, some private and public subnets, a 
 
 Next step: Adding a secondary CIDR range, placing nodes and pods in the secondary subnets. This _could_ work if workloads never need to connect to resources in private networks outside the VPC, which is unlikely. Theoretically pods would be able to send packets to other VPCs but there is no route back.
 
-{{< figure height="250" src="/img/eks_private_ips_secondary.drawio.png" title="Secondary CIDR block" >}}
+{{< figure height="250" src="/img/eks_private_ips_secondary.drawio.png" title="Secondary CIDR range" >}}
 
 * Pro: Simple
 * Con: No route between pods and private resources outside the VPC
@@ -98,7 +98,7 @@ Instead of configuring custom networking, it is also possible to solve the routi
 
 This way nodes _and_ pods can run in the secondary CIDR range, and the routing problem is solved outside of EKS.
 
-{{< figure height="250" src="/img/eks_private_ips_secondary_private_natgw.drawio.png" title="Secondary CIDR range + Custom networking" >}}
+{{< figure height="250" src="/img/eks_private_ips_secondary_private_natgw.drawio.png" title="Secondary CIDR range + private NAT gateway" >}}
 
 * Pro: Straightforward default VPC CNI network configuration
 * Pro: Can be used with security group for pods
