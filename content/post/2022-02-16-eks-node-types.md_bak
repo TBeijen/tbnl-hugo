@@ -17,12 +17,16 @@ thumbnail: ""
 draft
 
 
-Launch template overlay
+Launch template copying
+
+https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html
 
 
 Update process:
 
 Terraform flow
+
+Amazon Linux or Bottlerocket
 
 * Load latest AMI and pass to lt or pin specific AMI
 * Terraform plan/apply
