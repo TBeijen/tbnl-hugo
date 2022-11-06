@@ -18,6 +18,7 @@ description = "DevOps and programming related personal blog of Tibo Beijen"
 location = "" # optional
 twitter = "TBeijen"
 linkedin = 'tibobeijen'
+mastodon = 'mastodon.social/@tbeijen'
 googleplus = ''
 facebook = ''
 instagram = ''
