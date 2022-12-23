@@ -1,8 +1,8 @@
 ---
 title: 'The mysterious case of the missing ECR image'
 author: Tibo Beijen
-date: 2022-12-23T12:00:00+01:00
-url: /2022/12/23/2022-12-23-the-mysterious-case-of-the-missing-ecr-image
+date: 2022-12-23T20:00:00+01:00
+url: /2022/12/23/the-mysterious-case-of-the-missing-ecr-image
 categories:
   - articles
 tags:
@@ -11,10 +11,10 @@ tags:
   - Docker
   - Podman
 description: "Investigating why very occasionally we got bitten by our ECR lifecycle policy"
-thumbnail: img/missing-ecr-image.png
+thumbnail: img/missing_ecr_image.jpg
 
 ---
-## The mysterious case of the missing ECR image
+## ImagePullBackOff
 
 Recently we experienced a specific ECR production image being absent that really should not have been purged by our lifecycle hooks. It happened in two scenarios:
 
@@ -25,7 +25,11 @@ So far we've been lucky. The node replacement affected only one of multiple pods
 
 At some point luck will run out, so let's investigate before that.
 
-### ECR lifecycle policies
+{{< figure src="/img/missing_ecr_image.jpg" title="Container missing" >}}
+
+(Image [source](https://www.flickr.com/photos/twicepix/2407110417) / [licence](https://creativecommons.org/licenses/by-sa/2.0/legalcode))
+
+## ECR lifecycle policies
 
 Our ECR repository lifecycle policy looks like this:
 
@@ -64,11 +68,11 @@ Our ECR repository lifecycle policy looks like this:
 }
 ```
 
-We tag images based on git commit (example: `git-ad89876a`) and additionally tag production images with a 'tag' tag (example: `tag-1-256-0,`). So the above in human understandable language boils down to: "Purge everything older than 14 days, but no matter what, keep at least the 5 most recent production images".
+We tag images based on git commit (example: `git-ad89876a`) and additionally tag production images with a 'tag' tag (example: `tag-1-256-0,`). So the above in human understandable language boils down to: "Purge everything older than 14 days, but no matter what, keep at least the 5 most recent production images"[^footnote_ecr_cost].
 
 This has worked quite nicely for the past 4 years or so, only downside being inactive non-prod deployments sometimes needing a re-build because those images get purged. Except for the mysterious case described above.
 
-### Cloudtrail
+## Cloudtrail
 
 Checking cloudtrail we could indeed observe our rollback target `tag-1-253-0` being removed at an earlier date than a tag that's older (`tag-1-251-0`)
 
@@ -98,9 +102,9 @@ Relevant part of the CloudTrail data:
             }
 ```
 
-We were aware that an image can have multiple tags, that's how docker image tagging works. Still, the amount of tags was a bit higher than we expected. It did gave us insight in what went wrong though.
+We were aware that an image can have multiple tags, that's how docker image tagging works. Still, the amount of tags on a single image was surprisingly higher. It did gave us insight in what went wrong though.
 
-### Hypothesis
+## Hypothesis
 
 What looks to be the cause:
 
@@ -118,15 +122,15 @@ Quoting the [AWS ECR UserGuide](https://docs.aws.amazon.com/AmazonECR/latest/use
 
 That's indeed what we expect to happen.
 
-### Validating the hypothesis
+## Validating the hypothesis
 
-#### Why does the final image checksum hardly change?
+### Why does the final image checksum hardly change?
 
 Under normal circumstances, a new image build is triggered by code or dependency changes and those inherently result in a new image checksum.
 
 This particular image is part of the codebase of our API platform. It holds various static assets (think: SVG icons) used in our applications that support our API platform and make their way to devices via a CDN. So while the API code frequently changes, the contents of this image _do not_.
 
-#### Reproducing pushedAt behavior
+### Reproducing pushedAt behavior
 
 Next step, validate that pushedAt does not update when the image checksum doesn't change.
 
@@ -138,7 +142,7 @@ ARG MY_CONTENTS
 RUN echo ${MY_CONTENTS} > /contents.txt
 ```
 
-Let's build and push some images with various tags in succession:
+Let's build and push some images with various tags in succession[^footnote_podman]:
 
 ```
 podman build -t 400000000004.dkr.ecr.eu-west-1.amazonaws.com/pushed-at-demo:v1 --build-arg MY_CONTENTS=foo -f Dockerfile .
@@ -205,9 +209,9 @@ REPOSITORY                                                   TAG                
 
 As expected, tags are added to the existing image, and the resulting `imagePushedAt` of `v4` is actually older than that of `v3`.
 
-#### Bonus: It's all about the local cache
+### Bonus: It's all about the local cache
 
-It's good to understand that the only way this can happen is when local docker/podman hits a cached layer. When building from scratch, a different filesystem timestamp is bound to result in a different final checksum.
+It's good to understand that the only way this can happen is when docker/podman hits a cached layer. When building from scratch, a different filesystem timestamp is bound to result in a different final image checksum.
 
 ```
 # deleting cache
@@ -266,16 +270,19 @@ As a result, te `v5` image has a different checksum than `v1..v3` although its f
 }
 ```
 
-### Ways to mitigate
+## Ways to mitigate
 
-One of the ways to mitigate is to increase the number of preserved tags. But... this reduces the risk. Does not rule it out. Long-living layer cache combined with files that hardly change, or worse: Get reverted to a previous state ("previous icon was better") can still cause this problem.
+One of the ways to mitigate is to increase the number of preserved tags. But... this merely reduces the risk. It does not rule it out. Long-living layer cache combined with files that hardly change, or worse, get reverted to a previous state ("previous icon was better") can still cause this problem.
 
-The better fix here would be to add the git revision or git tag as content to a file in the image. This could be considered good practice anyway because now a version identifier becomes part of the image, instead of just being a tag.
+A better fix here would be to add the git revision or git tag as content to a file in the image. This forces any new git revision to result in a new image checksum. This could be considered good practice anyway because now a version identifier becomes part of the image, instead of just being a tag. 
+## Concluding
 
-### Concluding
-
-> Caching is hard
+As they say: "Caching is hard". Locally cached image layers can affect the upload result in a remote registry in unforeseen ways.
 
 Hopefully this either saves anyone some time, gives some insight into docker image layers or at the very least was mildly entertaining.
 
-If having any form of feedback, don't hesitate to reach out via Twitter or Mastodon.
+If having any form of feedback, don't hesitate to reach out via [Twitter](https://twitter.com/TBeijen)[^footnote_twitter] or [Mastodon](https://hachyderm.io/@tbeijen).
+
+[^footnote_ecr_cost]: With a retention of max. 14 days, ECR is not in the low-hanging fruit category of our potential cost-optimisations
+[^footnote_podman]: Shout out to [Podman](https://podman.io/) which proves to be a drop-in replacement for Docker Desktop, with strongly reduced fan-noise.
+[^footnote_twitter]: If it's still around and still has a tech community
