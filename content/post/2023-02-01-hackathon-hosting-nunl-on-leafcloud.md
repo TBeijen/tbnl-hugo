@@ -52,5 +52,35 @@ Below image shows a simplified outline of NU.nl architecture. Website and mobile
 
 Data and private network APIs constitute gravity, moving away from it tends to be hard. Compute consuming public APIs is easy, it can run anywhere. 
 
+Scope of POC is deploying frontend and optionally BFF for non-prod environment to LeafCloud. Getting the workloads to run somewhere else is not expected to be the hard part. The goal is to explore what it would take to go beyond a POC and identify blocking topics or topics that need further investigation. 
+
 {{< figure src="/img/hackathon_leafcloud_plan.gif" title="Plan: Run part of stack in LeafCloud" >}}
+
+## Required abilities
+
+The abilities required to effectively run a set of Kubernetes applications outside of AWS can be categorized as follows:
+
+* Easily set up clusters
+* Easily deploy a number of applications
+* Integrate with AWS and other services
+
+## Easily set up clusters
+
+As Kubernetes matures one could observe that various improvements have made it easier than ever to consider clusters as ephemeral resources. Clouds offer managed Kubernetes, more lightweight alternatives as K3S and [RKE2](https://docs.rke2.io/) emerged. And then there is ClusterAPI: The ability to setup a cluster as management cluster and deploy remote clusters in a similar way as deploying pods.
+
+LeafCloud is based on OpenStack which itself also offers a managed Kubernetes cluster. Exploring some of the opions to get started resulted in the following:
+
+|Technology        | Supports autoscaler | Getting started |
+|------------------|---------------------|-----------------|
+|OpenStack cluster | Yes                 | Average         |
+|RKE2              | No                  | Easy            |
+|ClusterAPI        | Yes                 | Hard            |
+
+RKE2 is quite easily set up using the [remche/terraform-openstack-rke2](https://github.com/remche/terraform-openstack-rke2) Terraform module, which also sets up network components. LeafCloud was so nice to provide some example IaC based on this module that adds properly configured storage driver and cloud-controller-manager (used by K8S control plane to add loadbalancer).
+
+So, since time was limited and we also wanted to explore other topics we opted to hit the ground running and started with RKE2. 
+
+When exploring further it would be worth trying out OpenStack as well as ClusterAPI. To see what's possible using ClusterAPI it's worth reading [this blog post by Helio](https://blog.helio.exchange/posts/deploying-kubernetes-with-cluster-api).
+
+## Easily deploy a number of applications
 
