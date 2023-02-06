@@ -76,11 +76,25 @@ LeafCloud is based on OpenStack which itself also offers a managed Kubernetes cl
 |RKE2              | No                  | Easy            |
 |ClusterAPI        | Yes                 | Hard            |
 
-RKE2 is quite easily set up using the [remche/terraform-openstack-rke2](https://github.com/remche/terraform-openstack-rke2) Terraform module, which also sets up network components. LeafCloud was so nice to provide some example IaC based on this module that adds properly configured storage driver and cloud-controller-manager (used by K8S control plane to add loadbalancer).
+RKE2 is quite easily set up using the [remche/terraform-openstack-rke2](https://github.com/remche/terraform-openstack-rke2) Terraform module, which also sets up network components. LeafCloud was so nice to provide some example IaC based on this module that adds properly configured storage driver and [cloud-controller-manager](https://github.com/kubernetes/cloud-provider-openstack/blob/master/docs/openstack-cloud-controller-manager/using-openstack-cloud-controller-manager.md) (used by K8S control plane to add loadbalancers).
 
 So, since time was limited and we also wanted to explore other topics we opted to hit the ground running and started with RKE2. 
 
 When exploring further it would be worth trying out OpenStack as well as ClusterAPI. To see what's possible using ClusterAPI it's worth reading [this blog post by Helio](https://blog.helio.exchange/posts/deploying-kubernetes-with-cluster-api).
 
 ## Easily deploy a number of applications
+
+Once stamping out clusters is possible, making sure each of them runs the required set of applications becomes the next challenge. Often pipelines combine the build (CI) and the deploy part (CD). However, once number of applications and possible deploy targets grow, maintainability becomes a problem: `neccessary pipeline changes = number of applications * number of targets`.
+
+So, instead of saying "deploy this to cluster xyz" for each application, we need to just publish application artifacts and configure clusters xyz to "run this collection of applications". We need building blocks that we can easily compose.
+
+Composition can be accomplished using
+
+* Terraform modules and submodules
+* ArgoCD applications, via the [App of Apps pattern](https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/#app-of-apps-pattern)
+
+Both can refer to manifests, Kustomize overlays or Helm charts. Terraform is push-based and integrates more easily with other IaC, using outputs of other modules to set variables to K8S deployments. ArgoCD is pull-based and has the advantage of not requiring external access to the K8S control plane.
+
+For this POC we used Terraform, since other IaC was already based on Terraform. Terraform solves the maintainability problem via composing modules and submodules. At scale it would still require the `terraform apply` to run across an increasing amount of clusters, updating an increasing number of apps. For now a theoretical problem but at some point it's likely that ArgoCD would be more effective.
+
 
