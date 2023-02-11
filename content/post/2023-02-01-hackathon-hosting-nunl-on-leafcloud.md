@@ -1,5 +1,5 @@
 ---
-title: 'Hackathon: Running NU.nl on LeafCloud sustainable hosting'
+title: 'Hackathon: Could we run NU.nl on LeafCloud sustainable hosting?'
 author: Tibo Beijen
 date: 2023-02-01T10:00:00+01:00
 url: /2023/02/01/hackathon-hosting-nunl-on-leafcloud
@@ -21,7 +21,7 @@ Once or twice a year, NU.nl organizes a hackathon, allowing its IT staff to dabb
 
 Mid 2022 I [visited EdgeCase](/2022/06/01/edgecase-2022), a 1-day conference about running Kubernetes at the edge. One of the presentations was by [LeafCloud](https://www.leaf.cloud/), a hosting provider focusing on reducing the environmental impact of cloud computing by re-using the heat that it generates. 
 
-Back then I somewhat jokingly proposed to run our `/klimaat` section from LeafCloud. So, knowing we have most of our compute on Kubernetes, one of the compute platforms offered, and one of this Hackathon's themes being climate, there is no better moment to do a POC.
+Back then I somewhat jokingly proposed to run our `/klimaat` section from LeafCloud. So, knowing we have most of our compute on Kubernetes which is one of the compute platforms offered, and one of this Hackathon's themes being climate, there is no better moment to do a POC.
 
 In this blogpost:
 
@@ -40,6 +40,7 @@ Now there's various other ways to reduce environmental impact of running compute
 
 * Right-sizing and autoscaling
 * Serverless
+* Optimizing programming languages and frameworks
 * More efficient CPU such as ARM
 
 There is no 'or' here, all of them are worth pursuing. However, as below image shows, none of them might be as effective as using hosting that's designed from the ground up to be environmental-friendly.
@@ -48,7 +49,7 @@ There is no 'or' here, all of them are worth pursuing. However, as below image s
 
 ## POC outline
 
-Below image shows a simplified outline of NU.nl architecture. Website and mobile apps consume a Backend For Frontend (BFF), which in turn uses various other APIs (mostly REST) APIs. All is frontend by Akamai to keep the bad guys away.
+Below image shows a simplified outline of NU.nl architecture. Website and mobile apps consume a Backend For Frontend (BFF), which in turn uses various other APIs (mostly REST). All is frontend by Akamai to keep the bad guys away.
 
 Data and private network APIs constitute gravity, moving away from it tends to be hard. Compute consuming public APIs is easy, it can run anywhere. 
 
@@ -95,6 +96,103 @@ Composition can be accomplished using
 
 Both can refer to manifests, Kustomize overlays or Helm charts. Terraform is push-based and integrates more easily with other IaC, using outputs of other modules to set variables to K8S deployments. ArgoCD is pull-based and has the advantage of not requiring external access to the K8S control plane.
 
-For this POC we used Terraform, since other IaC was already based on Terraform. Terraform solves the maintainability problem via composing modules and submodules. At scale it would still require the `terraform apply` to run across an increasing amount of clusters, updating an increasing number of apps. For now a theoretical problem but at some point it's likely that ArgoCD would be more effective.
+For this POC we used Terraform, since other IaC was already based on Terraform. Terraform solves the maintainability problem via composing modules and submodules. At scale it would still require the `terraform apply` to run across an increasing amount of clusters, updating an increasing number of apps, which might become problematic. For now a theoretical problem but at some point it's likely that ArgoCD would be more effective.
+
+## Integrate with AWS and other services
+
+Our center of operations is AWS, combined with various SaaS solutions (observability, security). Most of the concepts here could apply to other clouds as well.
+
+### Identity (IAM)
+
+There are 2 directions here:
+
+* Using IAM from AWS to grant access to the K8S control plane
+* Using IAM by workloads from within the cluster to interact with AWS services
+
+The former can be accomplished by [AWS IAM Authenticator](https://github.com/kubernetes-sigs/aws-iam-authenticator). CI/CD processes running within AWS can use IAM roles to access the cluster. Lock away the original client-certificate based kube-config and use short-lived IAM-based tokens from there on.
+
+Using IAM from the cluster is more complex. There's roughly 2 ways to do this: [^footnote_multicloud_identity]
+
+* Use IAM access keys or session tokens
+* IAM anywhere
+
+IAM anywhere is not for the faint of heart and, unless planned and executed perfectly, can be a sure-fire way to shoot oneself in the foot. Zscaler has [an interesting blog-post about this](https://www.zscaler.com/blogs/security-research/aws-iam-roles-anywhere-iam-risks-anywhere).
+
+IAM credentials it is then. There are some ways to improve the security posture of this (also addressed in the Zscaler blog-post):
+
+* Automate the cycling of credentials 
+* Alerting on key authentication failures (condition fail, or attempting actions outside of granted privileges)
+* Use credentials unique to specific remote cluster and application
+* Apply least-privilege principles
+* Use conditions to restrict credential usage to the specific remote cluster
+
+One can put access keys in the remote cluster or session credentials. From an auditing perspective, observing `AKIA...` key ids might cause screams of terror, while `ASIA...` key ids might result in sighs of relief.[^footnote_iam]. Using session credentials inherently forces rotation which is good, the downside being that failing to do so immediately results in an outage.
+
+Automation and alerting are intentionally put on top since they tend to fall in the 'do later' category. Done right this could address the concerns outlined in the Zscaler blog-post:
+
+* _Access keys can be forgotten and leaked_ 
+
+    * Short max age
+    * Condition preventing use outside of cluster
+
+* _There is no visibility into who is the entity using these keys_
+
+    * Key having well-defined cluster and application scope
+    * Condition preventing use outside of cluster
+    * Alerting on key authentication failures
+
+* _They require regular rotation_
+
+    * Automated cycling
+    * Short max age
+
+It is obvious that the above involves more moving parts than the use of IAM roles within the AWS environment. That is the trade-off of using more than one cloud vendor.
+
+**Important:** Security is hard. Validate anything security related with appropriate teams or peers that are able to challenge these concepts. Also be sure to point out any flaws in the above via the social links on this blog. 
+
+### Network
+
+For starters, network presence by itself should never be considered as an authorization mechanism. This is part of the [Zero Trust](https://en.wikipedia.org/wiki/Zero_trust_security_model) approach that is becoming prevalent in the industry.
+
+That said, private networks can add an _additional layer_ of security and are common. [Integrating an AWS VPC with a private network](https://docs.aws.amazon.com/whitepapers/latest/aws-vpc-connectivity-options/network-to-amazon-vpc-connectivity-options.html) is not trivial and could offset most of the potential cost savings.
+
+There are Zero Trust products that are able to link networks and devices by means of an identity-aware overlay network. Often these are based on [WireGuard](https://en.wikipedia.org/wiki/WireGuard), creating a [mesh VPN](https://tailscale.com/learn/understanding-mesh-vpns/). The [no-bullshit ZTNA vendor directory](https://zerotrustnetworkaccess.info/) is a great starting point when exploring this topic.
+
+For our POC we limited ourselves to workloads that consume public APIs only, avoiding the need to integrate networks. 
+
+### Services
+
+Integrating with AWS can be accomplished leveraging IAM, as described previously.
+
+Observability and security components can be installed on remote clusters in a similar way to existing clusters. Information flows to the SaaS platforms already in use, or to centralized setups. 
+
+## Putting it together
+
+Putting all of the above together, the LeafCloud setup looks like this:
+
+TODO: Image setup
+
+Terraform has proven valuable in combining various cloud platforms in a single IaC setup.
+
+TODO: Image Terraform flow
+
+Even when moving beyond a POC, and possibly integrating ClusterAPI or ArgoCD, Terraform could still be the linking pin because of the powerful chaining of output values and variables. Custom resources like a ClusterAPI [Cluster](https://doc.crds.dev/github.com/kubernetes-sigs/cluster-api/cluster.x-k8s.io/Cluster/v1beta1@v1.3.3) or ArgoCD [Application](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#applications) could be deployed by Terraform, having values that originate from other cloud resources. 
+
+## Why would we do this?
+
+Well, there is 'lead by example': If we want to reduce our environmental impact we should consider all options to do so. That said, putting our workloads on a different cloud might not be the lowest of hanging fruits. 
+
+The potential emissions are shown below, as well as a pricing comparison of AWS and LeafCloud resources. Make no mistake, setting up shop elsewhare takes effort and that brings cost, but the fact that the cloud resource costs themselves could be tens of percents lower at least shows potential. 
+
+{{< figure src="/img/hackathon_leafcloud_emissions.gif" title="Emission savings" >}}
+
+{{< figure src="/img/hackathon_leafcloud_cost.gif" title="Cost" >}}
+
+## Concluding
 
 
+
+
+
+[^footnote_multicloud_identity]: Besides probably a number of vendors wanting to solve the multi-cloud identity problem. Not in scope for a POC.
+[^footnote_iam]: Admitted: Doing uncommon things with IAM is unlikely to cause any sighs of relief at all.
