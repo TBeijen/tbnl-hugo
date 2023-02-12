@@ -182,17 +182,29 @@ Even when moving beyond a POC, and possibly integrating ClusterAPI or ArgoCD, Te
 
 Well, there is 'lead by example': If we want to reduce our environmental impact we should consider all options to do so. That said, putting our workloads on a different cloud might not be the lowest of hanging fruits. 
 
-The potential emissions are shown below, as well as a pricing comparison of AWS and LeafCloud resources. Make no mistake, setting up shop elsewhare takes effort and that brings cost, but the fact that the cloud resource costs themselves could be tens of percents lower at least shows potential. 
+The potential emissions are shown below, as well as a pricing comparison of AWS and LeafCloud resources. Make no mistake, setting up shop elsewhare takes effort and that brings cost, but the fact that the cloud resource costs themselves could be up to tens of percents lower at least shows potential. 
 
 {{< figure src="/img/hackathon_leafcloud_emissions.gif" title="Emission savings" >}}
 
-{{< figure src="/img/hackathon_leafcloud_cost.gif" title="Cost" >}}
+{{< figure src="/img/hackathon_leafcloud_cost.gif" title="Cost. Res/Sp = Reservation/Savings Plan." >}}
 
 ## Concluding
 
+As expected deploying the workload itself in a different cloud was easy. Integrating various AWS services via IAM is possible but requires upfront planning and careful evaluation and execution. Integrating private networks involves procurement and integration of a networking solution. This would be the biggest hurdle moving forward.
 
+Exploring further, topics to address include:
 
+* Adapting the POC to a tech stack that supports cluster-autoscaler
+* Evaluate cluster setup via Terraform vs ClusterAPI
+* Evaluate bundles of apps via Terraform vs ArgoCD
+* Evaluate resiliency and fail-over scenarios when using 'smaller clouds'
+* Prepare for day 2 operations: Cluster upgrade and node patching. (Swapping out version `n` with version `n+1` clusters could be an option)
 
+Multi-Cloud does not need to go as far as being cloud-agnostic, resulting in the lowest common denominator of each cloud and lots of abstractions. Mixing different cloud services based on available features or cost is possible. As always, it [comes with trade-offs](https://www.techtarget.com/searchcloudcomputing/definition/multi-cloud-strategy).
+
+LeafCloud's underlying platform OpenStack being well-documented and supported allows for a smooth on-boarding process and, from a strategic perspective, avoids a lock-in into a single new cloud. Tools and services already in use can in most cases be easily integrated.
+
+I would encourage any-one remotely into multi-cloud and sustainability to take a look at LeafCloud. Making an impact requires taking steps. Hopefully this blog-post shows that making the biggest impact might not even require the biggest of steps.
 
 [^footnote_multicloud_identity]: Besides probably a number of vendors wanting to solve the multi-cloud identity problem. Not in scope for a POC.
-[^footnote_iam]: Admitted: Doing uncommon things with IAM is unlikely to cause any sighs of relief at all.
+[^footnote_iam]: Admitted: Doing somewhat uncommon things with IAM is unlikely to cause any sighs of relief at all.
