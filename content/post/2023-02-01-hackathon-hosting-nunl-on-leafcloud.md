@@ -12,12 +12,12 @@ tags:
   - Sustainability
   - Kubernetes
 description: "Hackathon time! The theme being 'climate': What would it take to run NU.nl on LeafCloud, a more environmental-friendly cloud than AWS? Let's find out."
-thumbnail: img/todo.jpg
+thumbnail: img/hackathon_leafcloud_thumbnail.jpg
 
 ---
 ## Introduction
 
-Once or twice a year, NU.nl organizes a hackathon, allowing its IT staff to dabble in new technology and pursue ideas, usually guided by a number of themes. 2023 kicked off with a hackathon having the themes 'NU2030', 'NU.nl from scratch' and 'A greener NU.nl'.
+Once or twice a year, [NU.nl](https://www.nu.nl/) organizes a hackathon, allowing its IT staff to dabble in new technology and pursue ideas, usually guided by a number of themes. 2023 kicked off with a hackathon having the themes 'NU2030', 'NU.nl from scratch' and 'A greener NU.nl'.
 
 Mid 2022 I [visited EdgeCase](/2022/06/01/edgecase-2022), a 1-day conference about running Kubernetes at the edge. One of the presentations was by [LeafCloud](https://www.leaf.cloud/), a hosting provider focusing on reducing the environmental impact of cloud computing by re-using the heat that it generates. 
 
@@ -27,6 +27,8 @@ In this blogpost:
 
 
 **Disclaimer:** This is a _personal_ blog. So while NU.nl (part of DPG Media) facilitated the hackathon and supports the theme, opinions and conclusions are mine. This post holds no commitment in any way from NU.nl or DPG Media.
+
+{{< figure src="/img/hackathon_leafcloud_main.jpg" title="Sustainable hosting" >}}
 
 ## LeafCloud
 
@@ -53,7 +55,7 @@ Below image shows a simplified outline of NU.nl architecture. Website and mobile
 
 Data and private network APIs constitute gravity, moving away from it tends to be hard. Compute consuming public APIs is easy, it can run anywhere. 
 
-Scope of POC is deploying frontend and optionally BFF for non-prod environment to LeafCloud. Getting the workloads to run somewhere else is not expected to be the hard part. The goal is to explore what it would take to go beyond a POC and identify blocking topics or topics that need further investigation. 
+Scope of POC is deploying website (F1) and optionally BFF for non-prod environment to LeafCloud. Getting the workloads to run somewhere else is not expected to be the hard part. The goal is to explore what it would take to go beyond a POC and identify blocking topics or topics that need further investigation. 
 
 {{< figure src="/img/hackathon_leafcloud_plan.gif" title="Plan: Run part of stack in LeafCloud" >}}
 
@@ -69,7 +71,7 @@ The abilities required to effectively run a set of Kubernetes applications outsi
 
 As Kubernetes matures one could observe that various improvements have made it easier than ever to consider clusters as ephemeral resources. Clouds offer managed Kubernetes, more lightweight alternatives as K3S and [RKE2](https://docs.rke2.io/) emerged. And then there is ClusterAPI: The ability to setup a cluster as management cluster and deploy remote clusters in a similar way as deploying pods.
 
-LeafCloud is based on OpenStack which itself also offers a managed Kubernetes cluster. Exploring some of the opions to get started resulted in the following:
+LeafCloud is based on [OpenStack](https://www.openstack.org/) which itself also includes managed Kubernetes clusters. Exploring some of the opions to get started resulted in the following:
 
 |Technology        | Supports autoscaler | Getting started |
 |------------------|---------------------|-----------------|
@@ -168,13 +170,11 @@ Observability and security components can be installed on remote clusters in a s
 
 ## Putting it together
 
-Putting all of the above together, the LeafCloud setup looks like this:
+Putting all of the above together, the AWS/LeafCloud setup looks like this:
 
-TODO: Image setup
+{{< figure src="/img/hackathon_leafcloud_setup.gif" title="AWS and LeafCloud setup" >}}
 
-Terraform has proven valuable in combining various cloud platforms in a single IaC setup.
-
-TODO: Image Terraform flow
+Terraform has proven valuable in combining various cloud platforms in a single IaC setup. We can use AWS for Terraform state and storage of OpenStack credentials, use OpenStack provider for cluster setup and Kubernetes/Helm providers for deploying cluster resources.
 
 Even when moving beyond a POC, and possibly integrating ClusterAPI or ArgoCD, Terraform could still be the linking pin because of the powerful chaining of output values and variables. Custom resources like a ClusterAPI [Cluster](https://doc.crds.dev/github.com/kubernetes-sigs/cluster-api/cluster.x-k8s.io/Cluster/v1beta1@v1.3.3) or ArgoCD [Application](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#applications) could be deployed by Terraform, having values that originate from other cloud resources. 
 
@@ -182,9 +182,12 @@ Even when moving beyond a POC, and possibly integrating ClusterAPI or ArgoCD, Te
 
 Well, there is 'lead by example': If we want to reduce our environmental impact we should consider all options to do so. That said, putting our workloads on a different cloud might not be the lowest of hanging fruits. 
 
-The potential emissions are shown below, as well as a pricing comparison of AWS and LeafCloud resources. Make no mistake, setting up shop elsewhare takes effort and that brings cost, but the fact that the cloud resource costs themselves could be up to tens of percents lower at least shows potential. 
+The potential emission savings are shown below, as well as a pricing comparison of AWS and LeafCloud resources. Make no mistake, setting up shop elsewhere takes effort and that brings cost, but the fact that the cloud resource costs themselves could be up to tens of percents lower at least shows potential. 
 
 {{< figure src="/img/hackathon_leafcloud_emissions.gif" title="Emission savings" >}}
+
+_Based on 20kg/core/mo (Source: LeafCloud). Calculations via [EPA Greenhouse Gas Equivalencies Calculator
+](https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator)._
 
 {{< figure src="/img/hackathon_leafcloud_cost.gif" title="Cost. Res/Sp = Reservation/Savings Plan." >}}
 
@@ -197,7 +200,7 @@ Exploring further, topics to address include:
 * Adapting the POC to a tech stack that supports cluster-autoscaler
 * Evaluate cluster setup via Terraform vs ClusterAPI
 * Evaluate bundles of apps via Terraform vs ArgoCD
-* Evaluate resiliency and fail-over scenarios when using 'smaller clouds'
+* Evaluate resiliency and fail-over scenarios when using 'single-AZ' clouds[^footnote_az]
 * Prepare for day 2 operations: Cluster upgrade and node patching. (Swapping out version `n` with version `n+1` clusters could be an option)
 
 Multi-Cloud does not need to go as far as being cloud-agnostic, resulting in the lowest common denominator of each cloud and lots of abstractions. Mixing different cloud services based on available features or cost is possible. As always, it [comes with trade-offs](https://www.techtarget.com/searchcloudcomputing/definition/multi-cloud-strategy).
@@ -206,5 +209,8 @@ LeafCloud's underlying platform OpenStack being well-documented and supported al
 
 I would encourage any-one remotely into multi-cloud and sustainability to take a look at LeafCloud. Making an impact requires taking steps. Hopefully this blog-post shows that making the biggest impact might not even require the biggest of steps.
 
+Thanks go to LeafCloud for great assistance during this hackathon!
+
 [^footnote_multicloud_identity]: Besides probably a number of vendors wanting to solve the multi-cloud identity problem. Not in scope for a POC.
 [^footnote_iam]: Admitted: Doing somewhat uncommon things with IAM is unlikely to cause any sighs of relief at all.
+[^footnote_az]: Are you 100% sure your multi-AZ setup can handle AZ-failures? Do you test it?
