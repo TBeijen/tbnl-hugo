@@ -170,9 +170,9 @@ Observability and security components can be installed on remote clusters in a s
 
 ## Putting it together
 
-Putting all of the above together results in the following setup:
+Putting all of the above together results in the following setup[^footnote_devsecops]:
 
-{{< figure src="/img/hackathon_leafcloud_setup.gif" title="AWS and LeafCloud setup" >}}
+{{< figure src="/img/hackathon_leafcloud_setup_devsecops.gif" title="AWS and LeafCloud setup" >}}
 
 Terraform has proven valuable in combining various cloud platforms in a single IaC setup. We can use AWS for Terraform state and storage of OpenStack credentials, use OpenStack provider for cluster setup, and use Kubernetes/Helm providers for deploying cluster resources.
 
@@ -212,4 +212,5 @@ Thanks go to LeafCloud for great assistance during this hackathon!
 
 [^footnote_multicloud_identity]: Besides probably a number of vendors wanting to solve the multi-cloud identity problem. Not in scope for a POC.
 [^footnote_iam]: Admitted: Doing somewhat uncommon things with IAM is unlikely to cause any sighs of relief at all.
+[^footnote_devsecops]: Observability and Security tools for illustrative purposes. We're not using _all_ of them.
 [^footnote_az]: Are you 100% sure your multi-AZ setup can handle AZ-failures? Do you test it?
