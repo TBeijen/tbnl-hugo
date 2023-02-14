@@ -1,8 +1,8 @@
 ---
 title: 'Hackathon: Could we run NU.nl on LeafCloud sustainable hosting?'
 author: Tibo Beijen
-date: 2023-02-01T10:00:00+01:00
-url: /2023/02/01/hackathon-hosting-nunl-on-leafcloud
+date: 2023-02-14T10:00:00+01:00
+url: /2023/02/14/hackathon-hosting-nunl-on-leafcloud
 categories:
   - articles
 tags:
@@ -21,7 +21,7 @@ Once or twice a year, [NU.nl](https://www.nu.nl/) organizes a hackathon, allowin
 
 Mid-2022 I [visited EdgeCase](/2022/06/01/edgecase-2022), a 1-day conference about running Kubernetes at the edge. One of the presentations was by [LeafCloud](https://www.leaf.cloud/), a hosting provider focusing on reducing the environmental impact of cloud computing by re-using the heat it generates. 
 
-Back then, I somewhat jokingly proposed to run our `/klimaat` section from LeafCloud. So, knowing we have most of our computing on Kubernetes, and one of this hackathon's themes was climate, there was no better moment to do a POC.
+Back then, I somewhat jokingly proposed to run our `/klimaat` section using LeafCloud. So, knowing we have most of our computing on Kubernetes, and one of this hackathon's themes was climate, there was no better moment to do a POC.
 
 In this blog post:
 
