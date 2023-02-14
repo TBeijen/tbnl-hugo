@@ -25,6 +25,7 @@ Back then, I somewhat jokingly proposed to run our `/klimaat` section from LeafC
 
 In this blog post:
 
+{{< toc >}}
 
 **Disclaimer:** This is a _personal_ blog. So while NU.nl (part of DPG Media) facilitated the hackathon and supports the theme, opinions and conclusions are mine. This post holds no commitment in any way from NU.nl or DPG Media.
 
