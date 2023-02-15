@@ -1,8 +1,8 @@
 ---
 title: 'Hackathon: Could we run NU.nl on LeafCloud sustainable hosting?'
 author: Tibo Beijen
-date: 2023-02-14T10:00:00+01:00
-url: /2023/02/14/hackathon-hosting-nunl-on-leafcloud
+date: 2023-02-15T10:00:00+01:00
+url: /2023/02/15/hackathon-hosting-nunl-on-leafcloud
 categories:
   - articles
 tags:
