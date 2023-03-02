@@ -1,8 +1,8 @@
 ---
 title: Kubernetes Community Days 2023 Amsterdam
 author: Tibo Beijen
-date: 2023-02-27T10:00:00+01:00
-url: /2023/02/27/kubernetes-community-days-2023-ams
+date: 2023-03-02T15:00:00+01:00
+url: /2023/03/02/kubernetes-community-days-2023-ams
 categories:
   - articles
 tags:
@@ -21,6 +21,10 @@ Last time Kubernetes Community Day took place in the Netherlands was [september 
 In those three years the event became bigger, doubling in all aspects: The number of days (2), number of tracks (2) and audience now totalling 450 attendees. So either people fancy in-person events more than ever, or Kubernetes adoption simply continued to grow.
 
 Let's summarize some of the learnings and findings.
+
+In this recap:
+
+{{< toc >}}
 
 ## Main take-aways
 
@@ -45,7 +49,7 @@ The [Extended Berkeley Packet Filter](https://en.wikipedia.org/wiki/EBPF) is ano
 
 > A technology that can run sandboxed programs in a privileged context such as the operating system kernel.
 
-As Raymond de Jong from Isovalent described it in his presentation:
+As Raymond de Jong from Isovalent described it in his presentation "Service MESH without the MESS":
 
 > eBPF makes the kernel programmable in a secure way: _What Javascript is to the browser, eBPF is to the kernel_.
 
@@ -87,7 +91,7 @@ The five factors of scalability:
 
 Mentioned also:
 
-> Lots of talking and stakeholder management leads to complex architectures...
+> Lots of talking and many stakeholders leads to complex architectures...
 
 ### "gRPS Proxyless Service" by Gijs Molenaar (Spotify)
 
@@ -131,9 +135,124 @@ The `Ingress` resource mixes responsibilities of the infrastructure provider, cl
 
 [Gateway API](https://gateway-api.sigs.k8s.io/) does not _replace_ Ingress but can provide solutions where Ingress is too limited.
 
+### "Managed Kubernetes Service: Day Zero Survival Pack" by Kristina Devochko (Admincontrol)
 
+Managed Kubernetes is not a PaaS.
 
+Important:
 
+* Day-0: Design & architecture
+* Long-term tech strategy: Single cloud/multi-cloud, hybrid/cloud-only, serverless/Kubernetes.
 
+To gitops or not to gitops, that's the question: Mature over time.
 
-[^footnote_eks_cilium]: Personal take: AWS might be dragging its feet a bit either because either they want to have good integrations with AppMesh or X-Ray from the get-go, or because Cilium has the potential to cannibalize on these services.
+Cost-conscious:
+
+* Node VM sizes
+* Nightly shutdown
+* Reserved instances
+* Spot instances
+* Policy management
+* Cost-focused tools ([Kubecost](https://www.kubecost.com/), [Cast](https://cast.ai/), [Loft](https://loft.sh/))
+
+Security considerations:
+
+* Restrict to IP ranges or private network
+* Unprivileged
+* Minimal base images
+* RBAC
+* Namespaces are not tenants
+* Network isolation
+
+### "How CERN empowers its users with Kubernetes and OpenShift" by Jack Henschel (CERN)
+
+Two flavors: 
+
+* Kubernetes based on OpenStack Magnum (Power users, more flexible)
+* Openshift based on [OKD](https://www.okd.io/) (More turnkey, using community edition of RedHat Openshift)
+
+OKD4 cluster upgrades are automated and seamless.
+
+OpenShift relies heavily on operators. ArgoCD fits this model well.
+
+[Open Policy Agent](https://www.openpolicyagent.org/) is used to ensure unique hostnames across clusters.
+
+Clusters at CERN are _pets_, since they contain a lot of data.
+
+Operators for various purposes, including application management, DNS, Gitlab pages.
+
+Lessons learned:
+
+* The importance of internal documentation
+* Operators are powerfull, but a sharp tool
+* Not _everything_ has to be automated
+* Power users & casual users: Benefit both
+* Share common competence and experience
+
+### "Leading in Open Source - A Strategic Approach" by Dawn Foster (VMWare)
+
+Three stakeholders:
+
+* The project / community
+* The individual contributor
+* The company
+
+Employees contribute as an individual on company's behalf.
+
+Community comes before an individual's or company's needs. _Strategy should take that into account!_
+
+Open Source contributing works best with long-term strategic approach.
+
+Take-aways:
+
+* Building trust takes time
+* Align with business goals to highlight importance and impact
+* Focus on strategic projects with biggest impact
+* Guidelines and processes should make it _easy_ to contribute. Encourage!
+* Measure success
+* Upstream your patches
+* Build relationships
+* Leadership: Encourage people to move into leadership positions within their communities
+* Discuss changes first within community and break into smaller contributions
+
+### "Cloud to on-prem and back again" by Gijs van der Voort (Picnic)
+
+Description of journey of PicNic to move to on-premise using [VMWare Tanzu](https://tanzu.vmware.com/tanzu) and back to AWS.
+
+Running everything in two datacenter rooms proved to be complex. K8S does not abstract away the underlying hardware and the physical reality of having to deal with power outages. 
+
+Moved back to AWS EKS, also allowing improvements such as Graviton.
+
+Three types of application:
+
+* Stateless: Containers. HA. Applications
+* Stateful HA: VM-based. Postgres, RabbitMQ, Consul
+* Stateful non-HA: Control and transport systems. The physical part of the fulfillment center.
+
+Size: 444 CPU, 465Gb Ram, 10TB storage.
+
+Digital and mechanical engineering coming together in the conveyors in the fulfillment center. Even with EKS in AWS Ireland, using Direct Link, latency of `< 100 msec`is accomplished which encompasses:
+
+* Scan
+* Send event
+* Calculate desired junction state
+* Send desired state
+* Change junction direction
+
+### "The Great Lambda Migration to Kubernetes Jobs" by Liav Yona (Firefly)
+
+[Firefly](https://www.gofirefly.io/) is SaaS platform that allows teams to manage their entire cloud footprint.
+
+Started off with operations running in Lambda. Moved, partly because of limited duration to ECS. Still proved costly, not open, hard to customize.
+
+Now using Kubernetes, using CRD to define every customer account. Scalability and observability are key benefits.
+
+Works for Firefly, by no means a serverless vs. Kubernetes talk.
+
+## Summary
+
+Although at a grander scale than 2019, KCD 2023 once again was an event that provided a lot of room for the 'hallway track'. Also, this particular one was a nice warm-up for KubeCon in april, which undoubtedly will be bigger, broader, more in-depth.
+
+Shout-out to the organizers for making this event awesome! I'm looking forward to 2024.
+
+[^footnote_eks_cilium]: Personal take: AWS might be dragging its feet a bit either because they want to have good integrations with AppMesh and X-Ray from the get-go, or because Cilium has the potential to cannibalize on these services._
