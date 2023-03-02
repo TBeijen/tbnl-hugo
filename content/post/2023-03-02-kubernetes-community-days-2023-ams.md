@@ -16,9 +16,9 @@ thumbnail: img/foobar.jpg
 ---
 ## Introduction
 
-Last time Kubernetes Community Day took place in the Netherlands was [september 2019](/2019/09/16/kubernetes-community-day-amsterdam-2019/). Then the pandemic turned the world upside down and suddenly we find ourselves in february 2023 for the next event. 
+The last time Kubernetes Community Day took place in the Netherlands was [September 2019](/2019/09/16/kubernetes-community-day-amsterdam-2019/). Then the pandemic turned the world upside down, and suddenly we find ourselves in February 2023 for the next event. 
 
-In those three years the event became bigger, doubling in all aspects: The number of days (2), number of tracks (2) and audience now totalling 450 attendees. So either people fancy in-person events more than ever, or Kubernetes adoption simply continued to grow.
+In those three years, the event became bigger, doubling in all aspects: The number of days (2), number of tracks (2), and audience now totaling 450 attendees. So either people fancy in-person events more than ever, or Kubernetes adoption simply continued growing.
 
 Let's summarize some of the learnings and findings.
 
@@ -26,18 +26,18 @@ In this recap:
 
 {{< toc >}}
 
-## Main take-aways
+## Main takeaways
 
 *Note:* This is highly subjective, it mostly focuses on what would be most actionable and beneficial for the teams I represent.
 
 ### ArgoCD / GitOps
 
-By no means a new concept in the CNCF space, ArgoCD, the most commonly used GitOps solution, is there to stay and sees a lot of attention in past years. It fits the way Kubernetes operates nicely:
+By no means a new concept in the CNCF space, ArgoCD, the most commonly used GitOps solution, is there to stay and has seen a lot of attention in past years. It fits the way Kubernetes operates nicely:
 
-* Kubernetes: Give me YAML, I will align the resources.
-* ArgoCD: Give me git repos, I will align the YAML.
+* Kubernetes: Give me YAML, and I will align the resources.
+* ArgoCD: Give me git repos, and I will align the YAML.
 
-It makes clear the separation between the CI (test, build, publish artifacts) and the CD parts (promote artifacts through various stages). Conceptually that makes a lot of sense. However, when diving in questions might arise along the lines of "Ok, but _how_ exactly?". 
+It makes clear the separation between the CI (test, build, publish artifacts) and the CD parts (promote artifacts through various stages). Conceptually that makes a lot of sense, however, when diving in, questions might arise along the lines of "Ok, but _how_ exactly?". 
 
 The presentation "GitOps Patterns for managing cloud native applications" covered this nicely. Demo code is available at Github: https://github.com/rcarrata/kcd23ams-gitops-patterns
 
@@ -47,7 +47,7 @@ Topics addressed included, SyncWaves, Hooks, App-of-app pattern, ApplicationSets
 
 The [Extended Berkeley Packet Filter](https://en.wikipedia.org/wiki/EBPF) is another technology that is making waves for some time. As Wikipedia describes it:
 
-> A technology that can run sandboxed programs in a privileged context such as the operating system kernel.
+> A technology that can run sandboxed programs in a privileged context, such as the operating system kernel.
 
 As Raymond de Jong from Isovalent described it in his presentation "Service MESH without the MESS":
 
@@ -59,16 +59,16 @@ Cilium is a network plugin based on eBPF that provides:
 * Security
 * Observability
 
-More specifically this means:
+More specifically, this means:
 
 * Service mesh without sidecars
 * Faster service mesh because of less TCP stack traversal
 * Multi-cluster capabilities
 * A control plane that can integrate with Istio
 * Advanced observability for applications using [Hubble](https://github.com/cilium/hubble/) without requiring adapting the applications themselves.
-* Replacement for Ingress controller (from `v1.13`: Shared loadbalancer for multiple ingress resources)
+* Replacement for Ingress controller (from `v1.13`: Shared load balancer for multiple ingress resources)
 
-Cilium is already integrated in Google's Kubernetes offering and AWS [EKS Anywhere](https://isovalent.com/blog/post/2021-09-aws-eks-anywhere-chooses-cilium/). Sadly not (yet?) in standard EKS[^footnote_eks_cilium]. It is possible though to [chain Cilium CNI to the default CNI with 0-downtime](https://medium.com/codex/migrate-to-cilium-from-amazon-vpc-cni-with-zero-downtime-493827c6b45e).
+Cilium is already integrated into Google's Kubernetes offering and AWS [EKS Anywhere](https://isovalent.com/blog/post/2021-09-aws-eks-anywhere-chooses-cilium/). Sadly not (yet?) in standard EKS[^footnote_eks_cilium]. It is possible though, to [chain Cilium CNI to the default CNI with 0-downtime](https://medium.com/codex/migrate-to-cilium-from-amazon-vpc-cni-with-zero-downtime-493827c6b45e).
 
 ## Presentation notes
 
@@ -78,7 +78,7 @@ An interesting talk about business operations, efficiency and agility in the con
 
 * [Occam's razor](https://en.wikipedia.org/wiki/Occam%27s_razor)
 * [Conway's Law](https://en.wikipedia.org/wiki/Conway%27s_law)
-* [Willow run](https://en.wikipedia.org/wiki/Willow_Run)
+* [Willow Run](https://en.wikipedia.org/wiki/Willow_Run)
 * [OODA loop](https://en.wikipedia.org/wiki/OODA_loop)
 
 The five factors of scalability:
@@ -91,11 +91,11 @@ The five factors of scalability:
 
 Mentioned also:
 
-> Lots of talking and many stakeholders leads to complex architectures...
+> Lots of talking and many stakeholders lead to complex architectures...
 
 ### "gRPS Proxyless Service" by Gijs Molenaar (Spotify)
 
-Spotify pioneering in streaming business, requiring tools that didn't exist yet:
+Spotify pioneering in the streaming business, requiring tools that didn't exist yet:
 
 * Hermes: A protocol built on ZeroMQ and protobuf
 * Nameless: Service discovery using DNS SRV records
@@ -125,13 +125,13 @@ Most seen security event: Shell in container (e.g. via log4j)
 
 ### "Operating high traffic websites on Kubernetes" by Salman Iqbal (Appvia)
 
-Described the concepts of services, cloud loadbalancer and ingress. Then continued on how to scale an ingress controller using [KEDA](https://keda.sh/): Kubernetes Event-Driven Autoscaling.
+Described the concepts of services, cloud load balancer and ingress. Then continued on how to scale an ingress controller using [KEDA](https://keda.sh/): Kubernetes Event-Driven Autoscaling.
 
 Samples based on [this Nginx tutorial](https://www.nginx.com/blog/microservices-march-reduce-kubernetes-latency-with-autoscaling/).
 
 ### "Gateway API: The new way to travel north/south" by Ara Pulido (Datadog)
 
-The `Ingress` resource mixes responsibilities of the infrastructure provider, cluster operator and application developer. This can become problematic.
+The `Ingress` resource mixes the responsibilities of the infrastructure provider, cluster operator and application developer. This can become problematic.
 
 [Gateway API](https://gateway-api.sigs.k8s.io/) does not _replace_ Ingress but can provide solutions where Ingress is too limited.
 
@@ -144,7 +144,7 @@ Important:
 * Day-0: Design & architecture
 * Long-term tech strategy: Single cloud/multi-cloud, hybrid/cloud-only, serverless/Kubernetes.
 
-To gitops or not to gitops, that's the question: Mature over time.
+To GitOps or not to GitOps, that's the question: Mature over time.
 
 Cost-conscious:
 
@@ -177,14 +177,14 @@ OpenShift relies heavily on operators. ArgoCD fits this model well.
 
 [Open Policy Agent](https://www.openpolicyagent.org/) is used to ensure unique hostnames across clusters.
 
-Clusters at CERN are _pets_, since they contain a lot of data.
+Clusters at CERN are _pets_ since they contain a lot of data.
 
-Operators for various purposes, including application management, DNS, Gitlab pages.
+Operators for various purposes, including application management, DNS, and GitLab pages.
 
 Lessons learned:
 
 * The importance of internal documentation
-* Operators are powerfull, but a sharp tool
+* Operators are powerful, but a sharp tool
 * Not _everything_ has to be automated
 * Power users & casual users: Benefit both
 * Share common competence and experience
@@ -193,37 +193,37 @@ Lessons learned:
 
 Three stakeholders:
 
-* The project / community
+* The project/community
 * The individual contributor
 * The company
 
-Employees contribute as an individual on company's behalf.
+Employees contribute as an individual on the company's behalf.
 
 Community comes before an individual's or company's needs. _Strategy should take that into account!_
 
-Open Source contributing works best with long-term strategic approach.
+Open Source contribution works best with a long-term strategic approach.
 
-Take-aways:
+Takeaways:
 
 * Building trust takes time
-* Align with business goals to highlight importance and impact
-* Focus on strategic projects with biggest impact
+* Align with business goals to highlight the importance and impact
+* Focus on strategic projects with the biggest impact
 * Guidelines and processes should make it _easy_ to contribute. Encourage!
 * Measure success
 * Upstream your patches
 * Build relationships
 * Leadership: Encourage people to move into leadership positions within their communities
-* Discuss changes first within community and break into smaller contributions
+* Discuss changes first within the community and break into smaller contributions
 
 ### "Cloud to on-prem and back again" by Gijs van der Voort (Picnic)
 
-Description of journey of PicNic to move to on-premise using [VMWare Tanzu](https://tanzu.vmware.com/tanzu) and back to AWS.
+Description of the journey of PicNic to move to on-premise using [VMWare Tanzu](https://tanzu.vmware.com/tanzu) and back to AWS.
 
-Running everything in two datacenter rooms proved to be complex. K8S does not abstract away the underlying hardware and the physical reality of having to deal with power outages. 
+Running everything in two data center rooms proved to be complex. K8S does not abstract away the underlying hardware and the physical reality of having to deal with power outages. 
 
 Moved back to AWS EKS, also allowing improvements such as Graviton.
 
-Three types of application:
+Three types of applications:
 
 * Stateless: Containers. HA. Applications
 * Stateful HA: VM-based. Postgres, RabbitMQ, Consul
@@ -231,7 +231,7 @@ Three types of application:
 
 Size: 444 CPU, 465Gb Ram, 10TB storage.
 
-Digital and mechanical engineering coming together in the conveyors in the fulfillment center. Even with EKS in AWS Ireland, using Direct Link, latency of `< 100 msec`is accomplished which encompasses:
+Digital and mechanical engineering come together in the conveyors in the fulfillment center. Even with EKS in AWS Ireland, using Direct Link, latency of `< 100 msec` is accomplished, which encompasses:
 
 * Scan
 * Send event
@@ -243,7 +243,7 @@ Digital and mechanical engineering coming together in the conveyors in the fulfi
 
 [Firefly](https://www.gofirefly.io/) is SaaS platform that allows teams to manage their entire cloud footprint.
 
-Started off with operations running in Lambda. Moved, partly because of limited duration to ECS. Still proved costly, not open, hard to customize.
+Started off with operations running in Lambda. Moved, partly because of the limited duration to ECS. Still proved costly, not open, hard to customize.
 
 Now using Kubernetes, using CRD to define every customer account. Scalability and observability are key benefits.
 
@@ -251,8 +251,8 @@ Works for Firefly, by no means a serverless vs. Kubernetes talk.
 
 ## Summary
 
-Although at a grander scale than 2019, KCD 2023 once again was an event that provided a lot of room for the 'hallway track'. Also, this particular one was a nice warm-up for KubeCon in april, which undoubtedly will be bigger, broader, more in-depth.
+Although at a grander scale than 2019, KCD 2023 once again was an event that provided a lot of room for the 'hallway track'. Also, this particular one was a nice warm-up for KubeCon in April, which undoubtedly will be bigger, broader, and more in-depth.
 
-Shout-out to the organizers for making this event awesome! I'm looking forward to 2024.
+Shout out to the organizers for making this event awesome! I'm looking forward to 2024.
 
-[^footnote_eks_cilium]: Personal take: AWS might be dragging its feet a bit either because they want to have good integrations with AppMesh and X-Ray from the get-go, or because Cilium has the potential to cannibalize on these services._
+[^footnote_eks_cilium]: Personal take: AWS might be dragging its feet a bit either because they want to have good integrations with AppMesh and X-Ray from the get-go or because Cilium has the potential to cannibalize these services._
