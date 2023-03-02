@@ -11,20 +11,22 @@ tags:
   - Community
   - Conference
 description: Recap of the Kubernetes Community Days 2023 Amsterdam event
-thumbnail: img/foobar.jpg
+thumbnail: img/kcd2023.jpg
 
 ---
 ## Introduction
 
 The last time Kubernetes Community Day took place in the Netherlands was [September 2019](/2019/09/16/kubernetes-community-day-amsterdam-2019/). Then the pandemic turned the world upside down, and suddenly we find ourselves in February 2023 for the next event. 
 
-In those three years, the event became bigger, doubling in all aspects: The number of days (2), number of tracks (2), and audience now totaling 450 attendees. So either people fancy in-person events more than ever, or Kubernetes adoption simply continued growing.
+In those three years, [the event](https://community.cncf.io/events/details/cncf-kcd-netherlands-presents-kubernetes-community-days-amsterdam-2023/) became bigger, doubling in all aspects: The number of days (2), number of tracks (2), and audience now totaling 450 attendees. So either people fancy in-person events more than ever, or Kubernetes adoption simply continued growing.
 
 Let's summarize some of the learnings and findings.
 
 In this recap:
 
 {{< toc >}}
+
+{{< figure src="/img/kcd2023.jpg" title="Source: Twitter @cloudnativeams" >}}
 
 ## Main takeaways
 
@@ -217,7 +219,7 @@ Takeaways:
 
 ### "Cloud to on-prem and back again" by Gijs van der Voort (Picnic)
 
-Description of the journey of PicNic to move to on-premise using [VMWare Tanzu](https://tanzu.vmware.com/tanzu) and back to AWS.
+Description of the journey of Picnic to move to on-premise using [VMWare Tanzu](https://tanzu.vmware.com/tanzu) and back to AWS.
 
 Running everything in two data center rooms proved to be complex. K8S does not abstract away the underlying hardware and the physical reality of having to deal with power outages. 
 
