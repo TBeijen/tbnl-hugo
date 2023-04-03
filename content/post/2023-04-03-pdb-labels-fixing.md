@@ -72,7 +72,7 @@ The following pattern, partly based on Helm chart defaults, in our experience wo
 
 ```
 metadata:
-  name: <unique-release-name>-component
+  name: <unique-release-name>-<component>
   labels:
     # Below 3 labels used as selector labels in various places as well
     app.kubernetes.io/name: <chart-name>
