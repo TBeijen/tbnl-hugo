@@ -1,7 +1,7 @@
 ---
 title: "PodDisruptionBudget confused: Labels matter."
 author: Tibo Beijen
-date: 2023-04-03T10:00:00+01:00
+date: 2023-04-03T09:00:00+01:00
 url: /2023/04/03/pdb-labels-fixing
 categories:
   - articles
