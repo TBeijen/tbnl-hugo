@@ -11,7 +11,7 @@ tags:
   - Ingress
   - Troubleshooting
 description: PodDisruptionBudget and incomplete labels is not a great combination. How to prevent this situation and how to fix it.
-thumbnail: img/
+thumbnail: img/pdb_says_no.gif
 
 ---
 ## Introduction
@@ -34,6 +34,7 @@ It is also worth noting that a similar upgrade a few days earlier on a non-prod 
 
 Let's see what happened.
 
+{{< figure src="/img/pdb_says_no.gif" title="Computer says no" >}}
 ## The situation
 
 As hinted at by the error message, the problem originates from _within_ the cluster. Upon checking the event log, the underlying problem became apparent.
