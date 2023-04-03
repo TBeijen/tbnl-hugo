@@ -163,7 +163,9 @@ What can be 0-downtime:
 * Validate traffic going to the new release
 * Remove the old release
 
-We use Helm, and for Ingress we use Zalando's [Skipper](https://opensource.zalando.com/skipper/). When deploying duplicate `Ingress` objects, skipper will randomly select one. Specific to this problem, that allows replacing the old Ingress object with the new one. That way, we don't have to meddle with labels on the old Ingress object to make it part of the new Helm deployment.
+We use Helm, and for Ingress we use Zalando's [Skipper](https://opensource.zalando.com/skipper/). When deploying duplicate `Ingress` objects, skipper will randomly select one. 
+
+In this situation, we can use that to our advantage. We can deploy the new, correctly named and labeled Ingress _alongside_ the existing one for a brief period.
 
 Specific to our setup, the procedure then becomes:
 
