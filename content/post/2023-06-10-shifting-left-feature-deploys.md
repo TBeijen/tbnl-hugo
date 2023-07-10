@@ -99,9 +99,9 @@ To address the 'should we?' question: An API returning JSON is typically easy to
 
 Our feature deploy setup looks like this:
 
-TODO: Illustration feature deploy
+{{< figure src="/img/feature_deploys_implementation.png" title="Sample implementation" >}}
 
-Let's fo over some parts
+Let's go over some parts
 
 ## Akamai
 
@@ -116,15 +116,19 @@ This setup involves some use of wildcards:
 * A wildcard DNS entry to the CDN, e.g. `*.bff.feature.mysite.com CNAME bff.feature.mysite.com.edgekey.net.`
 * A wildcard certificate on the CDN, in this example `*.bff.feature.mysite.com`
 
-CDNs typically accept TLS certificates from origin that match either the requested `Host` or the origin FQDN. We terminate TLS on an AWS ALB and use the ALB FQDN.
+CDNs typically accept TLS certificates from origin that match either the requested `Host` or the origin FQDN. We terminate TLS on an AWS ALB and use the origin (ALB) FQDN.
 
 ## Helm unique release names
 
 By convention our feature branches reference the Jira issue we are working on. So branches will be named something like `feature/JIRA-123_something_descriptive`. CI/CD will parse this issue from the branch name, and apply it to our Helm install in the following ways:
 
-* Helm release name. Prefixing the release name with the issue code ensures all Kubernetes object names are unique within the namespace. For example a release name of `jira-1234-bff` resuling in deployments named `jira-1234-bff-api` and `jira-1234-bff-redis`.
+* Helm release name. Prefixing the release name with the issue code ensures all Kubernetes object names are unique within the namespace. For example a release name of `jira-1234-bff` resulting in deployments named `jira-1234-bff-api` and `jira-1234-bff-redis`.
 * Ingress hostname: `jira-1234.bff.feature.mysite.com`
 * Application config, things like the redis service-name if redis is included in the feature deploy, Hostnames the application accepts, etc.
+
+## Uninstaller
+
+
 
 ## Resource usage and cost
 
@@ -150,7 +154,6 @@ That's not 0, but not breaking the bank either. Now if we relate that to $100/hr
 
 This doesn't take into account the initial setup effort. On the other hand, these calculations also ignore that feature deploys don't need to run 24/7, and that a week per feature is a high estimate. So we can consider those to be in balance.
 
-## Cleanup
 
 
 
@@ -211,4 +214,6 @@ Integrated services. Consent, callbacks, etc.
 * Identify the goal, and choose scope wisely
 
 
+## TODO
 
+* Split introduction/use case
