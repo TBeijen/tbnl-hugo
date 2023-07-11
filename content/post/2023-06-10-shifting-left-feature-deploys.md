@@ -17,6 +17,16 @@ thumbnail: ""
 ---
 ## Introduction
 
+Feature deploys can help teams to validate work in progress, and test pull requests before merging. This article will address some things to consider when setting up feature deploys. Furthermore, an implementation in use at [NU.nl](https://www.nu.nl) will be described, based on AWS, Kubernetes, Helm and Akamai.
+
+{{< figure src="/img/feature_deploys_header.jpg" title="Parallel tracks. Source: Bing Image Creator" >}}
+
+In this article:
+
+{{< toc >}}
+
+## The use case for feature deploys
+
 Once teams grow, you might have multiple people working on a single application. Ideally one wants to integrate often (the 'continuous' in CI), yet at the same time one usually wants the have the main branch in a deployable state. 
 
 So, how to validate that a pull request results in a deployable application? Tests. very much preferably automated tests. 
@@ -25,9 +35,9 @@ But, once there is a more visual or UX aspect to the application, fully automate
 
 If there is just a single test environment, the testing lane easily becomes a traffic jam: Lots of alternating deploys of branches, a lot of alignment between team members and the ever-present question "Is my feature that I presume I am currently testing, really still on test?". Slow, error-prone, and full of overhead.
 
-Another reason a single test environment might not suffice is when needing to have a representative environment for automated end-to-end tests before merging into the main branch.
-
 Feature deploys, also sometimes referred to as 'preview deploys' can help to shorten the feedback loop and avoid this traffic jam: Every feature branch will be deployed in a separate environment. 
+
+Another reason a single test environment might not suffice is when needing to have a representative environment for automated end-to-end tests before merging into the main branch.
 
 Examples of situations where [we](NU.nl) have found feature deploys to be useful are:
 
@@ -37,15 +47,15 @@ Examples of situations where [we](NU.nl) have found feature deploys to be useful
 * Does platform x receive the expected events?
 * Does this API work-in-progress align with the feature developed in the mobile app? 
 
-{{< figure src="/img/feature_deploys_header.jpg" title="Parallel tracks. Source: Bing Image Creator" >}}
+## Feature deploys: An anti-pattern?
 
-## Preview deploys. An anti-pattern?
-
-[Modern practice](https://trunkbaseddevelopment.com/) encourages us towards keeping features small, merging often and fast, and automating everything. Yet we are considering feature deploys that ideally are just for automated end-to-end tests, but might result in branches being preserved until some non-automated procedure is finished? Should we really?
+[Modern practice](https://trunkbaseddevelopment.com/) encourages us to keep features small, merge often and fast, and automate everything. Yet we are considering feature deploys that, while ideally just for automated end-to-end tests, might result in branches being preserved until some non-automated procedure is finished? Should we really?
 
 Probably the most important thing is to never consider feature deploys as a goal but merely as a means to an end. If feasible, putting effort into automation, removing the _need_ for feature deploys, would be preferable.
 
 Speaking _in favor_ of feature deploys: It aligns with the _shift left_ paradigm. We try to validate our work _as soon as possible_. If that involves stakeholders that can't be automated, validating before merging and proceeding further down the delivery pipeline, sounds reasonable.
+
+## Alternatives
 
 Some alternatives might be worth considering:
 
@@ -63,9 +73,9 @@ Likewise, serverless development, unless using something like [LocalStack](https
 
 ## Define scope
 
-So, once we've established feature deploys solve a problem, we arrive at the next question: What should be included in a feature deploy?
+So, once we have established feature deploys solve a problem, we arrive at the next question: What should be included in a feature deploy?
 
-Applications are hardly ever isolated. They consume services, use databases, emit or consume events. Those services in turn also have depencencies, the list goes on.
+Applications are hardly ever isolated. They consume services, use databases, emit or consume events. Those services in turn also have dependencies, the list goes on.
 
 Determining what to include in a feature deploy will involve trade-offs and pragmatism. Some questions that might pop up:
 
@@ -73,9 +83,9 @@ Determining what to include in a feature deploy will involve trade-offs and prag
 * If so, can we fully leverage database? Ideally, databases are used by a single (micro-)service. However, the landscape is not always ideal and other applications might be needed to write to the database, increasing our scope.
 * Do we need to have per-feature deployments of supporting services?
 * If not possible, for example when integrating with a SaaS, should we setup additional tenants (if possible)? 
-* If not, and sharing a supporting service with other feature deploys, will our testing efforts interfere?
+* When sharing a supporting service with other feature deploys, will our testing efforts interfere?
 * Are there parts of our infrastructure we can not easily create duplicates for?
-* Are there services we integrate with that can not handle multiple domain names? Example: A consent platform using redirects. Can it be configured to accept a wildcard domain as valid return url? Alternatively, does it have an API to (un)register return urls? If not (so much for self-servicability) can we disable this integration?
+* Are there services we integrate with that can not handle multiple domain names? Example: A consent platform using redirects. Can it be configured to accept a wildcard domain as valid return url? Alternatively, does it have an API to (un)register return urls? If not, can we disable this integration?[^footnote_self_servicability]
 
 Rule of thumb: Keep the scope as small as possible. It will probably be easier from a devops perspective and easier to reason about.
 
@@ -103,7 +113,7 @@ Our feature deploy setup looks like this:
 
 Let's go over some parts
 
-## Akamai
+### Akamai
 
 As [written previously](https://www.tibobeijen.nl/2021/12/03/shift-left-akamai-terraform/), it is valuable to have a representative testing environment as early as possible in the development lifecycle. And being representative means including the CDN.
 
@@ -118,7 +128,7 @@ This setup involves some use of wildcards:
 
 CDNs typically accept TLS certificates from origin that match either the requested `Host` or the origin FQDN. We terminate TLS on an AWS ALB and use the origin (ALB) FQDN.
 
-## Helm unique release names
+### Helm unique release names
 
 By convention our feature branches reference the Jira issue we are working on. So branches will be named something like `feature/JIRA-123_something_descriptive`. CI/CD will parse this issue from the branch name, and apply it to our Helm install in the following ways:
 
@@ -126,18 +136,43 @@ By convention our feature branches reference the Jira issue we are working on. S
 * Ingress hostname: `jira-1234.bff.feature.mysite.com`
 * Application config, things like the redis service-name if redis is included in the feature deploy, Hostnames the application accepts, etc.
 
-## Uninstaller
+### Uninstaller
+
+With pipelines adding more and more feature deploys, there needs to be a mechanism that removes these deploys at some point.
+
+In each feature namespace we deploy a cronjob that:
+
+* Consists of some python code and the `helm` binary
+* Contains some logic that determines the current namespace and evaluates the `updated` value of the helm releases it finds
+* Role binding that grants it admin permissions within that namespace
+
+This allows to:
+
+* Run cronjob every evening without evaluating `updated`. Fast cleanup but requires re-deploy when resuming work next day.
+* Run cronjob more frequently but only uninstall when `updated` is a certain number of hours (or days) in the past.
+
+Python uses `subprocess.run` to invoke the helm binary, as shown below:
+
+```
+def _helm_list_releases(namespace):
+    # Controlling time-format, since default output can't be parsed by dateutil
+    cmd = f'helm -n {namespace} list --time-format "2006-01-02 15:04:05Z0700" -o json'
+    return json.loads(_exec_cli_cmd(cmd))
 
 
+def _helm_uninstall(namespace, release_name):
+    cmd = f"helm -n {namespace} uninstall {release_name}"
+    _exec_cli_cmd(cmd)
+```
 
-## Resource usage and cost
+### Resource usage and cost
 
 Non-production capacity tuning can be somewhat challenging: A lot of time throughput is absent, yet having very low CPU limits will badly affect any request. What in our experience works well is to have very low CPU requests, say `0.05 cpu` and no, or sufficiently high, limit. This works because:
 
 * CPU is compressible, so when having a brief period of CPU saturation, performance degrades but nothing will _break_
 * Not all deployments will have throughput at the same time (the concept taken to the extreme by serverless)
 
-Memory is not compressible,. Some tips: 
+Memory is not compressible. Some tips: 
 
 * Be aware of application configuration that affects memory usage. For example, having an needlessly high amount of [gunicorn worker processes](https://docs.gunicorn.org/en/stable/design.html#how-many-workers) on a non-prod environment will waste memory.
 * Pick node instance types that have high memory vs. CPU. E.g. the AWS `m5/m6` instance families, where a `m5.large` couples 4 vCPU to 16GiB of memory.
@@ -154,66 +189,20 @@ That's not 0, but not breaking the bank either. Now if we relate that to $100/hr
 
 This doesn't take into account the initial setup effort. On the other hand, these calculations also ignore that feature deploys don't need to run 24/7, and that a week per feature is a high estimate. So we can consider those to be in balance.
 
-
-
-
 ### Possible improvements
 
+A downside of pipelines is that it can become hard to have overview and control of what applications are running at any moment. A constant adding and removing of feature deploys, magnifies this problem.
 
-----
+For that reason, [ArgoCD](https://argo-cd.readthedocs.io/en/stable/) has become a tool of choice for many organizations.
 
-
-
-Ideally, one would strive for:
-
-* Short-lived branches
-* Frequent integration of code changes
-* Complete coverage by automated tests
-
-
-## Define scope
-
-* The why? What is the purpose. Smoke tests? Visual? Highly controlable e2e tests?
-* Speed of provisioning
-* Isolation & data flow
-
-### Considerations
-
-Integrated services. Consent, callbacks, etc.
-
-## Our particular implementation
-
-### Akamai
-
-* Wildcard domain
-* Wildcard TLS
-
-### Ingress
-
-* Ingress specific FQDN
-* Matching cert
-* Ingress definition per deployment
-
-### Redis 
-
-* Per installation
-
-### Teardown
-
-* Nightly cleanup, cleanup after x hours
-
-## Possible improvements
-
-* GitOps ArgoCD ApplicationSet with Pull  Request Generator: https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Pull-Request/
+When using ArgoCD, an ApplicationSet using the [Pull Request Generator](https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Pull-Request/) would be a suitable way to manage feature deploys.
 
 ## Conclusion
 
-* Can be useful
-* Lo-fi glue code can go a long way
-* So do wildcard certificates and DNS entries
-* Identify the goal, and choose scope wisely
+Feature deploys can help teams to move fast by preventing interfering workflows and providing early feedback (shift left). After considering some aspects, such as scope and how to provision supporting infrastucture, implementation can be straightforward. 
 
+Pragmatism and a bit of lo-fi glue code can be all that is needed to get started. Improvements can be made in future iterations.
 
-## TODO
+Don't hesitate to reach out via [Twitter](https://twitter.com/TBeijen)[^footnote_twitter] or [Mastodon](https://hachyderm.io/@tbeijen) when having any feedback.
 
-* Split introduction/use case
+[^footnote_self_servicability]: Do not underestimate the value of self-servicability
