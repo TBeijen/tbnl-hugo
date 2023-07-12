@@ -206,4 +206,4 @@ Pragmatism and a bit of lo-fi glue code can be all that is needed to get started
 Don't hesitate to reach out via [Twitter](https://twitter.com/TBeijen) or [Mastodon](https://hachyderm.io/@tbeijen) when having any feedback.
 
 [^footnote_self_servicability]: Do not underestimate the value of self-servicability
-[^footnote_contractor_rate]: Ballpark figure suitable for simple calculation
+[^footnote_contractor_rate]: Ballpark figure suitable for simple calculations
