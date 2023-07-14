@@ -67,7 +67,7 @@ Feature flag platforms can typically release features to segments, like company 
 
 ### Moving development into the cloud
 
-When development work in progress happens in the cloud, or is closely integrated with the cloud, the 'deploy' step can become an integral part of the workflow to the point that it disappears completely. Tools like [Raftt](https://www.raftt.io/) and [Telepresence](https://www.telepresence.io/) aim at improving the development experience, including preview URLs.
+When development work in progress happens in the cloud, or is closely integrated with the cloud, the 'deploy' step can become an integral part of the workflow to the point that it disappears completely. Tools like [Raftt](https://www.raftt.io/), [Telepresence](https://www.telepresence.io/), and [Mirrord](https://mirrord.dev/) aim at improving the development experience, including preview URLs.
 
 Likewise, serverless development, unless using something like [LocalStack](https://localstack.cloud/), often happens _in_ the cloud, making the availability of the work in progress ubiquitous.
 
@@ -130,11 +130,11 @@ CDNs typically accept TLS certificates from origins that match either the reques
 
 ### Helm unique release names
 
-By convention, our feature branches reference the Jira issue we are working on. So branches will be named something like `feature/JIRA-123_something_descriptive`. CI/CD will parse this issue from the branch name, and apply it to our Helm install in the following ways:
+By convention, our feature branches reference the Jira issue we are working on. So branches will be named something like `feature/JIRA-456_something_descriptive`. CI/CD will parse this issue from the branch name, and apply it to our Helm install in the following ways:
 
-* Helm release name. Prefixing the release name with the issue code ensures all Kubernetes object names are unique within the namespace. For example, a release name of `jira-1234-bff` would result in deployments named `jira-1234-bff-api` and `jira-1234-bff-redis`.
-* Ingress hostname: `jira-1234.bff.feature.mysite.com`
-* Application config, things like the redis service-name if redis is included in the feature deployment, Hostnames the application accepts, etc.
+* Helm release name. Prefixing the release name with the issue code ensures all Kubernetes object names are unique within the namespace. For example, a release name of `jira-456-bff` would result in deployments named `jira-456-bff-app` and `jira-456-bff-redis`.
+* Ingress hostname: `jira-456.bff.feature.mysite.com`
+* Application config, things like the redis service-name if redis is included in the feature deployment, hostnames the application accepts, etc.
 
 ### Uninstaller
 
@@ -185,7 +185,7 @@ A quick cost break-down:
 * Per feature deployment, assuming they would be active 24/7, the monthly cost per feature deployment would be **$10 / month**
 * A feature is not active for an entire month. A week would already be long. So, cost per feature deployment is **$2.50**.
 
-That's not 0, but it's not breaking the bank either. Now if we relate that to $100/hr cost of engineering (contractor)[^footnote_contractor_rate] you would break even at **saving 1.5 minutes of engineering time** per feature. Remembering the 'traffic jam' dynamics described in the introduction, that should be easy.
+That's not 0, but it's not breaking the bank either. Now if we relate that to $100/hr cost of engineering[^footnote_rate] you would break even at **saving 1.5 minutes of engineering time** per feature. Remembering the 'traffic jam' dynamics described in the introduction, that should be easy.
 
 This doesn't take into account the initial setup effort. On the other hand, these calculations also ignore that feature deployments don't need to run 24/7, and that a week per feature is a high estimate. So we can consider those to be in balance.
 
@@ -206,4 +206,5 @@ Pragmatism and a bit of lo-fi glue code can be all that is needed to get started
 Don't hesitate to reach out via [Twitter](https://twitter.com/TBeijen) or [Mastodon](https://hachyderm.io/@tbeijen) when having any feedback.
 
 [^footnote_self_servicability]: Do not underestimate the value of self-servicability
-[^footnote_contractor_rate]: Ballpark figure suitable for simple calculations
+[^footnote_rate]: Ballpark figure contractor rate in Netherlands, can obviously vary per country
+
