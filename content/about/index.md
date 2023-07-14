@@ -13,6 +13,12 @@ The way I (aspire to) work can best be described as 'agile architecting':
 
 > Look far. Look wide. Look deep. Review. Repeat.
 
+This should result in solutions that:
+
+* Fit well at day 0 (design)
+* Work well at day 1 (implementation)
+* Age well at day 2 (iterating)
+
 This field of work is constantly changing. So, while confident I've learned a lot over the years, I'm convinced there is a lot more that I still need to learn.
 
 ### The person
