@@ -12,7 +12,7 @@ tags:
   - Helm
   - CI/CD
 description: Deploying features before merging into main. Should you? And if so, how would you?
-thumbnail: ""
+thumbnail: /img/feature_deploys_header.jpg
 
 ---
 ## Introduction
