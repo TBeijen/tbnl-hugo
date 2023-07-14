@@ -1,8 +1,8 @@
 ---
 title: "Shifting left using feature deployments"
 author: Tibo Beijen
-date: 2023-07-13T08:00:00+01:00
-url: /2023/07/13/shifting-left-using-feature-deployments
+date: 2023-07-14T08:00:00+01:00
+url: /2023/07/14/shifting-left-using-feature-deployments
 categories:
   - articles
 tags:
