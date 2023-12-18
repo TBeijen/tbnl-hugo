@@ -34,19 +34,32 @@ Kubernetes is everywhere: It can facilitate a variety of workloads in a variety 
 
 -- Diagram
 
-As can be seen in the above diagram, one can run Kubernetes in environments ranging from Hyperscale clouds, small clouds, on-premise datacenters right up to edge computing.
+As can be seen in the above diagram, one can run Kubernetes in environments ranging from hyperscale clouds, small clouds, on-premise datacenters right up to edge computing.
 
-Focusing on the type of workloads, Kubernetes can do a lot. But there are types of workload Kubernetes might not be particular suited for. On the monolith side one could think of (legacy) mainframes. Or VM-based applications that are hard to containerise. 
+Focusing on the type of workloads, Kubernetes can do a lot. But there are types of workload Kubernetes might not be particular suited for. On the monolith side one could think of (legacy) mainframes. Or VM-based applications that are hard to containerize. 
 
 On the hyperscale clouds, there is a plethora of managed services, including databases, memory stores, messaging components and services focused on AI/ML and Big Data. For those you _can_ run cloud-native cloud-agnostic alternatives within Kubernetes. But it requires more up-front effort and the potential gain will differ per situation. 
 
-Then on the far end of micro, big clouds offer Function-as-a-Service, typically well-integrated with components like an API Gateway and building blocks for event-driven architectures. One could decide to run those in Kubernetes, for example using [Knative](https://knative.dev/). But it requires setting and supporting those components first, whereas cloud in that regard is easier to get into and usually offers scale-to-zero as a distinguishing feature.
+Then on the far end of micro, big clouds offer Function-as-a-Service, typically well-integrated with components like an API Gateway and building blocks for event-driven architectures. One could decide to run those in Kubernetes, for example, using [Knative](https://knative.dev/). But it requires setting and supporting those components first, whereas cloud in that regard is easier to get into and usually offers scale-to-zero as a distinguishing feature.
 
-Focusing on specific services offered by the big clouds, there are definitely services big clouds excel at. On the other hand, if putting in the effort, there is a lot Kubernetes _can_ do, while providing its users a standardised way-of-working (roughly: Put YAML in cluster), and platform teams a unified way to support engineering teams (roughly: Help come up with proper YAML and help put YAML in cluster). 
+Focusing on specific services offered by the big clouds, there are many services big clouds excel at: Easy to get into and little to no operational burden. On the other hand, if putting in the effort, there is a lot Kubernetes _can_ do, while providing its users a standardized way-of-working (roughly: Put YAML in cluster), and platform teams a unified way to support engineering teams (roughly: Help come up with proper YAML and help put YAML in cluster). 
 
-More on that standardisation later.
+More on that standardization later.
 
+## Why and how
 
+As an organization, it is important to have a good understanding of why a (technical) strategy is chosen and what the expectations are.
+
+As the title of this blog post suggests, it's good to have a clear answer to the question "Why are we using Kubernetes?". But perhaps even better would be if "Kubernetes" is the logical answer to various challenges faced by an organization. For example:
+
+* How can we effectively run numerous containerized workloads?
+* How can we allow a team of cloud specialists to empower many engineering teams by providing golden paths and guardrails?
+* How can we run applications at the edge, preferably in a way that aligns with the software delivery process we already have?
+* How can we allow engineering teams to deploy applications in our on-premise datacenter?
+* How can we standardize our way-of-working, while providing flexibility where it matters for us?
+* How can we ensure the know-how and tooling we invest in, are as widely applicable as possible?
+
+## Focus: Not everywhere at once
 
 
 
@@ -76,8 +89,8 @@ Scope
 Where to focus: Not everywhere at once
 
 - What can Kubernetes bring for your organisation?
-	- A platform to easily and frequently deploy containerised applications?
-	- Means of standardisation, allowing platform team to build and provide golden paths and guardrails for engineering teams?
+	- A platform to easily and frequently deploy containerized applications?
+	- Means of standardization, allowing platform team to build and provide golden paths and guardrails for engineering teams?
 	- The ability to run applications at the edge
     - The ability to hire a small team of cloud specialists to avoid needing a cloud specialist in every engineering team
 	- A way to run a multitude of workloads within on-premise datacenters?
@@ -151,7 +164,7 @@ Concluding
 	- Both can be used to build great things. 
 	- Of all the complexities Kubernetes can bring, servers don't need to be the biggest issue
 
-[^footnote_social_media_debate]: Debate on social media meaning: 90% shouting, 10% listening, and needing to seach for nuance while avoiding to get carried away.
+[^footnote_social_media_debate]: Debate on social media meaning: 90% shouting, 10% listening, and needing to search for the insights beyond the noise, while avoiding getting carried away.
 
 
 
