@@ -28,6 +28,10 @@ Discussing the value and cost of Kubernetes in my opinion is not merely about "s
 
 So, let's focus on where Kubernetes stands, its strong points and look into avoiding some of its complexities.
 
+In this article:
+
+{{< toc >}}
+
 ## Versatility
 
 Kubernetes is everywhere: It can facilitate a variety of workloads in a variety of environments:
@@ -66,7 +70,7 @@ As the title of this blog post suggests, it's good to have a clear answer to the
 @TODO: Here or at conclusion
 
 
-## Building it out
+## Building a skyscraper
 
 Embarking on the journey to adopt Kubernetes, there is a lot that needs to be set up before Kubernetes starts to deliver value. We are building a platform, so let's illustrate by a physical-world building analogy:
 
@@ -96,13 +100,21 @@ We need focus. If running in one of the big clouds, all the foundation component
 
 Similarly, at the basement level, one can spend a lot of time building an observability platform. But there are various SaaS solutions or solutions provided by the cloud provider. Likewise for security. If prefab components don't satisfy a requirement, carefully review those requirements. Are we sure the proposed simple solution is not 'good enough'?
 
-When running on edge, focusing on the operating system is essential: One needs the ability to safely update the remote device without breaking networking and locking one selves out. On the other hand, when running in the cloud, just pick the OS that is provided by the cloud vendor and be done with it.
+When running on edge, focusing on the operating system and networking is essential: One needs the ability to safely update the remote device without breaking networking and locking one self out. On the other hand, when running in the cloud, favor the solutions provided by the cloud vendor and leave it at that.
 
-When running on premise, one probably needs a performant storage solution and backup solution for stateful workloads. But when running the cloud, one does not _need_ to DIY databases in Kubernetes. Consider a managed database, providing all the point-in-time recovery you need. Use S3-compatible object storage for storing files. Use a SaaS for observability. Doing so allows storage requirements to be minimal, allowing things to stay simple.
+When running on premise, one probably needs a performant storage solution and backup solution for stateful workloads. But when running the cloud, one does not _need_ to DIY databases in Kubernetes. Consider a managed database, providing all the sizing options and point-in-time recovery you need. Use S3-compatible object storage for storing files. Use a SaaS for observability. Doing so allows storage requirements to be minimal, allowing things to stay simple.
+
+## Complexity budget
+
+Any customization or component added to a cluster adds complexity. It requires day 1 set up and day 2 maintenance and by that, it requires resources. This means there is a budget for the amount of complexity we can sustain.
+
+While boundaries of definitions might vary, depending on who you ask, we could consider every customization or additon to our platform [capital expenditure](https://en.wikipedia.org/wiki/Capital_expenditure): It's upfront expense we expect to get a return on investment (ROI) out of.
+
+As long as what we spend on CapEx results in reducing, or at worst, stabilizing our _overall_ [operating expense](https://en.wikipedia.org/wiki/Operating_expense), our operations are sustainable. If not, and OpEx gets the upper hand, we run into problems.
 
 ## API Flywheel effect
 
-When having dodged some of the complexity rabbit-holes beneath the service, the unified API and way-of-working Kubernetes provides can start to pay off. Let's illustrate:
+When having dodged some of the complexity rabbit-holes beneath the surface, the unified API and way-of-working Kubernetes provides can start to pay off. Let's illustrate:
 
 We have a Kubernetes set up. Teams are deploying applications. However we notice sometimes workloads are not resilient to rescheduling. Also, consistent tagging is a bit of a problem. We add a policy engine. This helps us enforce good practices.
 
@@ -118,18 +130,18 @@ _Improvement:_ Platform team notices that a lot of the changes that need to be d
 
 _New status, just like it was previously:_ Team puts YAML in git. GitOps puts YAML in cluster. Cluster machinery makes things happen.
 
-_Improvement:_ Platform team notices it takes increasing effort to keep track of component updates. After a POC they set up [Renovate](https://github.com/renovatebot/renovate). Now the platform team no longer has to check the release pages of each component that is running in the platform.
+_Improvement:_ Platform team notices it takes increasing effort to keep track of component updates. After a POC they set up [Renovate](https://github.com/renovatebot/renovate). Now, the platform team no longer has to check the release pages of each component that is running in the platform.
 
 _New status, very similar to previous:_ Renovate puts YAML in git. GitOps puts YAML in cluster. Cluster machinery makes things happen.
 
 ## API mindset
 
-When adopting Kubernetes, depending on organization, expierience and culture, there might be different perspectives:
+When adopting Kubernetes, depending on organization, experience and culture, there might be different perspectives:
 
 * Server-up: "We run servers, and we put Kubernetes on top of them"
-* API-down: "We run Kubernetes and we just happen to need servers for that"
+* API-down: "We run Kubernetes, and we just happen to need servers for that"
 
-The former tends to lean towards avoiding change and focus on uptime. The latter embraces controlled change as a means to keep fulfilling various requirements. It's a subtle difference but, as you might have guessed, the API-fown mindset is a better fit when using Kubernetes. Some examples:
+The former tends to lean towards avoiding change and focus on uptime. The latter embraces frequent controlled change as a means to keep fulfilling various requirements. It's a subtle difference but, as you might have guessed, the API-fown mindset is a better fit when using Kubernetes. It will result in a platform that is easier to maintain in the long run. Some examples:
 
 _Instead of:_ Set up shell access to servers for administrative purposes.
 
@@ -137,29 +149,38 @@ _Do:_ Focus on how to avoid ever needing to log in into (production) servers. Wh
 
 _Instead of:_ Investigate how to patch nodes in-place, with all the orchestration, checks and reboots that come with it.
 reproducible
-_Do:_ Consider immutable infrastructure. Simply replace nodes with patched ones. A process that is easily reproducable (testing) _and_ reversible.
+_Do:_ Consider immutable infrastructure. Simply replace nodes with patched ones frequently. A process that is easily reproducable (testing on non-prod) _and_ reversible. Bonus benefit: [Chaos engineering](https://en.wikipedia.org/wiki/Chaos_engineering).
 
 _Instead of:_ Using [Ansible](https://www.ansible.com/) to 'do things on servers'
 
-_Do:_ Focues on immutable infrastructure, and [cloud-init](https://cloud-init.io/) to perform the few installation steps that are absolutely necessary.
+_Do:_ Focus on immutable infrastructure, and [cloud-init](https://cloud-init.io/) to perform the few installation steps that are absolutely necessary.
 
 _Instead of:_ Extending VM images with observability agents, EDR agents and whatnot
 
-_Do:_ Favor deamonsets[^ami_bad_daemonset_good], having [security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) as needed, to run those processes. Remember the flywheel effect: We already have means to easily put workloads in clusters (GitOps) and all the observability in place to monitor the components. Also, Renovate will help us keeping the components updated.
-
-Ultimately, as shown in the city building diagram, we want to keep the foundation and basement as simple and hidden as we possibly can. Remember: The value is above the surface. If servers at the edge are needed, by all means focus on that until it 'just works'. 
-
-The take-away is to avoid having to manage servers _and_ a lot of moving parst on top, without using the capabilities of Kubernetes to make any of those parts easier.
+_Do:_ Favor deamonsets[^ami_bad_daemonset_good], having [security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) as needed, to run those processes. Remember the flywheel effect: We already have means to easily put workloads in clusters, and all the observability in place to monitor the components. Also, Renovate will help us to keep the components updated.
 
 ## Conclusion (aka TL;DR)
 
-All of the above illustrates the following:
+At a certain scale, and as the number of teams grows, organizations will face the following challenge:
 
-At a certain scale
+> How to provide guardrails without ending up with gates?
 
-> Build guardrails. Don't end up with gates. 
+Topics like compliance, security, cost-effectiveness, performance and disaster-recovery all need to be addressed. Delegating that to each individual team is not effective: For teams it's a distraction, and it requires having sufficient knowledge of those topics in each team. As a result, organizations need a way to consolidate this knowledge and apply it to all of the teams. This in a nutshell is why the buzzword 'DevOps' is now superseded by 'Platform engineering'.
+
+Kubernetes, also in 2024, is a suitable stack to build this platform engineering on top off. But the stakes are high: It requires upfront effort before it starts to give back. And that imposes a risk.
+
+Also: It's not for everyone. 
+Serverless
+Startup
+
 
 Complexity budget
+
+
+Ultimately, as shown in the city building diagram, we want to keep the foundation and basement as simple as possible. Remember: The value is above the surface. If servers and operating systems at the edge are needed, then of course focus on that until it 'just works'. 
+
+The take-away is to avoid having to manage servers _and_ a lot of moving parts on top, without using the capabilities of Kubernetes to make any of those parts easier.
+
 
 
 Wrapping it up:
