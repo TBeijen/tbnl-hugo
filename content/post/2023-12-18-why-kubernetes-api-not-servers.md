@@ -63,12 +63,7 @@ As the title of this blog post suggests, it's good to have a clear answer to the
 * How can we standardize our way-of-working, while providing flexibility where it matters for us?
 * How can we ensure the know-how and tooling we invest in, are as widely applicable as possible (e.g. not limited to a single cloud vendor)?
 
-@TODO: Clarify vendor lock-in
-
-## Organizational aspects
-
-@TODO: Here or at conclusion
-
+Yes, the last point has this 'multi-cloud' and 'vendor lock-in' ring to it. To be clear: Switching clouds because the compute is a bit cheaper elasewhere hardly ever pays off. Using the common denominator of multiple clouds hardly every pays off. Vendor lock-ins are everywhere, not just at the cloud selection. But, looking at the timespan of years, an organization might see an advantage in focusing on technology that is applicable across vendor boundaries.
 
 ## Building a skyscraper
 
@@ -108,7 +103,7 @@ When running on premise, one probably needs a performant storage solution and ba
 
 Any customization or component added to a cluster adds complexity. It requires day 1 set up and day 2 maintenance and by that, it requires resources. This means there is a budget for the amount of complexity we can sustain.
 
-While boundaries of definitions might vary, depending on who you ask, we could consider every customization or additon to our platform [capital expenditure](https://en.wikipedia.org/wiki/Capital_expenditure): It's upfront expense we expect to get a return on investment (ROI) out of.
+While boundaries of definitions might vary depending on who you ask, we could consider every customization or addition to our platform [capital expenditure](https://en.wikipedia.org/wiki/Capital_expenditure): It's an upfront expense we expect to get a return on investment (ROI) out of.
 
 As long as what we spend on CapEx results in reducing, or at worst, stabilizing our _overall_ [operating expense](https://en.wikipedia.org/wiki/Operating_expense), our operations are sustainable. If not, and OpEx gets the upper hand, we run into problems.
 
@@ -134,6 +129,8 @@ _Improvement:_ Platform team notices it takes increasing effort to keep track of
 
 _New status, very similar to previous:_ Renovate puts YAML in git. GitOps puts YAML in cluster. Cluster machinery makes things happen.
 
+The changes described above are not something implemented overnight. Furthermore they involve changing the way of working in an organization, which usually, compared to the technical part, is the hardest part. They _do_ show how carefully taking on additional complexity in one place, can reduce the overall effort within an organization.
+
 ## API mindset
 
 When adopting Kubernetes, depending on organization, experience and culture, there might be different perspectives:
@@ -141,15 +138,19 @@ When adopting Kubernetes, depending on organization, experience and culture, the
 * Server-up: "We run servers, and we put Kubernetes on top of them"
 * API-down: "We run Kubernetes, and we just happen to need servers for that"
 
-The former tends to lean towards avoiding change and focus on uptime. The latter embraces frequent controlled change as a means to keep fulfilling various requirements. It's a subtle difference but, as you might have guessed, the API-fown mindset is a better fit when using Kubernetes. It will result in a platform that is easier to maintain in the long run. Some examples:
+The former tends to lean towards avoiding change and focus on uptime. 
+
+The latter embraces frequent controlled change as a means to keep fulfilling various requirements. 
+
+It's a subtle difference but, as you might have guessed, the API-down mindset is a better fit when using Kubernetes. It will result in a platform that is easier to maintain in the long run. Some examples:
 
 _Instead of:_ Set up shell access to servers for administrative purposes.
 
-_Do:_ Focus on how to avoid ever needing to log in into (production) servers. What observability data do we need to ship? How can we reproduce error scenarios in a lab setup?
+_Do:_ Focus on how to avoid ever needing to log in into (production) servers. What observability data do we need to send out? How can we reproduce error scenarios in a lab setup?
 
 _Instead of:_ Investigate how to patch nodes in-place, with all the orchestration, checks and reboots that come with it.
-reproducible
-_Do:_ Consider immutable infrastructure. Simply replace nodes with patched ones frequently. A process that is easily reproducable (testing on non-prod) _and_ reversible. Bonus benefit: [Chaos engineering](https://en.wikipedia.org/wiki/Chaos_engineering).
+
+_Do:_ Consider immutable infrastructure. Simply replace nodes with patched ones frequently. A process that is easily reproducible (testing on non-prod) _and_ reversible. Bonus benefit: [Chaos engineering](https://en.wikipedia.org/wiki/Chaos_engineering).
 
 _Instead of:_ Using [Ansible](https://www.ansible.com/) to 'do things on servers'
 
@@ -159,6 +160,8 @@ _Instead of:_ Extending VM images with observability agents, EDR agents and what
 
 _Do:_ Favor deamonsets[^ami_bad_daemonset_good], having [security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) as needed, to run those processes. Remember the flywheel effect: We already have means to easily put workloads in clusters, and all the observability in place to monitor the components. Also, Renovate will help us to keep the components updated.
 
+The gist of the above is that we need to avoid ending up what we did a decade ago (managing a fleet of VMs), _plus_ managing a lot of Kubernetes moving parts. We need to leverage Kubernetes to make the VM managing part much easier, or disappear entirely. That will leave room to focus on the platform and developer experience.
+
 ## Conclusion (aka TL;DR)
 
 At a certain scale, and as the number of teams grows, organizations will face the following challenge:
@@ -167,135 +170,19 @@ At a certain scale, and as the number of teams grows, organizations will face th
 
 Topics like compliance, security, cost-effectiveness, performance and disaster-recovery all need to be addressed. Delegating that to each individual team is not effective: For teams it's a distraction, and it requires having sufficient knowledge of those topics in each team. As a result, organizations need a way to consolidate this knowledge and apply it to all of the teams. This in a nutshell is why the buzzword 'DevOps' is now superseded by 'Platform engineering'.
 
-Kubernetes, also in 2024, is a suitable stack to build this platform engineering on top off. But the stakes are high: It requires upfront effort before it starts to give back. And that imposes a risk.
+Running at scale, Kubernetes, also in 2024, is a suitable stack to build this platform engineering on top off. But the stakes are high: There can be great rewards, but it requires upfront effort before it starts to give back. And that imposes a risk.
 
-Also: It's not for everyone. 
-Serverless
-Startup
+Running at the edge, Kubernetes might turn out to be good choice that integrates naturally into the way you operate your centralised applications.
 
+But, Kubernetes might simply not fit your organization:
 
-Complexity budget
+* Startup needing to run 'some' applications in the cloud? Don't build Kubernetes first unless you have a clear goal for that.
+* Autonomous teams without centralised platform team? You need _something_ to avoid every team from re-inventing slightly different devops wheels. Could be Kubernetes.
+* Actually not running that many containers but using serverless? Fantastic, set up your organization to continuously improve _that_ stack. Don't consider Kubernetes because 'people are using Kubernetes'.
 
-
-Ultimately, as shown in the city building diagram, we want to keep the foundation and basement as simple as possible. Remember: The value is above the surface. If servers and operating systems at the edge are needed, then of course focus on that until it 'just works'. 
-
-The take-away is to avoid having to manage servers _and_ a lot of moving parts on top, without using the capabilities of Kubernetes to make any of those parts easier.
-
-
-
-Wrapping it up:
-* Is Kubernetes still great? Yes
-* Do you need to put in effort to make it great? Yes
-* Is Kubernetes the _only_ way to provide stream-aligned teams a platform? No, but it can help to scale a standardized way-of-work to many teams.
-* Do you need Kubernetes to run 'some containers'? No
-
-
+Spend your complexity budget wisely. When chosing Kubernetes, focus on the API and you might even forget about the servers. 
 
 Just avoid getting caught up below the surface while forgetting to enjoy the sunlight.
-
-
-## Outline
-
-Introduction
-- End of year, so: Reflection time
-	- Socials: Serverless server-full debates
-	- https://twitter.com/kelseyhightower/status/1671582240026025986?lang=en
-	- The Amazon Prime thing
-		- https://offbynone.io/issues/233/
-	- State of Kubernetes in production
-		- https://thenewstack.io/the-2023-state-of-kubernetes-in-production/
-	- Datadog outage related to Kubernetes
-		- https://newsletter.pragmaticengineer.com/i/121824122/what-really-caused-the-outage
-- Reflecting on one's life choices, what did we get into. 
-- Not about serverless vs Kubernetes. You can build awesome things using serverless.
-- Instead focus on the strong points of Kubernetes (the API) and how to avoid getting entangled in the complex parts (servers)
-
-Scope
-- Diagram
-	- Horizontal: From hypsercale cloud (AWS, Azure, etc.) to small cloud (Ditigital Ocean, OVH, etc.) to on-premise,  to edge
-	- Vertical: From  bottom monolithic to micro to functions to serverless
-- Kubernetes is (almost) everywhere
-- Strategic: Investing in Kubernetes eco-system covers a lot of ground. Downside: Exclude some vendor specifics, most notably serverless functions.
-
-Where to focus: Not everywhere at once
-
-- What can Kubernetes bring for your organisation?
-	- A platform to easily and frequently deploy containerized applications?
-	- Means of standardization, allowing platform team to build and provide golden paths and guardrails for engineering teams?
-	- The ability to run applications at the edge
-    - The ability to hire a small team of cloud specialists to avoid needing a cloud specialist in every engineering team
-	- A way to run a multitude of workloads within on-premise datacenters?
-	- Flexibility to adapt platform to changing needs, leveraging the many components that exist?
-	- A programmable platform, where the operator pattern can be used to manage databases or other complex stateful systems.
-	- A strategic choice to reduce cloud vendor lock-in.
-- Common
-	- First two: containerised applications, standardisation
-- Diagram
-	- Outside: K8S API, deployments, gitops, CRDs, Operators
-	- Basement: Observability, Security, Policy engine
-	- Under the hood APIs, CNI, CSI, CRI
-- City block analogy:
-    - Foundation: Might be fully provided by cloud vendor. Focus only on what really matters
-    - Basement: Does not need to be DIY. Many SaaS solutions exist
-	  - Lock-in. Prepare doing things right. Pick what can also be run open-source
-	  - Can help in identifying what org really needs
-    - Extending the API: Focus on what's important. Step by step.
-
-- Because you use Kubernetes, does not mean everything has to be inside kubernetes.
-
-But... servers
-
-- Means to an end
-- Just a building block
-- It depends: 
-	- Cloud: Consider it a disposable box. Just the thing that provides CPU, memory.
-	- Edge: Different focus. No unlimited hardware, edge storage. Update/patch cycle. Having hardware at the edge _is_ the goal.
-- Fix once,  automate, push complexity down. Result is providing the api.
-- Don't make it about servers, unless it's about servers (edge)
-
-Power of the API: Standardisation
-
-- The fly-wheel effect
-- Adding things
-	- We have: development flow using PRs
-	- We add: GitOps
-    - We now have: 
-	- We notice: Bad practices deployed (no PDB, no limits)
-	- We add: Policy engine
-	- We notice: Hard to find application owner (security/finops)
-	- We leverage: Policy engine to enforce tagging
-	- We notice we need: Smarter scaling
-	- We add: Keda
-	- We notice: Common cloud infra (DB, container registry, Redis)
-	- We add: CRDs, maybe Crossplane
-- All follow same pattern
-	- Platform team adds component (some effort)
-	- Results in new YAML that can be deployed to cluster (using all the existing processes)
-	- Things get done
-
-API-down mindset instead of server-up
-- Examples
-	- Instead of: Figure out how to easily patch nodes
-	- Rather do: Figure out how to easily replace nodes (resulting in robust setup, chaos engineering)
-	- Instead of: Considering ansible to configure nodes
-	- Rather do: Focus on cloud-init to have nodes self-bootstrap
-	- Instead of: Monitoring servers, optionally providing aggregate views (e.g. nagios)
-	- Rather do: Monitor golden signals, optionally drilling down into individual assets (e.g. via prometheus labels)
-	- Instead of: Provisioning access to nodes
-	- Rather do: Focus on what logging and monitoring node needs to send out, to avoid ever needing access to a node
-	- Instead of: Extending VM by baking custom image or install-at-boot
-	- Rather do: Use daemonsets wherever possible, leveraging any pod-observability one already has
-	- etc. etc.
-
-Concluding
-- More upfront investments, also high potential
-	- The upfront investment constitutes risk
-- Focus on what it means for your org
-- Use cloud provider and SaaS for the hard parts, Kubernetes itself as well as DBs and such
-- Choosing Kubernetes is not a serverless vs complex servers discussion
-	- More about using vendor opinionated ready-to-go solutions vs. Composing own platform tailored to ones needs
-	- Both can be used to build great things. 
-	- Of all the complexities Kubernetes can bring, servers don't need to be the biggest issue
 
 [^footnote_social_media_debate]: Debate on social media meaning: 90% shouting, 10% listening, and needing to search for the insights beyond the noise, while avoiding getting carried away.
 [^ami_bad_daemonset_good]: Guilty, been there. Extending AWS AMIs is totally cumbersome compared to managing a daemonset.
