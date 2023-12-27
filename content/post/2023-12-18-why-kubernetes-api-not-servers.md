@@ -19,7 +19,7 @@ thumbnail:
 As we are moving from 2023 to 2024, it is a good moment to reflect. Undoubtedly, one of the biggest topics of the past year was the rise of AI. Or the rise of the expectations of the promise of AI, so you will. But somewhat closer to my day-to-day job, there were some events that stood out:
 
 * The [Amazon Prime move from serverless microservices to 'monolith'](https://www.primevideotech.com/video-streaming/scaling-up-the-prime-video-audio-video-monitoring-service-and-reducing-costs-by-90) blogpost. Which was followed by a lot of clickbait lukewarm takes and "my tech stack is better than yours" type of discussions. Start at [this post by Jeremy Daly](https://offbynone.io/issues/233/) to pick some articles worth reading and avoiding about this topic.
-* Social media being social media: Debates[^footnote_social_media_debate] about pretty much every tech topic, including how "Kubernetes has single-handed set our industry back a decade", as [put in perspective](https://twitter.com/kelseyhightower/status/1671582240026025986?lang=en) by Kelsey Hightower. Or Basecamp's [move out of the cloud, dodging Kubernetes in the process](https://world.hey.com/dhh/we-have-left-the-cloud-251760fb).
+* Social media being social media: Debates[^footnote_social_media_debate] about pretty much every tech topic, including how "Kubernetes has single-handed set our industry back a decade", as [put in perspective](https://twitter.com/kelseyhightower/status/1671582240026025986?lang=en) by Kelsey Hightower. Or 37signals' [move out of the cloud, dodging Kubernetes in the process](https://world.hey.com/dhh/we-have-left-the-cloud-251760fb).
 * Datadog's outage. Caused by a variety of contributing factors that can be summarized by the keywords: Kubernetes, Cilium, eBPF, Systemd, OS updates. It's [all explained nicely](https://newsletter.pragmaticengineer.com/p/inside-the-datadog-outage) by Gergely Orosz (The Pragmatic Engineer).
 
 Working with, and liking Kubernetes, reading all of the above, it's tempting to reflect on the question "What did I get into?". Or in a broader sense: "What are we as an industry getting ourselves into?".
@@ -36,17 +36,17 @@ In this article:
 
 Kubernetes is everywhere: It can facilitate a variety of workloads in a variety of environments:
 
--- Diagram
+{{< figure src="/img/why_k8s.versatility.svg" title="Kubernetes is everywhere" >}}
 
-As can be seen in the above diagram, one can run Kubernetes in environments ranging from hyperscale clouds, small clouds, on-premise datacenters right up to edge computing.
+As can be seen in the above diagram, one can run Kubernetes in environments ranging from big clouds, small clouds, on-premise datacenters right up to edge computing.
 
 Focusing on the type of workloads, Kubernetes can do a lot. But there are types of workload Kubernetes might not be particularly suited for. On the monolith side one could think of (legacy) mainframes. Or VM-based applications that are hard to containerize. 
 
-On the hyperscale clouds, there is a plethora of managed services, including databases, memory stores, messaging components and services focused on AI/ML and Big Data. For those, you _can_ run cloud-native cloud-agnostic alternatives within Kubernetes. But it requires more up-front effort, and the potential gain will differ per situation. 
+The big cloud platforms offer a plethora of managed services, including databases, memory stores, messaging components and services focused on AI/ML and Big Data. For those, you _can_ run cloud-native cloud-agnostic alternatives within Kubernetes. But it requires more up-front effort, and the potential gain will differ per situation. 
 
-Then on the far end of micro, big clouds offer Function-as-a-Service, typically well-integrated with components like an API Gateway and building blocks for event-driven architectures. One could decide to run those in Kubernetes, for example, using [Knative](https://knative.dev/). But it requires setting and supporting those components first, whereas cloud in that regard is easier to get into and usually offers scale-to-zero as a distinguishing feature.
+Then on the far end of micro, big clouds offer 'serverless': Function-as-a-Service, typically well-integrated with components like an API Gateway and building blocks for event-driven architectures. One could decide to run those in Kubernetes, for example, using [Knative](https://knative.dev/). But it requires setting up and supporting those components first, whereas cloud in that regard is easier to get into. Additionally, serverless offers fast scaling and scale-to-zero as a distinguishing feature.
 
-Focusing on specific services offered by the big clouds, there are many services big clouds excel at: Easy to get into and little to no operational burden. On the other hand, if putting in the effort, there is a lot Kubernetes _can_ do, while providing its users a standardized way-of-working (roughly: Put YAML in cluster), and platform teams a unified way to support engineering teams (roughly: Help come up with proper YAML and help put YAML in cluster). 
+Big clouds offer many excellent services: Easy to get into and little to no operational burden. On the other hand, if putting in the effort, there is a lot Kubernetes _can_ do, while providing its users a standardized way-of-working (roughly: Put YAML in cluster), and platform teams a unified way to support engineering teams (roughly: Help come up with proper YAML and help put YAML in cluster). 
 
 More on that standardization later.
 
@@ -164,20 +164,20 @@ The gist of the above is that we need to avoid ending up what we did a decade ag
 
 ## Conclusion (aka TL;DR)
 
-At a certain scale, and as the number of teams grows, organizations will face the following challenge:
+At a certain scale, and as the number of teams increases, organizations will face the following challenge:
 
 > How to provide guardrails without ending up with gates?
 
-Topics like compliance, security, cost-effectiveness, performance and disaster-recovery all need to be addressed. Delegating that to each individual team is not effective: For teams it's a distraction, and it requires having sufficient knowledge of those topics in each team. As a result, organizations need a way to consolidate this knowledge and apply it to all of the teams. This in a nutshell is why the buzzword 'DevOps' is now superseded by 'Platform engineering'.
+Topics like compliance, security, cost-effectiveness, performance and disaster-recovery all need to be addressed. Delegating that to each individual team is not effective: For teams it's a distraction, and it requires having sufficient knowledge of those topics in each team. As a result, organizations need a way to consolidate this knowledge and apply it to all teams. This in a nutshell is why the buzzword 'DevOps' is nowadays superseded by 'Platform engineering'.
 
 Running at scale, Kubernetes, also in 2024, is a suitable stack to build this platform engineering on top off. But the stakes are high: There can be great rewards, but it requires upfront effort before it starts to give back. And that imposes a risk.
 
-Running at the edge, Kubernetes might turn out to be good choice that integrates naturally into the way you operate your centralised applications.
+Running at the edge, Kubernetes might turn out to be good choice that integrates naturally into the way you operate your centralized applications.
 
 But, Kubernetes might simply not fit your organization:
 
 * Startup needing to run 'some' applications in the cloud? Don't build Kubernetes first unless you have a clear goal for that.
-* Autonomous teams without centralised platform team? You need _something_ to avoid every team from re-inventing slightly different devops wheels. Could be Kubernetes.
+* Autonomous teams without centralized platform team? You need _something_ to avoid every team from re-inventing slightly different DevOps wheels. Could be Kubernetes.
 * Actually not running that many containers but using serverless? Fantastic, set up your organization to continuously improve _that_ stack. Don't consider Kubernetes because 'people are using Kubernetes'.
 
 Spend your complexity budget wisely. When chosing Kubernetes, focus on the API and you might even forget about the servers. 
