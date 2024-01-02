@@ -1,6 +1,8 @@
 /public/
 .vscode/
 *.code-workspace
+*.DS_Store
+*.drawio.bkp
 
 # image source files
 source/

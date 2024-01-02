@@ -14,9 +14,9 @@ thumbnail:
 
 ---
 
-## End of the year: Reflection time
+## A new year: Reflection time
 
-As we are moving from 2023 to 2024, it is a good moment to reflect. Undoubtedly, one of the biggest topics of the past year was the rise of AI. Or the rise of the expectations of the promise of AI, so you will. But somewhat closer to my day-to-day job, there were some events that stood out:
+As we have moved from 2023 to 2024, it is a good moment to reflect. Undoubtedly, one of the biggest topics of the past year was the rise of AI. But somewhat closer to my day-to-day job, there were some events that stood out:
 
 * The [Amazon Prime move from serverless microservices to 'monolith'](https://www.primevideotech.com/video-streaming/scaling-up-the-prime-video-audio-video-monitoring-service-and-reducing-costs-by-90) blogpost. Which was followed by a lot of clickbait lukewarm takes and "my tech stack is better than yours" type of discussions. Start at [this post by Jeremy Daly](https://offbynone.io/issues/233/) to pick some articles worth reading and avoiding about this topic.
 * Social media being social media: Debates[^footnote_social_media_debate] about pretty much every tech topic, including how "Kubernetes has single-handed set our industry back a decade", as [put in perspective](https://twitter.com/kelseyhightower/status/1671582240026025986?lang=en) by Kelsey Hightower. Or 37signals' [move out of the cloud, dodging Kubernetes in the process](https://world.hey.com/dhh/we-have-left-the-cloud-251760fb).
@@ -32,6 +32,8 @@ In this article:
 
 {{< toc >}}
 
+_Acknowledgement: Some vendor names or logos appear. I'm paid by none and none are to be interpreted as recommendations over similar solutions that might exist._
+
 ## Versatility
 
 Kubernetes is everywhere: It can facilitate a variety of workloads in a variety of environments:
@@ -40,7 +42,7 @@ Kubernetes is everywhere: It can facilitate a variety of workloads in a variety 
 
 As can be seen in the above diagram, one can run Kubernetes in environments ranging from big clouds, small clouds, on-premise datacenters right up to edge computing.
 
-Focusing on the type of workloads, Kubernetes can do a lot. But there are types of workload Kubernetes might not be particularly suited for. On the monolith side one could think of (legacy) mainframes. Or VM-based applications that are hard to containerize. 
+Focusing on the type of workloads, Kubernetes can do a lot. But there are types of workload Kubernetes might not be particularly suited for. On the monolith side, one could think of (legacy) mainframes. Or VM-based applications that are hard to containerize. 
 
 The big cloud platforms offer a plethora of managed services, including databases, memory stores, messaging components and services focused on AI/ML and Big Data. For those, you _can_ run cloud-native cloud-agnostic alternatives within Kubernetes. But it requires more up-front effort, and the potential gain will differ per situation. 
 
@@ -63,21 +65,21 @@ As the title of this blog post suggests, it's good to have a clear answer to the
 * How can we standardize our way-of-working, while providing flexibility where it matters for us?
 * How can we ensure the know-how and tooling we invest in, are as widely applicable as possible (e.g. not limited to a single cloud vendor)?
 
-Yes, the last point has this 'multi-cloud' and 'vendor lock-in' ring to it. To be clear: Switching clouds because the compute is a bit cheaper elasewhere hardly ever pays off. Using the common denominator of multiple clouds hardly every pays off. Vendor lock-ins are everywhere, not just at the cloud selection. But, looking at the timespan of years, an organization might see an advantage in focusing on technology that is applicable across vendor boundaries.
+Yes, the last point has this 'multi-cloud' and 'vendor lock-in' ring to it. To be clear: Switching clouds because compute is a bit cheaper elsewhere, hardly ever pays off. Using the common denominator of multiple clouds, just to be 'multi-cloud' hardly every pays off. Vendor lock-ins are everywhere, not just at the cloud selection. But, looking at the timespan of years, an organization might see an advantage in focusing on technology that is applicable across vendor boundaries.
 
 ## Building a skyscraper
 
-Embarking on the journey to adopt Kubernetes, there is a lot that needs to be set up before Kubernetes starts to deliver value. We are building a platform, so let's illustrate by a physical-world building analogy:
+Embarking on the journey to adopt Kubernetes, there is a lot that needs to be set up before Kubernetes starts to deliver value. We are building a platform. Let's illustrate by a physical-world building analogy:
 
--- Diagram
+{{< figure src="/img/why_k8s.building.svg" title="Building a platform" >}}
 
 At the bottom we find the foundation. It's there because it needs to be there, but nobody builds a foundation just to have a foundation. In Kubernetes terms, the foundation includes components like networking (CNI), storage (CSI), container runtime (CRI), virtual machines or bare metal servers and operating system.
 
-Next up is the basement. Similar to foundation, this is not the end-goal (unless you're building a parking garage). It houses things that need to be there that you typically take for granted. Equipment, maintenance rooms, piping and whatnot. In Kubernetes this would include observability and security tooling, certificate management, perhaps a policy engine.
+Next up is the basement. Similar to foundation, this is not the end-goal (unless you're building a parking garage). It houses things that need to be there that you typically take for granted. Equipment, maintenance rooms, piping and whatnot. In Kubernetes this translates to some basic requirements needed before going live: Observability and security. Certificate management. Perhaps a policy engine.
 
-Finally, we get above the surface. This is what we are building for: Buildings that have a purpose! In Kubernetes terms, these are obviously the applications that are deployed. But also components that enhance the ability of our platform. Examples include ArgoCD (efficient deployments using GitOps), Argo Workflows (Workflow engine), KEDA (smarter scaling) or databases.
+Finally, we get above the surface. This is what we are building for: Buildings that have a purpose! In Kubernetes terms, these are obviously the applications that are deployed. But also components that enhance the ability of our platform. Examples include ArgoCD/Flux (efficient deployments using GitOps), Argo Workflows (Workflow engine) and KEDA (smarter scaling).
 
-Now for each component one could argue if it's foundation, basement or building. Perhaps ArgoCD and KEDA are more basement than building. Maybe CSI is basement as well, instead of foundation, since you can somewhat easily add remove storage classes. 
+Now for each component one could argue if it's foundation, basement or building. Perhaps ArgoCD and KEDA are more basement than building. Maybe CSI is basement as well, instead of foundation, since you can somewhat easily add or remove storage classes. 
 
 What matters is that going from beneath to above the surface, we can observe that components:
 
@@ -93,11 +95,11 @@ At the same time, you can only build on a solid foundation. And the basement sho
 
 We need focus. If running in one of the big clouds, all the foundation components exist in a prefab way. Consider those first.
 
-Similarly, at the basement level, one can spend a lot of time building an observability platform. But there are various SaaS solutions or solutions provided by the cloud provider. Likewise for security. If prefab components don't satisfy a requirement, carefully review those requirements. Are we sure the proposed simple solution is not 'good enough'?
+Similarly, at the basement level, one can spend a lot of time building an observability platform. But there are various SaaS solutions or solutions provided by the cloud provider. Likewise for security. If prefab components don't satisfy a requirement, carefully review those requirements. Are we sure the proposed simpler solution is not 'good enough'? Can we settle with something simple now with the option to improve later?
 
 When running on edge, focusing on the operating system and networking is essential: One needs the ability to safely update the remote device without breaking networking and locking one self out. On the other hand, when running in the cloud, favor the solutions provided by the cloud vendor and leave it at that.
 
-When running on premise, one probably needs a performant storage solution and backup solution for stateful workloads. But when running the cloud, one does not _need_ to DIY databases in Kubernetes. Consider a managed database, providing all the sizing options and point-in-time recovery you need. Use S3-compatible object storage for storing files. Use a SaaS for observability. Doing so allows storage requirements to be minimal, allowing things to stay simple.
+When running on premise, one probably needs a performant storage solution and backup solution for stateful workloads. But when running in the cloud, one does not _need_ to DIY databases in Kubernetes. Consider a managed database, providing all the sizing options and point-in-time recovery you need. Use S3-compatible object storage for storing files. Use a SaaS for observability, avoiding the need to store all those logs, metrics and traces. Doing so allows storage requirements to be minimal, allowing our set-up to stay simple.
 
 ## Complexity budget
 
@@ -106,6 +108,12 @@ Any customization or component added to a cluster adds complexity. It requires d
 While boundaries of definitions might vary depending on who you ask, we could consider every customization or addition to our platform [capital expenditure](https://en.wikipedia.org/wiki/Capital_expenditure): It's an upfront expense we expect to get a return on investment (ROI) out of.
 
 As long as what we spend on CapEx results in reducing, or at worst, stabilizing our _overall_ [operating expense](https://en.wikipedia.org/wiki/Operating_expense), our operations are sustainable. If not, and OpEx gets the upper hand, we run into problems.
+
+{{< figure src="/img/why_k8s.capacity.svg" title="Capacity" >}}
+
+This does not mean that we should never add any component to our platform. When the scope of our operations increases, complexity increases as well. We need ways to deal with that. This is not unique to Kubernetes by the way. 
+
+It _does_ mean that we should consider when is the right time to add components and what their effect on the overall effort will be, going forward.
 
 ## API Flywheel effect
 
@@ -129,7 +137,7 @@ _Improvement:_ Platform team notices it takes increasing effort to keep track of
 
 _New status, very similar to previous:_ Renovate puts YAML in git. GitOps puts YAML in cluster. Cluster machinery makes things happen.
 
-The changes described above are not something implemented overnight. Furthermore they involve changing the way of working in an organization, which usually, compared to the technical part, is the hardest part. They _do_ show how carefully taking on additional complexity in one place, can reduce the overall effort within an organization.
+The changes described above are not something implemented overnight. Furthermore, they involve changing the way of working in an organization, which usually, compared to the technical part, is the hardest part. They _do_ show how carefully taking on additional complexity in one place, can reduce the overall effort within an organization.
 
 ## API mindset
 
@@ -160,7 +168,7 @@ _Instead of:_ Extending VM images with observability agents, EDR agents and what
 
 _Do:_ Favor deamonsets[^ami_bad_daemonset_good], having [security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) as needed, to run those processes. Remember the flywheel effect: We already have means to easily put workloads in clusters, and all the observability in place to monitor the components. Also, Renovate will help us to keep the components updated.
 
-The gist of the above is that we need to avoid ending up what we did a decade ago (managing a fleet of VMs), _plus_ managing a lot of Kubernetes moving parts. We need to leverage Kubernetes to make the VM managing part much easier, or disappear entirely. That will leave room to focus on the platform and developer experience.
+The take-away of the above is that we need to avoid ending up what we did a decade ago (managing a fleet of VMs), _plus_ managing a lot of Kubernetes moving parts. We need to leverage Kubernetes to make the VM managing part much easier, or disappear entirely. That will leave room to focus on the platform and developer experience.
 
 ## Conclusion (aka TL;DR)
 
@@ -168,23 +176,27 @@ At a certain scale, and as the number of teams increases, organizations will fac
 
 > How to provide guardrails without ending up with gates?
 
-Topics like compliance, security, cost-effectiveness, performance and disaster-recovery all need to be addressed. Delegating that to each individual team is not effective: For teams it's a distraction, and it requires having sufficient knowledge of those topics in each team. As a result, organizations need a way to consolidate this knowledge and apply it to all teams. This in a nutshell is why the buzzword 'DevOps' is nowadays superseded by 'Platform engineering'.
+Topics like compliance, security, cost-effectiveness, performance and disaster-recovery all need to be addressed. Delegating that to each individual team is not efficient: For teams it's a distraction, and it requires having sufficient knowledge of those topics in each team. As a result, organizations need a way to consolidate this knowledge and apply it to all teams. This in a nutshell is why the buzzword 'DevOps' is nowadays superseded by 'Platform engineering'.
 
-Running at scale, Kubernetes, also in 2024, is a suitable stack to build this platform engineering on top off. But the stakes are high: There can be great rewards, but it requires upfront effort before it starts to give back. And that imposes a risk.
+Running at scale, Kubernetes, also in 2024, can be a suitable stack to build this platform engineering on top off. But the stakes are high: There can be great rewards, but it requires upfront effort before it starts to give back. And that imposes a risk.
 
-Running at the edge, Kubernetes might turn out to be good choice that integrates naturally into the way you operate your centralized applications.
+{{< figure src="/img/why_k8s.tech_stacks.svg" title="Comparing tech stacks" >}}
 
-But, Kubernetes might simply not fit your organization:
+As the above diagram shows, between technology stacks a break-even point exists. Note however that this is a generalization: If and where that break even point exists, depends on if an organization succeeds in tacking the challenges to keep the overall effort within limits. The take-away is that Kubernetes, by its nature, is well-suited to scale out the initial effort to a large number of teams.
+
+Not focusing primarily at scale: Running at the edge, Kubernetes might turn out to be an interesting choice that integrates naturally into the way you operate your centralized applications.
+
+However, Kubernetes might simply not fit your organization:
 
 * Startup needing to run 'some' applications in the cloud? Don't build Kubernetes first unless you have a clear goal for that.
 * Autonomous teams without centralized platform team? You need _something_ to avoid every team from re-inventing slightly different DevOps wheels. Could be Kubernetes.
 * Actually not running that many containers but using serverless? Fantastic, set up your organization to continuously improve _that_ stack. Don't consider Kubernetes because 'people are using Kubernetes'.
 
-Spend your complexity budget wisely. When chosing Kubernetes, focus on the API and you might even forget about the servers. 
+Spend your complexity budget wisely. When choosing Kubernetes, focus on the API and you might even forget about the servers. 
 
 Just avoid getting caught up below the surface while forgetting to enjoy the sunlight.
 
-[^footnote_social_media_debate]: Debate on social media meaning: 90% shouting, 10% listening, and needing to search for the insights beyond the noise, while avoiding getting carried away.
+[^footnote_social_media_debate]: Avoiding bubbles, and filtering out noise and engagement-farming lists of random things, there is still a lot of insights and perspectives to get from social media.
 [^ami_bad_daemonset_good]: Guilty, been there. Extending AWS AMIs is totally cumbersome compared to managing a daemonset.
 
 
