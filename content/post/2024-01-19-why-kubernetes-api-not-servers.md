@@ -18,6 +18,8 @@ thumbnail: img/why_k8s-header.versatility.png
 
 ## A new year: Reflection time
 
+_This article originally appeared on the [Fullstaq blog](https://www.fullstaq.com/knowledge-hub/blogs/why-kubernetes)_
+
 As we have moved from 2023 to 2024, it is a good moment to reflect. Undoubtedly, one of the biggest topics of the past year was the rise of AI. But somewhat closer to my day-to-day job, there were some events that stood out:
 
 * The [Amazon Prime move from serverless microservices to 'monolith'](https://www.primevideotech.com/video-streaming/scaling-up-the-prime-video-audio-video-monitoring-service-and-reducing-costs-by-90) blogpost. Which was followed by a lot of clickbait lukewarm takes and "my tech stack is better than yours" type of discussions. Start at [this post by Jeremy Daly](https://offbynone.io/issues/233/) to pick some articles worth reading and avoiding about this topic.
