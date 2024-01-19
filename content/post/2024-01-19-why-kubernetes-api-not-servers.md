@@ -1,16 +1,18 @@
 ---
 title: "Why Kubernetes? Focus on the API, not the servers"
 author: Tibo Beijen
-date: 2023-12-18T08:00:00+01:00
-url: /2023/12/18/why-kubernetes-api-not-servers
+date: 2024-01-19T08:00:00+01:00
+url: /2024/01/19/why-kubernetes-api-not-servers
 categories:
   - articles
 tags:
   - Kubernetes
   - Serverless
   - GitOps
+  - BusinessValue
 description: Discussing the value and cost of Kubernetes in the light of various tech topics of 2023
-thumbnail: 
+canonicalUrl: https://www.fullstaq.com/knowledge-hub/blogs/why-kubernetes
+thumbnail: img/why_k8s-header.versatility.png
 
 ---
 
