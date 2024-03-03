@@ -22,6 +22,6 @@ COPY . ./source
 RUN hugo -e generic --source=${PWD}/source --destination=${PWD}/build/generic
 
 # Final image
-FROM --platform=${TARGETPLATFORM:-linux/amd64} nginx:stable-alpine3.17
+FROM --platform=${TARGETPLATFORM:-linux/amd64} nginx:1.25.4-alpine
 
 COPY --from=build /opt/tbnl/build/generic /usr/share/nginx/html
