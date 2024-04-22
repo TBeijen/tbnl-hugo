@@ -28,13 +28,15 @@ deployment
 
 After the talk, a colleague of way back, came to me and said: "You were way too mild in _suggesting_ it. It's mandatory, people _should_ follow those practices."[^footnote_xs4all_stint]
 
-And yes, he's right. In the past, I have onboarded quite a number of applications into Kubernetes, that we had already built with 12 factor in mind. That process usually was fairly smooth, so you start to take things for granted. Until you bump into applications that are tough to operate, that is.
+And yes, he's right. There is a lot of good practices to get from the 12 factor methodology. But do _all_ parts still hold up? Or might following it to the letter be actually counter-productive in some cases?
+
+In the past, I have onboarded quite a number of applications into Kubernetes, that were already built with 12 factor in mind. That process usually was fairly smooth, so you start to take things for granted. Until you bump into applications that are tough to operate, that is.
 
 Upon closer inspection, such applications are usually found to violate some of the 12 factor principles.
 
 The 12 factor methodology has been [initiated almost 14 years ago](https://github.com/heroku/12factor/commit/2b06e7deabb64bb759f9fc6f4d9b6fcc546921bb) at Heroku, a company that was 'cloud native', focused on developer experience and ease of operation. So, it's no surprise it still _is_ relevant.
 
-So, let's glance over the 12 factors, and put them in the context of cloud native applications.
+So, let's glance over the 12 factors, and put them in the context of modern cloud native applications.
 
 ## The 12 factors
 
@@ -57,9 +59,11 @@ It's worth noting that, depending on the local development setup, some form of l
 
 > Explicitly declare and isolate [dependencies](https://12factor.net/dependencies)
 
-This is something that has become more natural in containerized applications. One part of the description is a bit dated though: "Twelve-factor apps also do not rely on the implicit existence of any system tools. Examples include shelling out to ImageMagick or curl."
+This is something that has become more natural in containerized applications. 
 
-In containerized applications the boundary is the container, and its contents are well-defined. So an application shelling out to `curl` is not a problem, since `curl` now comes with the artifact, instead of it being assumed to exist.
+One part of the description is a bit dated though: "Twelve-factor apps also do not rely on the implicit existence of any system tools. Examples include shelling out to ImageMagick or curl."
+
+In containerized applications the boundary _is_ the container, and its contents are well-defined. So an application shelling out to `curl` is not a problem, since `curl` now comes with the artifact, instead of it being assumed to exist.
 
 ### 3. Config
 
@@ -82,7 +86,7 @@ However, depending on security requirements, there might be considerations to us
 
 > Treat [backing services](https://12factor.net/backing-services) as attached resources
 
-This has become common practice. In Kubernetes it's usually easy to configure either a local single-pod (non-prod) redis or postgres, or a remote cloud-managed variant like RDS or Elasticache.
+This has become common practice. In Kubernetes it's usually easy to configure either a local single-pod (non-prod) Redis or Postgres, or a remote cloud-managed variant like RDS or Elasticache.
 
 There can be reasons to use local filesystem or memory, for example performance, or simplicity. This is fine, as long as the data is completely ephemeral and the implementation doesn't negatively affect any of the other 11 factors.
 
@@ -112,6 +116,20 @@ Some take-aways:
 * One container, one process, one service.
 * No sticky-sessions. Store sessions externally, e.g. in redis. See also factor 4.
 * Simplify the process by considering [init containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) or [Helm chart hooks](https://helm.sh/docs/topics/charts_hooks/).
+
+Somewhat overlapping with factor 4, this factor implies using external services where possible. For example: Use external Redis instead of embedded Infinispan.
+
+### 7. Port binding
+
+> [Export services](https://12factor.net/port-binding) via port binding
+
+This holds up for TCP-based applications. But it is no longer applicable for event-driven systems such as AWS Lambda or WASM on Kubeternetes using [SpinKube](https://www.spinkube.dev/).
+
+### 8. Concurrency
+
+> [Scale out](https://12factor.net/concurrency) via the process model
+
+
 
 ## Conclusion
 
