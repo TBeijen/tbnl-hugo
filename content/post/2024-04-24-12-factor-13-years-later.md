@@ -1,8 +1,8 @@
 ---
-title: "12 Factor: More than 12 years later"
+title: "12 Factor: 13 years later"
 author: Tibo Beijen
-date: 2024-04-22T08:00:00+01:00
-url: /2024/04/22/12-factor-more-than-12-years-later
+date: 2024-04-24T06:00:00+01:00
+url: /2024/04/24/12-factor-13-years-later
 categories:
   - articles
 tags:
@@ -10,8 +10,8 @@ tags:
   - Kubernetes
   - Operations
   - Development
-description: The 12 factor methodology is more than 12 years old. How did it age in the cloud-native era?
-thumbnail: img/foobar.png
+description: The 12 factor methodology is about 13 years old. How did it age in the cloud-native era? Do we need a 13th factor?
+thumbnail: img/12factor_13years_header.jpg
 
 ---
 
@@ -28,15 +28,17 @@ deployment
 
 After the talk, a colleague of way back, came to me and said: "You were way too mild in _suggesting_ it. It's mandatory, people _should_ follow those practices."[^footnote_xs4all_stint]
 
-And yes, he's right. There is a lot of good practices to get from the 12 factor methodology. But do _all_ parts still hold up? Or might following it to the letter be actually counter-productive in some cases?
+And yes, he was right. There are a lot of good practices to get from the 12 factor methodology. But do _all_ parts still hold up? Or might following it to the letter be actually counter-productive in some cases?
 
 In the past, I have onboarded quite a number of applications into Kubernetes, that were already built with 12 factor in mind. That process usually was fairly smooth, so you start to take things for granted. Until you bump into applications that are tough to operate, that is.
 
 Upon closer inspection, such applications are usually found to violate some of the 12 factor principles.
 
-The 12 factor methodology has been [initiated almost 14 years ago](https://github.com/heroku/12factor/commit/2b06e7deabb64bb759f9fc6f4d9b6fcc546921bb) at Heroku, a company that was 'cloud native', focused on developer experience and ease of operation. So, it's no surprise it still _is_ relevant.
+The 12 factor methodology has been [initiated almost 13 years ago](https://github.com/heroku/12factor/commit/2b06e7deabb64bb759f9fc6f4d9b6fcc546921bb) at Heroku, a company that was 'cloud native', focused on developer experience and ease of operation. So, it's no surprise it still _is_ relevant.
 
 So, let's glance over the 12 factors, and put them in the context of modern cloud native applications.
+
+{{< figure src="/img/12factor_13years_header.jpg" title="12 Factor. Still leading the way in the cloud-native era?" >}}
 
 ## The 12 factors
 
@@ -69,7 +71,7 @@ In containerized applications the boundary _is_ the container, and its contents 
 
 > Store [config](https://12factor.net/config) in the environment
 
-This point is perhaps overly specific on the exact solution. The main take-aways are:
+This point is perhaps overly specific on the exact solution. The main takeaways are:
 
 * Configuration not in application code
 * Artifact + configuration = deployment
@@ -86,9 +88,9 @@ However, depending on security requirements, there might be considerations to us
 
 > Treat [backing services](https://12factor.net/backing-services) as attached resources
 
-This has become common practice. In Kubernetes it's usually easy to configure either a local single-pod (non-prod) Redis or Postgres, or a remote cloud-managed variant like RDS or Elasticache.
+This has become common practice. In Kubernetes, it's usually easy to configure either a local single-pod (non-prod) Redis or Postgres, or a remote cloud-managed variant like RDS or Elasticache.
 
-There can be reasons to use local filesystem or memory, for example performance, or simplicity. This is fine, as long as the data is completely ephemeral and the implementation doesn't negatively affect any of the other 11 factors.
+There can be reasons to use local file system or memory, for example performance, or simplicity. This is fine, as long as the data is completely ephemeral, and the implementation doesn't negatively affect any of the other factors.
 
 ### 5. Build, release, run
 
@@ -111,10 +113,10 @@ In the full text, there is a line that better summarizes the point:
 
 > Twelve-factor processes are stateless and share-nothing
 
-Some take-aways:
+Some takeaways:
 
 * One container, one process, one service.
-* No sticky-sessions. Store sessions externally, e.g. in redis. See also factor 4.
+* No sticky-sessions. Store sessions externally, e.g. in Redis. See also factor 4.
 * Simplify the process by considering [init containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) or [Helm chart hooks](https://helm.sh/docs/topics/charts_hooks/). See also factor 12.
 
 Somewhat overlapping with factor 4, this factor implies using external services where possible. For example: Use external Redis instead of embedded Infinispan.
@@ -123,7 +125,7 @@ Somewhat overlapping with factor 4, this factor implies using external services 
 
 > [Export services](https://12factor.net/port-binding) via port binding
 
-This holds up for TCP-based applications. But it is no longer applicable for event-driven systems such as AWS Lambda or WASM on Kubeternetes using [SpinKube](https://www.spinkube.dev/).
+This holds up for TCP-based applications. But it is no longer applicable for event-driven systems such as AWS Lambda or WASM on Kubernetes using [SpinKube](https://www.spinkube.dev/).
 
 ### 8. Concurrency
 
@@ -139,7 +141,7 @@ Furthermore, the application should leave process management to the operating sy
 
 In a way this can be seen as complementing the previous factor: Just as it should be easy to horizontally scale out, it should be easy to remove or replace processes.
 
-Specific to Kubernetes this boils down to:
+Specific to Kubernetes, this boils down to:
 
 * Obey [termination signals](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination). The application should gracefully shut down. Either handle the `SIGTERM` signal in the application, or setup a [PreStop](https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks
 ) hook ([more info](https://cloud.google.com/blog/products/containers-kubernetes/kubernetes-best-practices-terminating-with-grace)).
@@ -163,7 +165,7 @@ Don't store logs in files. Don't 'ship' logs in the application.
 
 The operating system or orchestrator should capture the output stream and route it to the logging storage of choice.
 
-Where the 12 factor methodology shows its age a bit is that there is no mention of metrics and traces, together with logs often refered to as "the three pillars of observability".
+Where the 12 factor methodology shows its age a bit is that there is no mention of metrics and traces, together with logs, often referred to as "the three pillars of observability".
 
 Extrapolating the approach to logging, consider systems that 'wrap' an application instead of requiring a detailed implementation. [OpenTelemetry zero-code instrumentation](https://opentelemetry.io/docs/concepts/instrumentation/zero-code/) could be a good starting point. APM agents of observability SaaS platforms such as New Relic or Datadog can be applied similarly.
 
@@ -175,7 +177,7 @@ This fragment in the full description might summarize it better: "Admin code sho
 
 This is about tasks like changing database schema, or uploading asset bundles to a centralized storage location. 
 
-Keywords here, having the goal to rule out any synchronization issues:
+Keywords here, having the goal to rule out any synchronization issues, are:
 
 * Identical environment
 * Same codebase
@@ -190,14 +192,14 @@ Some recommendations have become more or less common practice over the years. So
 
 There is a point not addressed in the 12 factor methodology that in my experience has always made an application easier to operate: Backward and forward compatibility.
 
-These days we expect applications to be frequent and without any downtime. That implies either rolling updates or blue/green deployments. Even blue/green deployments, in large distributed platforms, are hardly ever truly atomic. And deployment patterns like canary deployments, imply being able to roll back.
+These days we expect application deployments to be frequent and without any downtime. That implies either rolling updates or blue/green deployments. Even blue/green deployments, in large distributed platforms, are hardly ever truly atomic. And deployment patterns like canary deployments, imply being able to roll back.
 
 So, getting this right opens up the path the frequent no-hassle deploys.
 
 This is about databases, cached data and API contracts. We need to consider:
 
 * How does our application handle data while version `N` and `N+1` are running simultaneously?
-* What happens if we need to roll-back from `N+1` to `N`?
+* What happens if we need to roll back from `N+1` to `N`?
 
 Some pointers:
 
@@ -205,6 +207,8 @@ Some pointers:
 * First add a field to an API or event schema, only then update consumers to actually expect the new field.
 
 What will happen with data in the transition period. Store in old _and_ new format? Do we need to store version information with the data and support multiple versions?
+
+This can be complicated for applications provided for others to operate, unlike applications operated by the developing team itself, and released via CI/CD. External users often don't follow all minor releases, making it more likely to not have backward compatibility.
 
 ## Conclusion
 
