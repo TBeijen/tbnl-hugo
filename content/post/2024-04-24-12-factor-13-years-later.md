@@ -52,7 +52,7 @@ Looking at the image, these days we would add artifact between codebase and depl
 code         -> artifact       -> deploy
 - versioned     - container       - prod
                 - zip             - staging
-                - bundle          - local
+                                  - local
 ```
 
 It's worth noting that for local development, depending on the setup, some form of live-reload usually comes in place of creating an actual artifact.
@@ -67,6 +67,8 @@ One part of the description is a bit dated though: "Twelve-factor apps also do n
 
 In containerized applications the boundary _is_ the container, and its contents are well-defined. So an application shelling out to `curl` is not a problem, since `curl` now comes with the artifact, instead of it being assumed to exist.
 
+Similarly, in serverless setups like AWS Lambda, the execution environment is so well-defined that any dependency it provides, can be safely used.
+
 ### 3. Config
 
 > Store [config](https://12factor.net/config) in the environment
@@ -80,7 +82,7 @@ Confusingly, and especially with the rise of GitOps, the configuration _is_ in a
 
 As long as the above concept is followed, using environment variables or config files, is mostly an implementation detail.
 
-However, depending on security requirements, there might be considerations to use files instead of environment variables, optionally combined with envelope encryption. On this topic I can recommend:
+Using Kubernetes, depending on security requirements, there might be considerations to use files instead of environment variables, optionally combined with envelope encryption. On this topic I can recommend:
 
 * KubeCon EU 2023: [A Confidential Story of Well-Kept Secrets - Lukonde Mwila, AWS](https://kccnceu2023.sched.com/event/1HyVr/a-confidential-story-of-well-kept-secrets-lukonde-mwila-aws) [(video)](https://youtu.be/-I1JjJxy-rU?t=302).
 
@@ -177,12 +179,12 @@ This fragment in the full description might summarize it better: "Admin code sho
 
 This is about tasks like changing database schema, or uploading asset bundles to a centralized storage location. 
 
-Keywords here, having the goal to rule out any synchronization issues, are:
+The goal is to rule out any synchronization issues. Keywords are:
 
 * Identical environment
 * Same codebase
 
-## Recapping the 12 factors
+## Summarizing the 12 factors
 
 As long as we try to grasp the idea behind the factors instead of following every detail, I would say most of the factors hold up quite well.
 
@@ -194,7 +196,7 @@ There is a point not addressed in the 12 factor methodology that in my experienc
 
 These days we expect application deployments to be frequent and without any downtime. That implies either rolling updates or blue/green deployments. Even blue/green deployments, in large distributed platforms, are hardly ever truly atomic. And deployment patterns like canary deployments, imply being able to roll back.
 
-So, getting this right opens up the path the frequent no-hassle deploys.
+So, getting this right opens up the path the frequent friction-less deploys.
 
 This is about databases, cached data and API contracts. We need to consider:
 
@@ -205,6 +207,7 @@ Some pointers:
 
 * When changing the database schema, first _add_ columns. Only remove the columns in a subsequent release once the data has been migrated.
 * First add a field to an API or event schema, only then update consumers to actually expect the new field.
+* Consider compatibility of cached objects. Prefixing cache-keys with something unique to the application version can help here.
 
 What will happen with data in the transition period. Store in old _and_ new format? Do we need to store version information with the data and support multiple versions?
 
