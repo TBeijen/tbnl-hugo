@@ -65,7 +65,7 @@ This is something that has become more natural in containerized applications.
 
 One part of the description is a bit dated though: "Twelve-factor apps also do not rely on the implicit existence of any system tools. Examples include shelling out to ImageMagick or curl."
 
-In containerized applications the boundary _is_ the container, and its contents are well-defined. So an application shelling out to `curl` is not a problem, since `curl` now comes with the artifact, instead of it being assumed to exist.
+In containerized applications, the boundary _is_ the container, and its contents are well-defined. So an application shelling out to `curl` is not a problem, since `curl` now comes with the artifact, instead of it being assumed to exist.
 
 Similarly, in serverless setups like AWS Lambda, the execution environment is so well-defined that any dependency it provides, can be safely used.
 
@@ -82,7 +82,7 @@ Confusingly, and especially with the rise of GitOps, the configuration _is_ in a
 
 As long as the above concept is followed, using environment variables or config files, is mostly an implementation detail.
 
-Using Kubernetes, depending on security requirements, there might be considerations to use files instead of environment variables, optionally combined with envelope encryption. On this topic I can recommend:
+Using Kubernetes, depending on security requirements, there might be considerations to use files instead of environment variables, optionally combined with envelope encryption. On this topic, I can recommend:
 
 * KubeCon EU 2023: [A Confidential Story of Well-Kept Secrets - Lukonde Mwila, AWS](https://kccnceu2023.sched.com/event/1HyVr/a-confidential-story-of-well-kept-secrets-lukonde-mwila-aws) [(video)](https://youtu.be/-I1JjJxy-rU?t=302).
 
@@ -209,7 +209,7 @@ Some pointers:
 * First add a field to an API or event schema, only then update consumers to actually expect the new field.
 * Consider compatibility of cached objects. Prefixing cache-keys with something unique to the application version can help here.
 
-What will happen with data in the transition period. Store in old _and_ new format? Do we need to store version information with the data and support multiple versions?
+What will happen with data in the transition period? Store the data in old _and_ new format? Do we need to store version information with the data and support multiple versions?
 
 This can be complicated for applications provided for others to operate, unlike applications operated by the developing team itself, and released via CI/CD. External users often don't follow all minor releases, making it more likely to not have backward compatibility.
 
