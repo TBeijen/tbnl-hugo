@@ -41,7 +41,7 @@ From an architectural point of view, (micro-)services were the norm. Services in
 
 Product teams were autonomous and would use said services to do a lot of heavy lifiting. Looking back, I would say there was a keen understanding of what services were needed to propel the organization forward: The amount of re-invented square wheels was fairly limited.
 
-This culture of providing services was present in the DevOps way of working as well. All application were hosted on virtual machines in datacenters. The 'systems' team provided tools like [Puppet](https://www.puppet.com/), [Foreman](https://theforeman.org/) and [CheckMK](https://checkmk.com/). Product teams were in control of configuring their infrastructure, using puppet modules provided by the systems team. A model of 'You Build It, You Run It', backed by the systems team.
+This culture of providing services was present in the DevOps way of working as well. All application were hosted on virtual machines in datacenters. The 'systems' team provided tools like [Webistrano](https://github.com/peritor/webistrano/wiki), [Puppet](https://www.puppet.com/), [Foreman](https://theforeman.org/) and [CheckMK](https://checkmk.com/). Product teams were in control of configuring their infrastructure, using puppet modules provided by the systems team. A model of 'You Build It, You Run It', backed by the systems team.
 
 In 2016, the current datacenter contracts were about to end, so the organization would either have to renew, or move to other infrastructure. For that reason, a 'big IT solutions provider', let's call them SalesCorp, had been working on a new private cloud for quite some time. In that same period, some proof of concepts were done using AWS. Also, tools like Terraform and Ansible had been explored. Ultimately, SalesCorp did not deliver to expectations and timeframe, and the plug was pulled.
 
@@ -109,6 +109,10 @@ terrible apply news/nunl/test <plan-ID>
 # Result: CLI streaming output showing apply being executed
 ```
 
+Output of `terrible plan` would look like this[^footnote-terrible-plan-indeed]:
+
+{{< figure src="/img/terrible-plan.gif" title="Terrible plan output" >}}
+
 For a number of common server components, Ansible modules were created, for example Nginx, Python, Uwsgi and Varnish. Also, a 'common' module was provided, ensuring the systems team would be able to access servers, and CheckMK was installed.
 
 The resulting configuration was more or less identical to the configuration previously set up by puppet, so the rehosting in general was a smooth process. A Direct Connect link existed between the AWS VPC and datacenter, so we could easily move applications one at a time.
@@ -117,7 +121,51 @@ Worth mentioning is that, although the Ansible modules were initially set up by 
 
 ## Terrible 2
 
+The simplicity of Terrible 1 facilitated the quick move to AWS, since teams hardly had to learn any Terraform. Teams just needed to learn Ansible, but by most that was perceived to be much simpler than Puppet, and most Ansible modules were already present.
+
+However, after the move, that simplicity started to become problematic:
+
+* Although scope was limited, even for just EC2, ELB and security groups, designing a good YAML schema and keeping feature parity with AWS, proved challenging.
+* Now settled in AWS, quite soon other services became very interesting to explore. Most close to our technology stacks, services like RDS, Elasticache and S3 could remove a lot of operational effort, without requiring fundamentally changing our applications.
+
+Click-ops already finding its way, Terrible 2 was created, and it did the most important thing right:
+
+> Get out of the way and put Terraform front and center
+
+This introduced the ability to:
+
+* Leverage all Terraform documentation found online
+* Use every resource type in the AWS Terraform provider
+* Collaborate on Terraform modules, similar to the Ansible modules
+
+Over time, several features had been added, for example:
+
+* Ansible was optional
+* Support for multiple AWS accounts
+* Rest API to integrate Terrible into pipelines
+* Support for more advanced Terraform usage, such as `import` and `state`
+* Ability to use Terraform to do basic AWS IAM user management. We didn't have SSO back then, Terrible was tightly integrated with a sign-in AWS account.
+
+## No more Terrible
+
+As always, things come to an end. Reasons, not surprisingly, include:
+
+* Losing relevance: Platforms to build pipelines have become abundant. There are cloud platforms to manage Terraform projects, and bolting Ansible onto Terraform can now be done using the [Ansible provider](https://github.com/ansible/terraform-provider-ansible).
+* Knowledge about the inner workings of Terrible slowly but steadily leaving the company without being re-acquired. This increasingly became a risk.
+* No longer needing Ansible anyway, because having moved on to immutable infrastructure.
+
+Eventually, mid 2023, all projects were moved to an AWS CodePipeline and CodeBuild setup. Just focusing on the Terraform code, all Terrible added, was a `.tf` file containing provider, backend and tags, so this turned out to be quite easy. 
+
+The CodePipeline was granted the permissions Terrible had, and a confirmation step was added to the pipeline. Lo-fi but it worked.
+
 ## Looking back
+
+Over the past eight or so years, `terrible` is among the tools I have used most. Acknowledging my perspective might have become a bit skewed, what were the good parts and what could have been improved?
+
+### Good: Enable teams
+
+
+
 
 ### Good: Plan stage front and center
 
@@ -125,7 +173,6 @@ One of the strong points of Terraform is the confidence gained from the plan sta
 
 ### Good: Iterate, removing bottlenecks
 
-### Good: Enable teams
 
 ### Good: Create fast, sunset fast
 
@@ -134,3 +181,5 @@ One of the strong points of Terraform is the confidence gained from the plan sta
 ### Meh, Generic permissive
 
 [^footnote_hipchat_public]: Back then HipChat was a thing, and you could still run high-traffic news sites using DNS load balanced public VMs without immediately regretting it.
+
+[^footnote-terrible-plan-indeed]: We had a news site aimed at 6-12 aged kids for a while. Too bad that didn't work out. Also: Can't remember what my intention with the `foobar` tag was, but at least billing was correctly set up.
