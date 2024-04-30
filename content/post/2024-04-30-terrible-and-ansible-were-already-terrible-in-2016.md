@@ -10,6 +10,7 @@ tags:
   - Terraform
   - Ansible
   - DevOps
+  - SFTP
 description: IBM now has Terraform plus Ansible which is Terrible. A great combination, that is why somewhere an in-house 'Terrible' was created many years ago.
 thumbnail: img/12factor_13years_header.jpg
 
@@ -31,17 +32,17 @@ Author's note 1: This topic was at some random place in my blog topic list. But 
 
 Author's note 2: I did not _build_ Terrible, but was one of its power users and worked quite closely with the team maintaining it for many years. Shout out to the forward thinkers that understood the need for this tool and made it happen.
 
-Author's note 3: Everything described leading up to the creation of Terrible is based on my perspective, and my recollection and knowledge of matters. All of those might be inaccurate or incomplete.
+Author's note 3: Everything described leading about Terrible is based on my perspective, and my recollection and knowledge of matters. All of those might be inaccurate or incomplete.
 
 ## Context
 
 In 2016, Sanoma Media Netherlands had a portfolio consisting of many print magazines, and a number of digital assets that were among the largest in the Netherlands. This included [Autoweek](https://www.autoweek.nl/), [Kieskeurig](https://www.kieskeurig.nl/) and the product I worked for: [NU.nl](https://www.nu.nl/), the largest news site in the Netherlands.
 
-From an architectural point of view, (micro-)services were the norm. Services included a tagging service, an identity platform for customers, and platforms for images and videos. When the GDPR legislation was implemented, an organization-wide event bus was created to implement the '[Right of access](https://gdpr-info.eu/issues/right-of-access/)' and the '[Right to be Forgotten](https://gdpr-info.eu/issues/right-to-be-forgotten/)'.
+From an architectural point of view, (micro-)services were the norm. Services included a tagging service, an identity platform for customers, and platforms for images and videos. Illustrative for the services landscape: When the GDPR legislation was implemented, an organization-wide event bus was created to implement the '[Right of access](https://gdpr-info.eu/issues/right-of-access/)' and the '[Right to be forgotten](https://gdpr-info.eu/issues/right-to-be-forgotten/)'.
 
 Product teams were autonomous and would use said services to do a lot of heavy lifiting. Looking back, I would say there was a keen understanding of what services were needed to propel the organization forward: The amount of re-invented square wheels was fairly limited.
 
-This culture of providing services was present in the DevOps way of working as well. All application were hosted on virtual machines in datacenters. The 'systems' team provided tools like [Webistrano](https://github.com/peritor/webistrano/wiki), [Puppet](https://www.puppet.com/), [Foreman](https://theforeman.org/) and [CheckMK](https://checkmk.com/). Product teams were in control of configuring their infrastructure, using puppet modules provided by the systems team. A model of 'You Build It, You Run It', backed by the systems team.
+This culture of providing services was present in the DevOps way of working as well. All application were hosted on virtual machines in datacenters. The 'systems' team provided tools like [Puppet](https://www.puppet.com/), [Foreman](https://theforeman.org/), [Webistrano](https://github.com/peritor/webistrano/wiki) and [CheckMK](https://checkmk.com/). Product teams were in control of configuring their infrastructure, using puppet modules provided by the systems team. A model of 'You Build It, You Run It', backed by operational expertise.
 
 In 2016, the current datacenter contracts were about to end, so the organization would either have to renew, or move to other infrastructure. For that reason, a 'big IT solutions provider', let's call them SalesCorp, had been working on a new private cloud for quite some time. In that same period, some proof of concepts were done using AWS. Also, tools like Terraform and Ansible had been explored. Ultimately, SalesCorp did not deliver to expectations and timeframe, and the plug was pulled.
 
@@ -113,7 +114,7 @@ Output of `terrible plan` would look like this[^footnote-terrible-plan-indeed]:
 
 {{< figure src="/img/terrible-plan.gif" title="Terrible plan output" >}}
 
-For a number of common server components, Ansible modules were created, for example Nginx, Python, Uwsgi and Varnish. Also, a 'common' module was provided, ensuring the systems team would be able to access servers, and CheckMK was installed.
+For a number of common server components, Ansible modules were created, for example Nginx, Python, Uwsgi and Varnish. Also, a 'common' module was provided, ensuring the systems team would be able to access servers, and CheckMK agent was installed.
 
 The resulting configuration was more or less identical to the configuration previously set up by puppet, so the rehosting in general was a smooth process. A Direct Connect link existed between the AWS VPC and datacenter, so we could easily move applications one at a time.
 
@@ -126,6 +127,7 @@ The simplicity of Terrible 1 facilitated the quick move to AWS, since teams hard
 However, after the move, that simplicity started to become problematic:
 
 * Although scope was limited, even for just EC2, ELB and security groups, designing a good YAML schema and keeping feature parity with AWS, proved challenging.
+* Not supporting a single shared configuration, combined with environment-specific `tfvars`, there was a lot of code duplication.
 * Now settled in AWS, quite soon other services became very interesting to explore. Most close to our technology stacks, services like RDS, Elasticache and S3 could remove a lot of operational effort, without requiring fundamentally changing our applications.
 
 Click-ops already finding its way, Terrible 2 was created, and it did the most important thing right:
@@ -138,9 +140,8 @@ This introduced the ability to:
 * Use every resource type in the AWS Terraform provider
 * Collaborate on Terraform modules, similar to the Ansible modules
 
-Over time, several features had been added, for example:
+Over time, several features were added to Terrible 2, for example:
 
-* Ansible was optional
 * Support for multiple AWS accounts
 * Rest API to integrate Terrible into pipelines
 * Support for more advanced Terraform usage, such as `import` and `state`
@@ -162,23 +163,60 @@ The CodePipeline was granted the permissions Terrible had, and a confirmation st
 
 Over the past eight or so years, `terrible` is among the tools I have used most. Acknowledging my perspective might have become a bit skewed, what were the good parts and what could have been improved?
 
-### Good: Enable teams
+### Good parts
 
+#### Empower teams
 
+Terrible succeeded in letting us migrate to AWS in time. By empowering development teams to build their own stack, it prevented the systems team from becoming a bottleneck.
 
+Furthermore, Terrible handled some of the more complex security aspects of Terraform by removing the need for access to the AWS account and Terraform state.
 
-### Good: Plan stage front and center
+The Ansible modules, and later also the Terraform modules, facilitated collaboration and knowledge sharing, reducing the sentiment of 'their job'.
 
-One of the strong points of Terraform is the confidence gained from the plan stage: The changes that will be executed 
+#### Using Terraform plan stage
 
-### Good: Iterate, removing bottlenecks
+One of the strong points of Terraform is the confidence that can begained from the plan stage: The changes that will be executed. This has been the core of the Terrible workflow from day one: It allowed anyone, regardless of experience, to contribute by starting a branch and iterate on the plan output.
 
+At the same time, production rollouts could be protected by requiring additional approvals, ensuring a 4-eyes principle.
 
-### Good: Create fast, sunset fast
+If I remember correctly, by the end of Terrible, plan ID was around 150k. Meaning in the 7 years, on average, more than 90 plans per day. In those years as far as I know there haven't been occurrences of accidentally rolling out destructive changes.
 
-### Meh, LDAP auth
+#### Iterate
 
-### Meh, Generic permissive
+Terrible 1 was created fast with a clear scope and goal in mind. Terrible 2 removed a lot of limitations. I'm not sure if a second iteration was planned right from the start, but looking back, it is not even _that_ important:
+
+* Not envisioned: Shows ability to adapt and improve, meaning agility
+* Envisioned: Shows ability to start small with an MVP and deliver value as fast as possible, meaning agility
+
+#### Create fast, sunset fast
+
+As organizations grow, the ability to adapt to changes usually decreases. Not all bad, sprint vs. marathon and all, but it can stifle innovation. 
+
+At the same time, organizations having a certain size and age, usually have their fair share of 'legacy systems' that are dragged around forever. Once again, not all bad, you can't rebuild everything all the time. But at some point, value and cost might become unbalanced. Having more systems simply means more maintenance.
+
+Terrible's lifecycle in my opinion was a good one, and did not suffer from any of the above two enterprise traits.
+
+### Could have been better
+
+#### Automation relatively hard
+
+Terrible initially focused on the CLI client. In Terrible 2 an API was added, so the process of applying Terraform changes could be automated. Since pipeline options back then were limited (UI-driven Bamboo) and the CLI process was good, there was not a lot of incentive to go that extra mile.
+
+#### Authentication
+
+When Terrible was launched, LDAP was the only sign-in system available, so that was the login method. Later Terrible was also used to manage the roles a person could assume in several AWS accounts. This turned out a bit clunky. People would need to install and login into Terrible first, before being able to get access to the AWS console. Also granting of AWS permissions was intertwined with project permissions in Terrible, complicating this process.
+
+In hindsight, AWS access management would probably best have been left out. Later, OIDC SSO became available, as well as MFA requirements. But since Terrible was already in 'maintenance mode', that never got implemented.
+
+#### AWS Permissions
+
+Terrible had a broad set of permissions in the AWS account. Least privilege would have been better but should probably have been addressed in the wider context of cloud privileges in general. The impact of this permission model at least was reduced by eventually moving to separate AWS accounts per team and environment. If Terrible was not already end-of-life, this might have seen improvement.
+
+## Far from Terrible
+
+When running in the cloud, servers can be made simple by adopting immutable infrastructure. Similarly, with autoscaling, the concept of 'the inventory to provide to Ansible' disappears. So, in modern cloud setups, Ansible loses its place. 
+
+For that reason alone, acquiring HashiCorp, also bringing Vault, makes a lot of sense for IBM. And, as we experienced for many years, the _combination_ of Terraform and Ansible can be great (not terrible!).
 
 [^footnote_hipchat_public]: Back then HipChat was a thing, and you could still run high-traffic news sites using DNS load balanced public VMs without immediately regretting it.
 
