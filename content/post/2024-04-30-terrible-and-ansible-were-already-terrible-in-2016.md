@@ -28,7 +28,7 @@ That was exactly the combination of capabilities needed by Sanoma Media Netherla
 
 Terrible plan?
 
-> This is the first article of a series 'Stuff From The Past (SFTP)', for which I have got a number of topics lined up. Things I have created or should not have created. Things I have worked with or wish I would not have. How did those systems age? What can be learned?
+> This is the first article of a series 'Stuff From The Past (SFTP)', for which I have got a number of topics lined up. Things I have created or should not have created. Things I have worked with or wish I didn not have. How did those systems age? What can be learned?
 
 Author's note 1: This topic was at some random place in my blog topic list. But since a lot of people are suddenly making terrible jokes, there is no better moment than now.
 
@@ -91,7 +91,7 @@ Terrible 1 took care of:
 * AWS account permissions
 * Consistent tagging
 * Executing Terraform `init`, `plan` and `apply` stages, and streaming output to users via CLI client.
-* Executing Ansible on the resulting infrastructure, and streaming output to users via CLI clients.
+* Executing Ansible on the resulting infrastructure, and streaming output to users via CLI client.
 
 The organization was organized in clusters, in our case: news. Clusters could run many products and each product would have several environments: production, staging, test.
 
@@ -126,7 +126,7 @@ Worth mentioning is that, although the Ansible roles were initially set up by th
 
 ## Terrible 2
 
-The simplicity of Terrible 1 facilitated the quick move to AWS, since teams hardly had to learn any Terraform. Teams just needed to learn Ansible, but by most that was perceived to be much simpler than Puppet, and most Ansible modrolesles were already present.
+The simplicity of Terrible 1 facilitated the quick move to AWS, since teams hardly had to learn any Terraform. Teams just needed to learn Ansible, which by most that was perceived to be much simpler than Puppet, and most Ansible roles were already present.
 
 However, after the move, that simplicity started to become problematic:
 
