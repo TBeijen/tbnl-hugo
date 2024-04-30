@@ -13,7 +13,7 @@ tags:
   - HashiCorp
   - IBM
   - SFTP
-description: IBM now has Terraform plus Ansible which is Terrible. A great combination, that is why somewhere an in-house 'Terrible' was created many years ago.
+description: IBM now has Terraform plus Ansible which is Terrible. But actually a great combination, that is why somewhere an in-house 'Terrible' was created many years ago.
 thumbnail: img/terrible-header.jpg
 
 ---
