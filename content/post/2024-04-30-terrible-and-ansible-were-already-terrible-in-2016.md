@@ -28,7 +28,7 @@ That was exactly the combination of capabilities needed by Sanoma Media Netherla
 
 Terrible plan?
 
-> This is the first article of a series 'Stuff From The Past (SFTP)', for which I have got a number of topics lined up. Things I have created or should not have created. Things I have worked with or wish I didn not have. How did those systems age? What can be learned?
+> This is the first article of a series 'Stuff From The Past (SFTP)', for which I have got a number of topics lined up. Things I have created or should not have created. Things I have worked with or wish I did not have. How did those systems age? What can be learned?
 
 Author's note 1: This topic was at some random place in my blog topic list. But since a lot of people are suddenly making terrible jokes, there is no better moment than now.
 
