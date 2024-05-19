@@ -54,9 +54,9 @@ Everything in the Lego house gives the impression that it exists for a reason an
 
 And yes, this attention to detail goes all the way to the signing.
 
-Whereas in software there can be screen noise (data), in the LEGO HOUSE there is real noise (people), distracting from navigation: Where do I want to go? Where do I _need_ to go? Providing guidance through the noise is important.
+Whereas in software there can be screen noise (data), in the LEGO House there is real noise (people), distracting from navigation: Where do I want to go? Where do I _need_ to go? Providing guidance through the noise is important.
 
-Attention to details results in consistency, which builds trust, and increases efficiency and helps navigate a product. Or building. It [reduces cognitive load](https://www.ics.com/blog/most-important-reason-consistency-design-ux).
+Attention to details results in consistency, which builds trust, and increases efficiency and helps navigate a product. Or building. Don't take my word for it, [this article](https://www.ics.com/blog/most-important-reason-consistency-design-ux) by [Dorothy Shamonsky](https://dorothyshamonsky.com/) describes the importance of reducing cognitive load, going beyond "it's just good design".
 
 ### Fun, or at least: Pleasant
 
@@ -76,18 +76,31 @@ But, there is a wide range between playfulness to the point of being over-the-to
 
 Adding playful elements to otherwise lacking design won't work. It's like painting a wooden window frame without first taking care of the wood rot. Exhibit A: The aforementioned Clippy.
 
-But, just like well-placed easter eggs, if done right, playfull elements can convey a message of "We got this sorted, everything under control. We can have a bit of fun here". Which circles back to building trust. 
+But, just like well-placed easter eggs, if done right, playful elements can convey a message of "We got this sorted, everything under control. We can have a bit of fun here." Which circles back to building trust. 
 
 ### Taking the user seriously
 
+Most signs urging people to wash their hands, are either questions, or imperative sentences. So there is this little possibility of friction: "Of course I washed my hands!" Or, in case of the imperative form: "What is this sign to tell me what to do?" Luckily not everybody is a snowflake, but still, in a way such signage gives the impression that it is _needed_ to point out to wash your hands.
 
+The LEGO sign takes a different approach: It _assumes_ the visitor has (of course!) washed their hands. And by that message, it elevates the visitor.
 
-## Back to software applications
+I am sure the exact message of the LEGO sign is deliberate, and it illustrates how attention to detail can make a difference.
 
+## Improving software UX
 
-## How to improve
+So, what can organizations do to make better software?
 
-### Make UI/UX design part of the team
+### Beat the economics
+
+This is the hardest part: Apparently crap software can be successfully sold, so why improve? And adding to that: If  a company can sell a certain product for a hefty amount, but can also make money _on top of that_ for consultancy and training, actually creates an incentive to not bother improving software UX.
+
+Another problem might be the small number of alternatives. Take for example office suites. Basically there is [Microsoft 365](https://en.wikipedia.org/wiki/Microsoft_365) and [Google Workspace](https://en.wikipedia.org/wiki/Google_Workspace).
+
+TODO: Example
+
+### Team composition
+
+Make UI/UX design part of the team
 
 ### Simplify processes, not just the UI
 
@@ -102,6 +115,8 @@ Merchants do this
 
 * Business processes (constraints, regulation, compliance, privacy)
 
+Thanks for washing your hands!
+Thanks for watching your users!
 
 
 [^footnote_pun]: Yes, pun intended. And no, there hardly ever is anything voluntary about using enterprise software.
