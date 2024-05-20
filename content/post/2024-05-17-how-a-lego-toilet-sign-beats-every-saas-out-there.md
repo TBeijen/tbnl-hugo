@@ -92,15 +92,25 @@ So, what can organizations do to make better software?
 
 ### Beat the economics
 
-This is the hardest part: Apparently crap software can be successfully sold, so why improve? And adding to that: If  a company can sell a certain product for a hefty amount, but can also make money _on top of that_ for consultancy and training, actually creates an incentive to not bother improving software UX.
+This is the hardest part: Apparently crap software can be successfully sold, so why improve? And adding to that: If a company can sell a certain product for a hefty amount, but can also make money _on top of that_ for consultancy and training, there is an incentive to not bother improving software UX.
 
 Another problem might be the small number of alternatives. Take for example office suites. Basically there is [Microsoft 365](https://en.wikipedia.org/wiki/Microsoft_365) and [Google Workspace](https://en.wikipedia.org/wiki/Google_Workspace).
 
-TODO: Example
+An example: I run Microsoft Outlook on my Android phone, mostly to have a calendar widget on one of the home screens. An infuriating aspect is that if corporate policy requires me to re-authenticate, Outlook stays silent. So effectively, I overlook calendar events because the widget becomes outdated. This can easily be solved. Other apps show a system notification in such cases, but alas, mediocrity is the norm. 
+
+Now, if I were to decide what office suite to purchase, this might be somewhere in the back of my head. But, given many more important requirements, and the lack of alternatives, it will probably not be a deciding factor. Even if I flat out refuse to buy crap software, which I would very much like to, I would need to justify that to higher ups. And alternatives are hardly better.
+
+Hard requirements and pricing make it to the Excel lists when comparing alternatives. But the cost of errors, ineffective work and necessary learning curve, resulting from bad software, is hard to measure. And as a result, those hidden cost are often overlooked. 
+
+Once again quoting Jason Fried: "It hurts people, and it hurts the economy". There is real cost and good UX can be a selling point. But probably more easily an additional selling point than a unique selling point, since buyers tend to focus on hard requirements.
 
 ### Team composition
 
-Make UI/UX design part of the team
+User experience design is more than graphical design. So, having someone deliver UI styling now and then, is a start, but is unlikely to accomplish great UX. Within teams, UX skill should be available. Whether via a permanent role within the team, or via an '[enabling team](https://teamtopologies.com/key-concepts)', depends on the wider organization structure.
+
+Besides UX knowledge being needed within a team, care needs to be taken to facilitate good design _across_ teams. [Conway's law](https://en.wikipedia.org/wiki/Conway%27s_law) applies here: Not only the technical structure of a system will reflect the social boundaries of the organizations that produced it, the resulting UX might as well. For example, for large retail sites, it is not uncommon to have different teams responsible for product pages, recommendations and the checkout process. There needs to be some entity guarding the overall user experience.
+
+The level of autonomy of a team is an important factor as well. For example, if improving a certain UX aspect requires another team to provide additional data via an API, the result will depend on the amount of politics and bureaucracy needed to get that done. 
 
 ### Simplify processes, not just the UI
 
