@@ -1,5 +1,5 @@
 ---
-title: "12 Factor: 13 years later"
+title: "12 Factor applications: 13 years later"
 author: Tibo Beijen
 date: 2024-04-24T05:00:00+01:00
 url: /2024/04/24/12-factor-13-years-later
