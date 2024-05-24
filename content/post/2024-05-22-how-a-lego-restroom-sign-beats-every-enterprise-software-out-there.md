@@ -56,7 +56,9 @@ And yes, this attention to detail goes all the way to the signing.
 
 Whereas in software there can be screen noise (data), in the LEGO House there is real noise (people), distracting from navigation: Where do I want to go? Where do I _need_ to go? Providing guidance through the noise is important.
 
-Attention to details results in consistency, which builds trust, and increases efficiency and helps navigate a product. Or building. Don't take my word for it, [this article](https://www.ics.com/blog/most-important-reason-consistency-design-ux) by [Dorothy Shamonsky](https://dorothyshamonsky.com/) describes the importance of reducing cognitive load, going beyond "it's just good design".
+Attention to details results in consistency, which builds trust. It increases efficiency and helps navigate a product, or building, by reducing cognitive load. 
+
+Don't take my word for it, [this article](https://www.ics.com/blog/most-important-reason-consistency-design-ux) by [Dorothy Shamonsky](https://dorothyshamonsky.com/) describes the importance of reducing cognitive load, going beyond "it's just good design". The [Team Topologies](https://teamtopologies.com/) approach focuses on [reducing (team) cognitive](https://teamtopologies.com/key-concepts-content/what-are-the-core-team-types-in-team-topologies) load as well.
 
 ### Fun, or at least: Pleasant
 
@@ -106,11 +108,11 @@ Once again quoting Jason Fried: "It hurts people, and it hurts the economy". The
 
 ### Team composition
 
-User experience design is more than graphical design. So, having someone deliver UI styling now and then, is a start, but is unlikely to accomplish great UX. Within teams, UX skills should be available. Whether via a permanent role within the team, or via an '[enabling team](https://teamtopologies.com/key-concepts)', depends on the wider organization structure.
+User experience design is more than graphical design. So, having someone deliver UI styling now and then, is a start, but is unlikely to accomplish great UX. Within teams, UX skills should be available. Whether that should be via a permanent role within the team, or via an '[enabling team](https://teamtopologies.com/key-concepts)', depends on the wider organization structure.
 
 Besides UX knowledge being needed within a team, care needs to be taken to facilitate good design _across_ teams. [Conway's law](https://en.wikipedia.org/wiki/Conway%27s_law) applies here: Not only the technical structure of a system will reflect the social boundaries of the organizations that produced it, the resulting UX might as well. For example, for large retail sites, it is not uncommon to have different teams responsible for product pages, recommendations and the checkout process. There needs to be some entity guarding the overall user experience.
 
-The level of autonomy of a team is an important factor as well. For example, if improving a certain UX aspect requires another team to provide additional data via an API, the result will depend on the amount of politics and bureaucracy needed to get that done. 
+The level of autonomy of a team is an important factor as well. If improving a certain UX aspect requires another team to provide additional data via an API, the resulting UX will most likely be affected by the amount of politics and bureaucracy needed to get that done. 
 
 ### Simplify logic, not just the UI
 
@@ -118,7 +120,7 @@ The more complex the underlying business logic, the harder it will be to create 
 
 Somewhat similar to programming: When having added things on top for a while, at some point refactoring becomes needed.
 
-It is worth noting that some complexities in business logic, can simply be unavoidable, due to compliancy, regulations or privacy requirements.
+It is worth noting that some complexities in business logic, simply can not be avoided, due to compliancy, regulations or privacy requirements.
 
 ### Do real user tests
 
