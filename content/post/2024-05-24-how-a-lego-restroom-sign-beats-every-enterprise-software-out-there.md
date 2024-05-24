@@ -1,8 +1,8 @@
 ---
 title: How a LEGO restroom sign beats every enterprise software out there
 author: Tibo Beijen
-date: 2024-05-17T05:00:00+01:00
-url: /2024/05/22/how-a-lego-restroom-sign-beats-every-enterprise-software-out-there
+date: 2024-05-24T05:00:00+01:00
+url: /2024/05/24/how-a-lego-restroom-sign-beats-every-enterprise-software-out-there
 categories:
   - articles
 tags:
