@@ -15,7 +15,7 @@ name = "Tibo Beijen"
 author = "Tibo Beijen"
 bio = "DevOps, Python, JS lead-developer/architect. UX enthusiast. Coffee addict. Loud music aficionado. Dad. Runner. AFOL. Opinions own."
 description = "DevOps and programming related personal blog of Tibo Beijen"
-location = "" # optional
+location = ""                                                                                                                              # optional
 twitter = "TBeijen"
 linkedin = 'tibobeijen'
 mastodon = 'hachyderm.io/@tbeijen'
@@ -34,7 +34,7 @@ comments = ""
 
 # By setting homeMaxPosts, home page will show limited number of post and link to archive (/post/) 
 # instead of paginated list of posts
-homeMaxPosts = 3
+homeMaxPosts = 5
 
 # Use summary instead, if description is empty
 useSummaryIfNoDescription = true
