@@ -1,8 +1,8 @@
 ---
 title: "Working in News Tech: An impressive day to remember"
 author: Tibo Beijen
-date: 2024-07-01T05:00:00+01:00
-url: /2024/07/01/news-tech-an-impressive-day-to-remember
+date: 2024-07-10T15:00:00+01:00
+url: /2024/07/10/news-tech-an-impressive-day-to-remember
 categories:
   - articles
 tags:
@@ -11,20 +11,20 @@ tags:
   - SRE
   - MH17
   - Ukraine
-description: One of the most impactful news events of the Netherlands, as experienced by a News ICT team
+description: Looking back 10 years ago at MH17, from a personal and news tech perspective.
 thumbnail: img/impressive_day_flowers.jpg
 
 ---
 
 When dealing with traffic of a news site, one quickly learns to expect the unexpected: You know there will be traffic surges, but you can not predict _when_ they will be. 
 
-This is quite unlike for example ecommerce where the holiday season can be predicted. Or big event ticket sales, where the moment tickets will start to sell, is known beforehand. With breaking news however, the moment is sudden, and the traffic surge typically is in the ballpark of 'times 4, within 4 minutes'.
+This is quite unlike, for example, ecommerce where the holiday season can be predicted. Or big event ticket sales, where the moment tickets will start to sell, is known beforehand. With breaking news, however, the moment is sudden, and the traffic surge typically is in the ballpark of 'times 4, within 4 minutes'.
 
-At [July 17th, 2014](https://en.wikipedia.org/wiki/Malaysia_Airlines_Flight_17), in the afternoon, I was heading to the train station, when on our [HipChat](https://en.wikipedia.org/wiki/HipChat) channels there were messages about a missing airplane. That set in motion an evening of observing and adjusting our various systems.
+At [July 17th, 2014](https://en.wikipedia.org/wiki/Malaysia_Airlines_Flight_17), in the afternoon, I was heading to the train station, when on our [HipChat](https://en.wikipedia.org/wiki/HipChat) channels there were messages about a missing airplane. That set in motion an evening of observing our various systems.
 
 ## A brief history of all-hands-on-deck situations
 
-Before, but also after July 2014, there have been various troubleshooting sessions, which sometimes ran into the late hours. Some of the most memorable include:
+Before, but also after July 2014, we had experience with the occasional incident troubleshooting sessions, which sometimes ran into the late hours. Some of the most memorable include:
 
 ### Meltdown
 
@@ -44,11 +44,11 @@ And, as these things go, a CDN with DDoS mitigation capabilities got prioritized
 
 ### A sunny afternoon
 
-Besides things breaking down in various ways, normal, legitimate traffic can cause quite some impact as well. And that sunny 2014 day might have been one of the busiest days in [NU.nl](https://www.nu.nl/) history.
+Besides things breaking down in various ways, normal, legitimate traffic can cause quite some impact as well. And that day in 2014 might have been one of the busiest days in [NU.nl](https://www.nu.nl/) history.
 
 ## Breaking News
 
-I remember it was a bright, sunny afternoon, and I just left the Sanoma office in Hoofddorp. Heading to the train station, someone mentioned on HipChat that a plane had gone missing above Ukraine. I'm not sure if it was in an editor channel, or one of our team members giving us a heads up of a possible breaking news push coming up.
+I remember it was a bright, sunny afternoon, and I just left the Sanoma office in Hoofddorp. Heading to the train station, someone mentioned on HipChat that a plane had gone missing above Ukraine. I'm not sure if it was in an editor channel, or one of our team members, giving us a heads-up of a possible breaking news push coming up.
 
 Either way, I checked the [Flightradar](https://www.flightradar24.com/) link to the missing airplane and I can remember noticing the altitude graph showed no descend, but just 'stopped'. Worried, but hoping it would turn out to be just a transponder failure, I knew editors were busy trying to get information _and_ confirmation from authorities and sources such as [ANP](https://www.anp.nl/).
 
@@ -76,7 +76,7 @@ Let's see what happens when a 'breaking news' push is sent out:
 
 ### Tech stack anno 2014
 
-Mid 2014 we had an API stack, based on Python and Django, that was providing data to the mobile apps. Furthermore, we had a stack delivering the website, based on PHP[^footnote_surviving_a_plane_crash]. We were in the process of building a brand new, responsive website _on top_ of API that was already used by the mobile app.
+Mid 2014 we had an API stack, based on Python and Django, that was providing data to the mobile apps. Furthermore, we had a stack delivering the website, based on PHP[^footnote_surviving_a_plane_crash]. We were in the process of building a brand new, responsive website _on top_ of API that was already used by the mobile app[^footnote_new_site].
 
 Everything was running on co-located hardware in two datacenters. No Cloud. No CDN. No horizontal or vertical scaling options.
 
@@ -86,7 +86,7 @@ Video and images were handled by the 'mediatool' service, hosted in the same dat
 
 A schematic view of our setup:
 
-TODO: Setup
+{{< figure src="/img/impressive_day_tech_stack.svg" title="NU.nl tech stack anno 2014" >}}
 
 Traffic hitting one of our systems could result in the following caching scenarios:
 
@@ -96,12 +96,12 @@ Traffic hitting one of our systems could result in the following caching scenari
 
 ### Metrics to check
 
-At moments where the amount of traffic is extraordinary high, there were some metrics to check:
+At moments where the amount of traffic is extraordinarily high, there were some metrics to check:
 
 #### Varnish
 
 * Cache hit ratio - Needs to be high, a drop in this metric will cause extra load on the web servers
-* Cache evictions - Varnish memory usage does not change, it constant. When memory is full, Varnish will evict items from cache following [LRU](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)). This will affect the cache hit ratio as well.
+* Cache evictions - Varnish memory usage does not change, it remains constant. When memory is full, Varnish will evict items from cache following [LRU](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)). This will affect the cache hit ratio as well.
 * CPU - This is proportional to traffic
 * Bandwidth - We just can send so many bytes
 * Backend connection errors - More requests going to the web servers than they can handle
@@ -169,15 +169,15 @@ Around the time I arrived at home, another push message was sent:
 
 > 18:20 - At least 20 Dutch people on board the crashed plane, follow our live blog here
 
-By this time all news outlets were reporting on the crashed plane. At the start of the evening a lot of people were commuting, either by car or public transport. So, almost everybody in the Netherlands would have been notified of the developing news, either by hearing about it on the radio or reading it on mobile devices. News travels, so with a bit of delay, traffic to the desktop website increased as well.
+By this time all news outlets were reporting on the crashed plane. At the start of the evening, a lot of people were commuting, either by car or public transport. So, almost everybody in the Netherlands would have been notified of the developing news, either by hearing about it on the radio or reading it on mobile devices. News travels, so with a bit of delay, traffic to the desktop website increased as well.
 
 As a result, and of course because this particular news could have a very direct effect on a lot of Dutch people, traffic on our systems was at an all-time high.
 
-Dinner was a hasty affair, and the evening consisted mostly of keeping an eye out on various metrics, and staying in touch with our team and other teams. Quite soon another push message was sent, this time about a different news item:
+Dinner was a hasty affair, and the evening consisted mostly of keeping an eye out on various metrics, and staying in touch with our team and other teams. Quite soon, another push message was sent, this time about a different news item:
 
 > 19:42 - Israeli army begins ground offensive in Gaza Strip
 
-Apparently, the world had gone mad. Compared to the direct impact the MH17 news had on the Netherlands, this news had a relatively small impact on traffic. About an hour later another push message followed:
+Apparently, the world had gone mad. Compared to the direct impact the MH17 news had on the Netherlands, this news had a relatively small impact on traffic. About an hour later, another push message followed:
 
 > 20:48 - 154 Dutch people in crashed plane in Ukraine
 
@@ -189,9 +189,9 @@ At the end of the evening, around midnight, things settled down. These types of 
 
 ## Aftermath
 
-The thing I remember most is that the actual news, only started to sink in the next morning. The evening itself had been all about checking systems and constantly evaluating trade-offs of mitigating actions, all at heightened levels of adrenaline.
+The thing I remember most is that the actual news, only started to sink in the next morning. The evening itself had been all about checking systems and constantly evaluating trade-offs of possible mitigations, all at heightened levels of adrenaline.
 
-We actually didn't need to do a lot that evening. From that perspective we have seen way worse. But it has been the evening of most intensively following the news, without actually following the news.
+We actually didn't need to do a _lot_ that evening. From that perspective, we have seen way worse. To me, it has been the evening of most intensively following the news ever, without actually following the news.
 
 The Netherlands was in shock. My daily commute included Schiphol, and visiting the sea of flowers there, in the days following the crash, left a lasting impression.
 
@@ -199,8 +199,8 @@ It is an impressive day to remember. Even more so when realizing that 10 years l
 
 {{< figure src="/img/impressive_day_flowers.jpg" title="Sea of flowers at Schiphol airport in the days following the MH17 crash">}}
 
-
 [^footnote_netscaler]: It's long ago. If not NetScaler, then Juniper.
 [^footnote_open_rate]: One might think it's the impactful news items that have the highest open rate, but actually the more gossipy articles tend to rank the highest.
 [^footnote_surviving_a_plane_crash]: The website stack was, at a high level, still similar to the one described in a talk "[Surviving a Plane Crash](https://www.slideshare.net/peter_ibuildings/surviving-a-plane-crash)" at the Dutch PHP Conference in 2009. A [different plane crash](https://en.wikipedia.org/wiki/Turkish_Airlines_Flight_1951) by the way.
+[^footnote_new_site]: That would be that 'cache miss' incident.
 [^footnote_fastly]: Varnish is so good, [Fastly built it's CDN on top of it](https://www.fastly.com/blog/benefits-using-varnish/).
