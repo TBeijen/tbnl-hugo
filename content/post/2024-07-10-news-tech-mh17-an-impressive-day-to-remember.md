@@ -1,8 +1,8 @@
 ---
-title: "Working in News Tech: An impressive day to remember"
+title: "Working in News Tech: MH17, an impressive day to remember"
 author: Tibo Beijen
 date: 2024-07-10T15:00:00+01:00
-url: /2024/07/10/news-tech-an-impressive-day-to-remember
+url: /2024/07/10/news-tech-mh17-an-impressive-day-to-remember
 categories:
   - articles
 tags:
@@ -11,12 +11,12 @@ tags:
   - SRE
   - MH17
   - Ukraine
-description: Looking back 10 years ago at MH17, from a personal and news tech perspective.
+description: Looking back 10 years ago at MH17, from a personal and news tech perspective
 thumbnail: img/impressive_day_flowers.jpg
 
 ---
 
-When dealing with traffic of a news site, one quickly learns to expect the unexpected: You know there will be traffic surges, but you can not predict _when_ they will be. 
+When dealing with traffic of a news site like [NU.nl](https://www.nu.nl/), one quickly learns to expect the unexpected: You know there will be traffic surges, but you can not predict _when_ they will be. 
 
 This is quite unlike, for example, ecommerce where the holiday season can be predicted. Or big event ticket sales, where the moment tickets will start to sell, is known beforehand. With breaking news, however, the moment is sudden, and the traffic surge typically is in the ballpark of 'times 4, within 4 minutes'.
 
@@ -44,7 +44,7 @@ And, as these things go, a CDN with DDoS mitigation capabilities got prioritized
 
 ### A sunny afternoon
 
-Besides things breaking down in various ways, normal, legitimate traffic can cause quite some impact as well. And that day in 2014 might have been one of the busiest days in [NU.nl](https://www.nu.nl/) history.
+Besides things breaking down in various ways, normal, legitimate traffic can cause quite some impact as well. And that day in 2014 might have been one of the busiest days in NU.nl history.
 
 ## Breaking News
 
@@ -181,7 +181,7 @@ Apparently, the world had gone mad. Compared to the direct impact the MH17 news 
 
 > 20:48 - 154 Dutch people in crashed plane in Ukraine
 
-The entire evening, our systems received an enormous amount of traffic. Systems were holding up, but throughout the stack, things were at 'orange levels' of maximum capacity. The twilight zone of everything working fine, but not so fine as to being able to leave systems unattended. So we kept monitoring things, continuously discussing if we would need to take any action. 
+The entire evening, our systems received an enormous amount of traffic. Systems were holding up, but throughout the stack, things were at 'orange levels' of maximum capacity: The twilight zone of everything working fine, but not so fine as to being able to leave systems unattended. So we kept monitoring things, continuously discussing if we would need to take any action. 
 
 Ultimately, I can't remember if we actually changed any of the configurations. We might have tuned the TTL values here and there. I know the option of disabling videos was discussed at some point. Although I'm not sure if we actually did that, it illustrates the unusual amount of traffic we were seeing that evening.
 
