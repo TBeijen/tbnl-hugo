@@ -34,7 +34,7 @@ comments = ""
 
 # By setting homeMaxPosts, home page will show limited number of post and link to archive (/post/) 
 # instead of paginated list of posts
-homeMaxPosts = 8
+homeMaxPosts = 5
 
 # Use summary instead, if description is empty
 useSummaryIfNoDescription = true
