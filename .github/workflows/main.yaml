@@ -70,4 +70,4 @@ jobs:
     - build
     steps:
     - name: Test docker tags
-      run: "Docker tags: ${{ needs.build.outputs.docker_image_tags }}"
+      run: echo "docker_image_tags = ${{ needs.build.outputs.docker_image_tags }}"
