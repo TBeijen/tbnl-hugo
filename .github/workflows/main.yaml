@@ -20,6 +20,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs: 
+      docker_image_tags: ${{ steps.docker_meta.outputs.tags }}
     steps:
       # Get the repository's code
       - name: Checkout
@@ -61,3 +63,11 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs:
+    - build
+    steps:
+    - name: Test docker tags
+      run: "Docker tags: ${{ needs.build.outputs.docker_image_tags }}"
