@@ -69,19 +69,10 @@ jobs:
     needs:
     - build
     steps:
-      - name: GitOps Checkout
-        uses: actions/checkout@v4
-        with:
-          repository: tbeijen/tbnl-www-gitops
-          ref: main
-          token: ${{ secrets.TBNL_BOT_PAT }}
-          fetch-depth: 0
-          path: tbnl-www-gitops
-
       - name: Extract sha tag
-        id: extract-sha-tag
+        id: extract_sha_tag
         run: |
-          tags="${{ needs.build.outputs.docker_image_tags }}""
+          tags="${{ needs.build.outputs.docker_image_tags }}"
           echo "Docker image tags:"
           echo "$tags"
           sha_tag=$(echo "$tags" | grep -oE 'sha-[^ ]+')
@@ -93,3 +84,31 @@ jobs:
             echo "::set-output name=sha_tag::$sha_tag"
           fi
 
+      - name: GitOps Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: tbeijen/tbnl-www-gitops
+          ref: main
+          token: ${{ secrets.TBNL_BOT_PAT }}
+          fetch-depth: 0
+          path: tbnl-www-gitops
+
+      - name: GitOps update
+        run: |
+          git -C tbnl-www-gitops config user.name "TBNL bot"
+          git -C tbnl-www-gitops config user.email "tbnl@users.noreply.github.com"
+                    
+          new_sha_tag="${{ steps.extract_sha_tag.outputs.sha_tag}}"
+          deployment_file="variants/www-test/version.yaml"
+
+          echo "Deployment file path: $deployment_file"
+          echo "Current deployment file contents:"
+          cat $deployment_file
+
+          sed -i.bak -E "s/(image:.*:)(sha-[a-z0-9]+)/\1${new_sha_tag}/" $deployment_file
+
+          echo "Modified deployment file contents:"
+          cat $deployment_file
+
+          git -C tbnl-www-gitops commit -am "Updated www test to ${{ steps.extract-sha-tag.outputs.sha_tag}}"
+          git -C tbnl-www-gitops push origin main
