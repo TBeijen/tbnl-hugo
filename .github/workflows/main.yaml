@@ -94,9 +94,10 @@ jobs:
           path: tbnl-www-gitops
 
       - name: GitOps update
+        working-directory: ./tbnl-www-gitops
         run: |
-          git -C tbnl-www-gitops config user.name "TBNL bot"
-          git -C tbnl-www-gitops config user.email "tbnl@users.noreply.github.com"
+          git config user.name "TBNL bot"
+          git config user.email "tbnl@users.noreply.github.com"
                     
           new_sha_tag="${{ steps.extract_sha_tag.outputs.sha_tag}}"
           deployment_file="variants/www-test/version.yaml"
@@ -110,5 +111,5 @@ jobs:
           echo "Modified deployment file contents:"
           cat $deployment_file
 
-          git -C tbnl-www-gitops commit -am "Updated www test to ${{ steps.extract-sha-tag.outputs.sha_tag}}"
-          git -C tbnl-www-gitops push origin main
+          git commit -am "Updated www test to ${{ steps.extract-sha-tag.outputs.sha_tag}}"
+          git push origin main
