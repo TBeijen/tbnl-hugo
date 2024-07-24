@@ -69,5 +69,26 @@ jobs:
     needs:
     - build
     steps:
-    - name: Test docker tags
-      run: echo "docker_image_tags = ${{ needs.build.outputs.docker_image_tags }}"
+      - name: Extract sha tag
+        id: extract-sha-tag
+        run: |
+          tags="${{ needs.build.outputs.docker_image_tags }}""
+          echo "Docker image tags:"
+          echo "$tags"
+          sha_tag=$(echo "$tags" | grep -oE 'ghcr.io/[^:]+:sha-[^ ]+')
+          if [ -z "$sha_tag" ]; then
+            echo "No tag starting with 'sha-' found."
+            exit 1
+          else
+            echo "Extracted sha- tag: $sha_tag"
+            echo "::set-output name=sha_tag::$sha_tag"
+          fi
+
+      - name: GitOps Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: tbeijen/tbnl-www-gitops
+          ref: main
+          token: ${{ secrets.TBNL_BOT_PAT }}
+          fetch-depth: 0
+          path: tbnl-www-gitops
