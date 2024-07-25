@@ -111,5 +111,5 @@ jobs:
           echo "Modified deployment file contents:"
           cat $deployment_file
 
-          git commit -am "Updated www test to ${{ steps.extract-sha-tag.outputs.sha_tag}}"
+          git commit -am "Updated www test to $new_sha_tag"
           git push origin main

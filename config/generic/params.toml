@@ -1,2 +1,5 @@
 # Enable Google Analytics be inserting your tracking code
 googleAnalytics = "G-FBP8RTQVQ2"
+
+# Git revision to show in HTML meta
+gitRevision = "not-set"

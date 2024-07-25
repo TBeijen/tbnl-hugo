@@ -59,6 +59,10 @@
     <meta name="twitter:image" content="{{ .Site.BaseURL }}{{ .Params.thumbnail }}">
     {{ end -}}
 
+    {{ if .Site.Params.gitRevision }}
+    <meta name="git-revision" content="{{ .Site.Params.gitRevision }}">
+    {{ end -}}
+
     <!-- Canonical URL -->
     {{ if .Params.canonicalUrl }}
     <link rel="canonical" href="{{ .Params.canonicalUrl }}">
