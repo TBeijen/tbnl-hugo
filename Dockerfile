@@ -1,9 +1,13 @@
+# See: https://docs.docker.com/reference/dockerfile/#automatic-platform-args-in-the-global-scope
 FROM --platform=${BUILDPLATFORM:-linux/amd64} golang:alpine AS build
 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 ARG HUGO_VERSION="0.63.1"
 ARG HUGO_ARCH="64bit"
+ARG GIT_REVISION="sha-notset"
+
+ENV GIT_REVISION_ENV=${GIT_REVISION}
 
 RUN BUILD_ARCH_UC=$(echo $BUILDPLATFORM | awk -F'/' '{print $2}' | tr '[:lower:]' '[:upper:]') && \
     if [ $BUILD_ARCH_UC == "ARM64" ]; then HUGO_ARCH="ARM64"; fi && \
@@ -18,6 +22,8 @@ RUN mkdir -p /opt/tbnl/source && \
 WORKDIR /opt/tbnl
 
 COPY . ./source
+
+RUN sed -i -e "s/gitRevision.*=.*/gitRevision = \"${GIT_REVISION_ENV}\"/" ./source/config/generic/params.toml
 
 RUN hugo -e generic --source=${PWD}/source --destination=${PWD}/build/generic
 

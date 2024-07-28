@@ -26,6 +26,11 @@ jobs:
       # Get the repository's code
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Get short Git revision
+        id: gitrev
+        run: |
+          gitrev=$(git rev-parse --short HEAD)
+          echo "::set-output name=gitrev::$gitrev"
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -63,6 +68,8 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
+          build-args: |
+            GIT_REVISION=${{ steps.gitrev.outputs.gitrev}}
 
   deploy:
     runs-on: ubuntu-latest
