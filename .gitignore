@@ -3,6 +3,7 @@
 *.code-workspace
 *.DS_Store
 *.drawio.bkp
+.temp/
 
 # image source files
 source/
