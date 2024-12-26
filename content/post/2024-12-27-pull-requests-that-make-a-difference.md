@@ -29,6 +29,32 @@ By improving our review process we can make infrastructure changes as easy as th
 
 Let's look into what we can improve, and how this fits into platform engineering and [Team Topologies](https://teamtopologies.com/key-concepts).
 
+## Challenges
+
+Now what are these challenges, that set IaC delivery apart from 'just software'?
+
+### Challenge: Code change does not equal infra change
+
+When you change the name of a variable within a function, you have a better named variable. However, when you change the name of an S3 bucket in a Terraform project, your bucket will be _replaced_.
+
+So, there can be a big disconnect between the (small) code change and the actual effect when rolling out the change.
+
+This is aggravated by various mechanisms that are used for good reason: [Terraform modules](https://registry.terraform.io/browse/modules), [CDK constructs](https://constructs.dev/search?q=&cdk=aws-cdk&cdkver=2&offset=0), [Helm charts](https://artifacthub.io/) encapsulate a lot of resources.
+So, the small maintenance task of bumping the version of a Terraform module, will likely introduce changes. Now the author of such a module has a responsibility, but _you_ are responsible. 
+
+Another mechanism is the overlaying of values. For example, Kustomize allows one to use [overlays](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/#bases-and-overlays). A great concept, but it can make it hard to predict the effect of a code change on a given environment. To illustrate: Changing a value in a base, might not have any effect on production because it is already defined in the production overlay. This is impossible to predict by looking at the code change alone.
+
+### Challenge: Big bang rollouts
+
+
+
+
+To summarize:
+
+* Small code changes can have big, unexpected, side-effects
+* Module upgrades bring hard to predict infra changes
+* Effect of value overlays is hard to predict
+
 
 
 ### Challenge: Unexpected changes
@@ -38,6 +64,9 @@ Let's look into what we can improve, and how this fits into platform engineering
 ### Challenge: Rollout
     - No progressive rollout
     - Destructive
+
+### Challenge: access
+
 
 ### Collaboration
 
