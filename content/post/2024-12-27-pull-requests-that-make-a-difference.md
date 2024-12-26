@@ -6,7 +6,7 @@ url: /2024/12/27/infra-pull-requests-that-make-a-difference
 categories:
   - articles
 tags:
-  - Infra as code
+  - Infrastructure as code
   - DevOps
   - Platform engineering
   - Team topologies
@@ -17,13 +17,19 @@ thumbnail: ""
 ---
 
 
-### Introduction
-- IaC rollout process
-- Risks:
+## Introduction
 
-Goal: Mitigate risk & increase efficiency
+These days, applying Infrastructure as Code (IaC) changes is typically automated by using pipelines or GitOps. 
+The Infrastructure Lifecycle shares some characteristics with the Software Development Lifecycle: It starts with defining a goal, which is then followed by authoring of code, checks and tests, and a code review step.
 
-How can we accomplish this, improve platform and enable teams?
+However, there are also some aspects that make the deployment of infrastructure as code quite different from regular software. 
+These challenges bring risks, which tend to slow teams down. Those risks also limit the practical use of infrastructure as code to the 'expert' teams, limiting collaboration within an organization.
+
+By improving our review process we can make infrastructure changes as easy as the continuous delivery of software. 
+
+Let's look into what we can improve, and how this fits into platform engineering and [Team Topologies](https://teamtopologies.com/key-concepts).
+
+
 
 ### Challenge: Unexpected changes
     - Unexpected replace or removal
@@ -112,6 +118,8 @@ Pair with modules, charts, libraries that include all good practices. Mix knowle
 Improve DX and conformality, without needing to build a lot on top of IaC.
 
 https://tag-app-delivery.cncf.io/whitepapers/platforms/
+
+### What about team topologies
 
 
 ### Challenges
