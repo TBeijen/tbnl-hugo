@@ -42,7 +42,7 @@ So, there can be a big disconnect between the (small) code change and the actual
 This is aggravated by various mechanisms that are used for good reason: [Terraform modules](https://registry.terraform.io/browse/modules), [CDK constructs](https://constructs.dev/search?q=&cdk=aws-cdk&cdkver=2&offset=0), [Helm charts](https://artifacthub.io/) form reusable packages, encapsulating a lot of resources.
 So, the small maintenance task of bumping the version of a Terraform module, will likely introduce several changes. Now the author of such a module has a responsibility to avoid to unneededly break things, but ultimately _you_ are responsible when using the package.
 
-It is worth noting that unexpected changes can also occur when no code has changed. One source, which you don't want, is click-ops, or automated systems competing for ownership. But an example of a more subtle source I have seen in the past, is Elasticache [automatic minor version upgrades](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_cluster#auto_minor_version_upgrade-1) (the default). If other parameters haven't been set accordingly, you are suddenly faced with a _replacement_ of your Elasticache setup. Not what you want.
+It is worth noting that unexpected changes can also occur when no code has changed. One source, which should be avoided, is click-ops, or automated systems competing for ownership. But an example of a more subtle source I have seen in the past, is Elasticache [automatic minor version upgrades](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_cluster#auto_minor_version_upgrade-1) (the default). If other parameters haven't been set accordingly, you are suddenly faced with a _replacement_ of your Elasticache setup. Not what you want.
 
 Another mechanism that complicates predictability, is the overlaying of values. For example, Kustomize allows one to use [overlays](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/#bases-and-overlays). A great concept, but it can make it hard to predict the effect of a code change on a given environment. To illustrate: Changing a value in a base, might not have any effect on production because it is already defined in the production overlay. This is impossible to predict by looking at the code change alone.
 
@@ -62,11 +62,29 @@ Of course, changes can be rolled out to non-prod environments first. And this wo
 
 ### Challenge: Access
 
-Another challenge is access. Assuming we acknowledged the previous challenges, we probably want to preview our changes before submitting a pull request. This often requires a level of access we should not have. This access might be at the network level, authorization level, or both. For example, being able to `kubectl diff` might [not be as simple](https://github.com/kubernetes/kubectl/issues/981) as one expects. And, while read-only access seems good, for secrets it is not.
+Another challenge is access. Assuming we acknowledged the previous challenges, we probably want to preview our changes before submitting a pull request. This often requires a level of access we should not have. This access might be at the network level, authorization level, or both. For example, being able to `kubectl diff` might [not be as simple](https://github.com/kubernetes/kubectl/issues/981) as one expects, requiring broad permissions. And, while read-only access in a lot of cases seems ok, for secrets it is not.
+
+## Improving the workflow
+
+First, let's look at a basic workflow for infrastructure as code, and how a pipeline could automate parts of this:
+
+{{< figure src="/img/iac_workflows.basic.svg" title="Example of a basic infrastructure as code workflow" >}}
+
+* *Final check:* This would typically be a step in a pipeline, right before applying that shows the changes that will be applied. Then in the automation platform, the proposed changes can be confirmed. If something looks not right, this would be the moment were the process is aborted, and a new pull request needs to be created.
+* *Focus*: These are the moments where a second person needs to shift focus to this workflow. The reviewer needs to grasp the intentions of the author, both at the moment of reviewing and when applying the changes. The author might need to chime in when changes are about to be applied, to verify any questions. This task switching [is expensive](https://www.psychologytoday.com/us/blog/brain-wise/201209/the-true-cost-of-multi-tasking) and increases the chance of errors.
+* *Repeat loops:* Repeats can obviously originate from the pull request, but also from the final check. Every repeat loop requires a new pull request. And that will bring more task switching.
+* *Risk:* Just before applying, might be the first time the proposed changes are visible. This requires alignment between the author and the person applying, requiring focus from both. As mentioned before, task switching introduces increased chance of errors. So, a 'quick final check' might not get the attention it needs and people might overlook important details.
+
+Now let's see how we can improve this workflow by some relatively small modifications:
 
 ----
 
-### Collaboration
+
+### Preview changes: First time right
+
+### Shift left: The cheaper, the more left
+
+
 
 Typical collaboration workflow (diagrams)
 - Software
@@ -157,7 +175,7 @@ https://tag-app-delivery.cncf.io/whitepapers/platforms/
 
 ### Conclusion
 
-Reference to Terrible. Platforms like Hashicorp cloud. Cloudformation Github integration.
+Reference to Terrible. Platforms like Hashicorp cloud. Atlantis. Cloudformation Github integration.
 
 Remove the scary part from IaC. Allow collaboration, similar to 'normal' software.
 
