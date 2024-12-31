@@ -11,6 +11,7 @@ tags:
   - Platform engineering
   - Team topologies
   - Collaboration
+  - Terraform
 description: How to effectively collaborate on infra-as-code and roll out changes with confidence
 thumbnail: ""
 
@@ -79,40 +80,31 @@ Now let's see how we can improve this workflow by some relatively small modifica
 
 {{< figure src="/img/iac_workflows.improved.svg" title="Example of an improved infrastructure as code workflow" >}}
 
+* *Remove risk:* By making the proposed changes available at review time, and ensuring that exactly those changes will be applied, there will be no unexpected changes.
+* *Reduced task switching:* All collaboration is now reduced to a single occurrence: The pull request. The code changes, but also the resulting planned infrastructure changes, are presented in the pull request. This requires the reviewer to change tasks only once, and provides full context.
+* *First time right:* The author, without needing any access or permissions on the target environment, can see the effect of the code changes. This allows the author to fix any issues _before_ submitting the pull request. This greatly reduces the chance of additional code changes, and by that a new pull request, being needed.
+* *Additional checks*: By making the planned changes part of the review, we can run additional checks on the planned changes. For example: Prevent (accidental) deletion of certain resource types, or run policy checks.
+
+The example below shows `terraform plan` output in a pull request. Here, apparently, we are about to remove an event listener from a Keycloak realm, which was temporarily added using click-ops to test something[^footnote_clickops]. Without plan output this would either go unnoticed (lack of control) or require further examination at apply-time (increased cognitive load).
+
+{{< figure src="/img/iac_workflows.tf_example.png" title="Example of Terraform plan output in a GitHub PR" >}}
+
+## How does this fit into platform engineering?
+
+On the topic of 'platform engineering', one is bound to run into the term 'Internal Development Plaform' (IDP). Quoting [one of the definitions](https://internaldeveloperplatform.org/what-is-an-internal-developer-platform/) that can be found:
+
+> An Internal Developer Platform (IDP) is built and provided as a product by the platform team to application developers and the rest of the engineering organization. An IDP glues together the tech and tools of an enterprise into golden paths that lower cognitive load and enable developer self-service. 
+
+Gluing together, lower cognitive load, enable self service... Improving the workflow as described above ticks those boxes. At least to a certain extent.
+
+Depending on who you ask, IDP can also mean 'Internal Development _Portal_'. The [following defininition](https://internaldeveloperplatform.org/developer-portals/) is quite concise in explaining the relationshi[^footnote_idp]:
+
+> **Internal developer portals** serve as the interface through which developers can discover and access **internal developer platform** capabilities.
+
+
+
 
 ----
-
-
-### Preview changes: First time right
-
-### Shift left: The cheaper, the more left
-
-
-
-Typical collaboration workflow (diagrams)
-- Software
-  - Authoring
-  - Linting/automated tests
-  - Pull request
-  - Artifact
-  - Deploy non-prod
-  - Test
-  - Deploy prod
-- IaC:
-  - Authoring
-  - Linting
-  - PR
-  - Apply
-
-Highlight areas of: Safeguards, risk and human focus
-
-### Integrate Pull Request and planned changes
-
-Describe. 
-Various systems have a preview step (tf plan, cdk synth, bicep, helm diff, kubectl diff, cloudformation change set)
-Illustrate when integrating in PR:
-* Move risk from apply time to PR
-* Focus only once
 
 ### Why
 
@@ -188,4 +180,9 @@ Future post pipeline simple building blocks.
 
 
 
-[^footnote_cicd]: This assumes separated CI and CD pipelines. A good practice, but in reality these are often intertwined in a single pipeline. Nevertheless, there are steps that build (CI) and steps that deploy (CD).
+[^footnote_cicd]: This assumes separated CI and CD pipelines. A good practice, but in reality these are often intertwined in a single pipeline. Nevertheless, there are steps that _build_ (CI) and steps that _deploy_ (CD).
+
+[^footnote_clickops]: Shame. Shame. Also: Pragmatic. But one needs to be aware the click-ops change can be reverted at any moment _and_ can thwart others workflow by showing unexpected changes.
+
+[^footnote_idp]: [This blogpost](https://humanitec.com/blog/wtf-internal-developer-platform-vs-internal-developer-portal-vs-paas#what-is-an-internal-developer-portal
+) by Humanitec, themselves an IDP vendor, gives some context on the platform/portal confusion of IDPs.
