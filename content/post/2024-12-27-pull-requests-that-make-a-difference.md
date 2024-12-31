@@ -73,9 +73,12 @@ First, let's look at a basic workflow for infrastructure as code, and how a pipe
 * *Final check:* This would typically be a step in a pipeline, right before applying that shows the changes that will be applied. Then in the automation platform, the proposed changes can be confirmed. If something looks not right, this would be the moment were the process is aborted, and a new pull request needs to be created.
 * *Focus*: These are the moments where a second person needs to shift focus to this workflow. The reviewer needs to grasp the intentions of the author, both at the moment of reviewing and when applying the changes. The author might need to chime in when changes are about to be applied, to verify any questions. This task switching [is expensive](https://www.psychologytoday.com/us/blog/brain-wise/201209/the-true-cost-of-multi-tasking) and increases the chance of errors.
 * *Repeat loops:* Repeats can obviously originate from the pull request, but also from the final check. Every repeat loop requires a new pull request. And that will bring more task switching.
-* *Risk:* Just before applying, might be the first time the proposed changes are visible. This requires alignment between the author and the person applying, requiring focus from both. As mentioned before, task switching introduces increased chance of errors. So, a 'quick final check' might not get the attention it needs and people might overlook important details.
+* *Risk:* Just before applying, might be the first time the proposed changes are visible. This requires alignment between the author and the person applying, requiring focus from both. As mentioned before, task switching increases the chance of errors. So, a 'quick final check' might not get the attention it needs and people might overlook important details.
 
 Now let's see how we can improve this workflow by some relatively small modifications:
+
+{{< figure src="/img/iac_workflows.improved.svg" title="Example of an improved infrastructure as code workflow" >}}
+
 
 ----
 
