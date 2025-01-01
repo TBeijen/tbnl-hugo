@@ -101,6 +101,8 @@ Depending on who you ask, IDP can also mean 'Internal Development _Portal_'. The
 
 > **Internal developer portals** serve as the interface through which developers can discover and access **internal developer platform** capabilities.
 
+In Internal Developer Portal brings and integrates various capabilities: Workflow automation, Service catalog, documentation, dashboards showing a projects health by metrics such as test coverage and vulnerabilities. They typically sit on top of existing services such as version control, or pipelines, and need to integrate with those services. The rewards can be high, but it takes serious investment to start extracting that value.
+
 
 
 
