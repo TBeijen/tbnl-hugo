@@ -40,8 +40,8 @@ When you change the name of a variable within a function, you have a better name
 
 So, there can be a big disconnect between the (small) code change and the actual effect when rolling out the change.
 
-This is aggravated by various mechanisms that are used for good reason: [Terraform modules](https://registry.terraform.io/browse/modules), [CDK constructs](https://constructs.dev/search?q=&cdk=aws-cdk&cdkver=2&offset=0), [Helm charts](https://artifacthub.io/) form reusable packages, encapsulating a lot of resources.
-So, the small maintenance task of bumping the version of a Terraform module, will likely introduce several changes. Now the author of such a module has a responsibility to avoid to unneededly break things, but ultimately _you_ are responsible when using the package.
+This is aggravated by various abstractions that are used for good reason: [Terraform modules](https://registry.terraform.io/browse/modules), [CDK constructs](https://constructs.dev/search?q=&cdk=aws-cdk&cdkver=2&offset=0), [Helm charts](https://artifacthub.io/) form reusable packages, encapsulating a lot of resources.
+So, the small maintenance task of bumping the version of a Terraform module, will likely introduce several changes. Now the author of such a module has a responsibility to avoid to unnecessarily break things, but ultimately _you_ are responsible when using the package.
 
 It is worth noting that unexpected changes can also occur when no code has changed. One source, which should be avoided, is click-ops, or automated systems competing for ownership. But an example of a more subtle source I have seen in the past, is Elasticache [automatic minor version upgrades](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_cluster#auto_minor_version_upgrade-1) (the default). If other parameters haven't been set accordingly, you are suddenly faced with a _replacement_ of your Elasticache setup. Not what you want.
 
@@ -71,6 +71,8 @@ First, let's look at a basic workflow for infrastructure as code, and how a pipe
 
 {{< figure src="/img/iac_workflows.basic.svg" title="Example of a basic infrastructure as code workflow" >}}
 
+**TODO:** Check capitalization
+
 * *Final check:* This would typically be a step in a pipeline, right before applying that shows the changes that will be applied. Then in the automation platform, the proposed changes can be confirmed. If something looks not right, this would be the moment were the process is aborted, and a new pull request needs to be created.
 * *Focus*: These are the moments where a second person needs to shift focus to this workflow. The reviewer needs to grasp the intentions of the author, both at the moment of reviewing and when applying the changes. The author might need to chime in when changes are about to be applied, to verify any questions. This task switching [is expensive](https://www.psychologytoday.com/us/blog/brain-wise/201209/the-true-cost-of-multi-tasking) and increases the chance of errors.
 * *Repeat loops:* Repeats can obviously originate from the pull request, but also from the final check. Every repeat loop requires a new pull request. And that will bring more task switching.
@@ -79,6 +81,8 @@ First, let's look at a basic workflow for infrastructure as code, and how a pipe
 Now let's see how we can improve this workflow by some relatively small modifications:
 
 {{< figure src="/img/iac_workflows.improved.svg" title="Example of an improved infrastructure as code workflow" >}}
+
+**TODO:** Split out checks, after plan
 
 * *Remove risk:* By making the proposed changes available at review time, and ensuring that exactly those changes will be applied, there will be no unexpected changes.
 * *Reduced task switching:* All collaboration is now reduced to a single occurrence: The pull request. The code changes, but also the resulting planned infrastructure changes, are presented in the pull request. This requires the reviewer to change tasks only once, and provides full context.
@@ -95,15 +99,32 @@ On the topic of 'platform engineering', one is bound to run into the term 'Inter
 
 > An Internal Developer Platform (IDP) is built and provided as a product by the platform team to application developers and the rest of the engineering organization. An IDP glues together the tech and tools of an enterprise into golden paths that lower cognitive load and enable developer self-service. 
 
-Gluing together, lower cognitive load, enable self service... Improving the workflow as described above ticks those boxes. At least to a certain extent.
+Gluing together, lower cognitive load, enable self-service... Improving pull requests as described above ticks those boxes. At least to a certain extent.
 
-Depending on who you ask, IDP can also mean 'Internal Development _Portal_'. The [following defininition](https://internaldeveloperplatform.org/developer-portals/) is quite concise in explaining the relationshi[^footnote_idp]:
+Depending on who you ask, IDP can also mean 'Internal Development _Portal_'. The [following defininition](https://internaldeveloperplatform.org/developer-portals/) is quite concise in explaining how those two relate[^footnote_idp]:
 
 > **Internal developer portals** serve as the interface through which developers can discover and access **internal developer platform** capabilities.
 
 In Internal Developer Portal brings and integrates various capabilities: Workflow automation, Service catalog, documentation, dashboards showing a projects health by metrics such as test coverage and vulnerabilities. They typically sit on top of existing services such as version control, or pipelines, and need to integrate with those services. The rewards can be high, but it takes serious investment to start extracting that value.
 
+Focusing on the infrastructure as code part, portals typically require you to identify self-service workflows, _then_ integrate these into the portal. And while that can nicely integrate into the portal, that does not automatically mean integrating into the code review process.
 
+The method described in this article, uses basic building blocks that are likely present in any organization:
+
+* Version control with collaboration, so: GitHub, GitLab, Bitbucket and the likes
+* CI platform, either integrated with version control (e.g. GitHub actions) or separate, such as Azure DevOps, AWS Code Pipeline, Argo Workflows, etc.
+* Infrastructure of code tool of choice. This could be anything: Terraform, Kubernetes manifests via Helm or Kustomize, Cloudformation, CDK, Bicep.
+
+It is adaptable to systems and tools that are in use and relatively easy to implement. Developer experience (DX) can be considered good for teams routinely modifying infrastructure as code. To illustrate:
+
+**TODO** graphic
+
+## How does this fit into Team Topologies?
+
+
+
+
+## Additional benefits and complexities
 
 
 ----
