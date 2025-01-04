@@ -67,11 +67,11 @@ Another challenge is access. Assuming we acknowledged the previous challenges, w
 
 ## Improving the workflow
 
-First, let's look at a basic workflow for infrastructure as code, and how a pipeline could automate parts of this:
+First, let's look at a basic workflow for infrastructure as code:
 
 {{< figure src="/img/iac_workflows.basic.svg" title="Example of a basic infrastructure as code workflow" >}}
 
-**TODO:** Check capitalization
+**TODO:** Check capitalization, consider highlighting manual, pipeline, review
 
 * *Final check:* This would typically be a step in a pipeline, right before applying that shows the changes that will be applied. Then in the automation platform, the proposed changes can be confirmed. If something looks not right, this would be the moment were the process is aborted, and a new pull request needs to be created.
 * *Focus*: These are the moments where a second person needs to shift focus to this workflow. The reviewer needs to grasp the intentions of the author, both at the moment of reviewing and when applying the changes. The author might need to chime in when changes are about to be applied, to verify any questions. This task switching [is expensive](https://www.psychologytoday.com/us/blog/brain-wise/201209/the-true-cost-of-multi-tasking) and increases the chance of errors.
@@ -115,16 +115,58 @@ The method described in this article, uses basic building blocks that are likely
 * CI platform, either integrated with version control (e.g. GitHub actions) or separate, such as Azure DevOps, AWS Code Pipeline, Argo Workflows, etc.
 * Infrastructure of code tool of choice. This could be anything: Terraform, Kubernetes manifests via Helm or Kustomize, Cloudformation, CDK, Bicep.
 
-It is adaptable to systems and tools that are in use and relatively easy to implement. Developer experience (DX) can be considered good for teams routinely modifying infrastructure as code. To illustrate:
+It can be adapted to the systems and tools that are in use, and is relatively easy to implement. Developer experience (DevEx) can be considered good for teams routinely modifying infrastructure as code. To illustrate:
 
 **TODO** graphic
 
 ## How does this fit into Team Topologies?
 
+Let's look at the brief description of [Team Topologies](https://teamtopologies.com/key-concepts):
 
+> Team Topologies is an approach to designing team-of-teams organizations for fast flow of value.
 
+One of the four topologies, which can be seen as a 'kind of team' is the platform team:
+
+> A grouping of other team types that provide a compelling internal product to accelerate delivery by Stream-aligned teams
+
+So, helping stream aligned teams to accelerate delivery. Which can be done by removing some of the friction points, an internal developer platform aims to solve:
+
+* Cognitive load
+* Ticket Ops / Missing self service
+* Slow delivery
+
+Improving the pull request workflow, as described in this article, benefits the platform team itself, but it can also allow other teams to easily contribute. This puts them back in control over their roadmap. Instead of 'issuing tickets' they can 'create pull requests'.
+
+When paired with a curated, opinionated library of packages, like Terraform modules, CDK constructs or Helm charts, and guardrails that ensure their usage, it might even be possible to remove the platform team entirely from the review process. Cognitive load can be reduced by not having to come up with solutions, but instead change a small set of parameters.
+
+This provides self-service to the stream aligned teams and the role of the platform team shifts a bit to that of an 'enabling team', by providing guidance, and signaling where capabilities of the platform might be lacking.
 
 ## Additional benefits and complexities
+
+Centering the infrastructure as code workflow around the pull request, addresses the challenges described at the start of this article. There are some additional befits:
+
+* *Auditability*: Depending on the level of regulation or compliancy that is, your organization might be required to have a 'change management process', including a '4 eyes principle' when applying infrastructure changes. Pull requests are already set up for this: Branch protection and required reviewers satisfy the 4 eyes principle, while the closed pull requests, _and_ the rich context provided _in_ those pull request, can serve as an auditable log of infrastructure changes.
+* *Easier onboarding*: There is no need to setup local environments, or access, to start working on systems. Also it is not required to immediately grasp every abstraction in a project: By changing some variables it immediately becomes clear what the effect will be. Furthermore previous pull request can provide context and guidance. This helps platform teams when onboarding new team members, but it also helps when performing infrequent tasks.
+
+Some particular complexities remain though, that might require (quite some) additional effort to tackle:
+
+* *What to show?* What if the code change affects several AWS accounts? Or: tens or hundreds of edge devices? Depending on the number of targets, it might be needed to select a representative example to show the planned changes. This implicitly requires the targets to be set up identically, following logical patterns. Identifying what to show, or how to spot outliers, can be challenging.
+* *Noise*: When comparing current and intended state, certain types of metadata might create noise. This could be metadata changes in the actual state, or changes introduced in automation. Depending on the nature, this could make the actual changes less obvious.
+* *Apply time errors*: In most cases, tools will identify syntax errors or misconfigurations. There are however errors that will only show once trying to apply the change. For example, the name of an AWS security group needs to be unique within the VPC. In some cases this might be indicative of an underlying problem: A lack of naming conventions that ensures uniqueness. For other cases, one could consider adding checks in the pipeline that 'shift the problem left'.
+
+## Conclusion
+
+
+
+
+- What to show? E.g. PR affecting many, similar, edge devices
+- Noise (metadata changes, like 'last_updated', 'previous_version')
+- Apply-time errors
+
+
+
+## Conclusion
+
 
 
 ----
