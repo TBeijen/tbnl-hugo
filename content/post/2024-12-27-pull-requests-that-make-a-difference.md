@@ -71,7 +71,7 @@ First, let's look at a basic workflow for infrastructure as code:
 
 {{< figure src="/img/iac_workflows.basic.svg" title="Example of a basic infrastructure as code workflow" >}}
 
-**TODO:** Check capitalization, consider highlighting manual, pipeline, review
+**TODO:** Check capitalization, consider highlighting manual, pipeline, review. Visualise pipeline steps.
 
 * *Final check:* This would typically be a step in a pipeline, right before applying that shows the changes that will be applied. Then in the automation platform, the proposed changes can be confirmed. If something looks not right, this would be the moment were the process is aborted, and a new pull request needs to be created.
 * *Focus*: These are the moments where a second person needs to shift focus to this workflow. The reviewer needs to grasp the intentions of the author, both at the moment of reviewing and when applying the changes. The author might need to chime in when changes are about to be applied, to verify any questions. This task switching [is expensive](https://www.psychologytoday.com/us/blog/brain-wise/201209/the-true-cost-of-multi-tasking) and increases the chance of errors.
@@ -131,22 +131,22 @@ One of the four topologies, which can be seen as a 'kind of team' is the platfor
 
 So, helping stream aligned teams to accelerate delivery. Which can be done by removing some of the friction points, an internal developer platform aims to solve:
 
-* Cognitive load
-* Ticket Ops / Missing self service
+* High cognitive load
+* Ticket Ops / Missing self-service
 * Slow delivery
 
 Improving the pull request workflow, as described in this article, benefits the platform team itself, but it can also allow other teams to easily contribute. This puts them back in control over their roadmap. Instead of 'issuing tickets' they can 'create pull requests'.
 
-When paired with a curated, opinionated library of packages, like Terraform modules, CDK constructs or Helm charts, and guardrails that ensure their usage, it might even be possible to remove the platform team entirely from the review process. Cognitive load can be reduced by not having to come up with solutions, but instead change a small set of parameters.
+When paired with a curated, opinionated library of packages, such as Terraform modules, CDK constructs or Helm charts, cognitive load can be further reduced: Day-to-day changes then become the mere changing of a limited set of parameters. Optionally, guardrails can ensure the usage of those packages, reducing an organization's configuration sprawl.
 
-This provides self-service to the stream aligned teams and the role of the platform team shifts a bit to that of an 'enabling team', by providing guidance, and signaling where capabilities of the platform might be lacking.
+This provides self-service to the stream aligned teams, and the role of the platform team shifts a bit to that of an 'enabling team', by providing guidance, and signaling where capabilities of the platform might be lacking.
 
 ## Additional benefits and complexities
 
 Centering the infrastructure as code workflow around the pull request, addresses the challenges described at the start of this article. There are some additional befits:
 
 * *Auditability*: Depending on the level of regulation or compliancy that is, your organization might be required to have a 'change management process', including a '4 eyes principle' when applying infrastructure changes. Pull requests are already set up for this: Branch protection and required reviewers satisfy the 4 eyes principle, while the closed pull requests, _and_ the rich context provided _in_ those pull request, can serve as an auditable log of infrastructure changes.
-* *Easier onboarding*: There is no need to setup local environments, or access, to start working on systems. Also it is not required to immediately grasp every abstraction in a project: By changing some variables it immediately becomes clear what the effect will be. Furthermore previous pull request can provide context and guidance. This helps platform teams when onboarding new team members, but it also helps when performing infrequent tasks.
+* *Easier onboarding*: There is no need to set up local environments, or access, to start working on systems. Also, it is not required to immediately grasp every abstraction in a project: By changing some variables it immediately becomes clear what the effect will be. Furthermore, previous pull request can provide context and guidance. This helps platform teams when onboarding new team members, but it also helps when performing infrequent tasks.
 
 Some particular complexities remain though, that might require (quite some) additional effort to tackle:
 
@@ -156,94 +156,17 @@ Some particular complexities remain though, that might require (quite some) addi
 
 ## Conclusion
 
+Augmenting pull requests with planned changes and leveraging policies, is hardly revolutionary: Platforms such as [Terraform Cloud](https://developer.hashicorp.com/hcp) and [Spacelift](https://spacelift.io/) offer similar capabilities. Self-hosted, for Terraform, one could consider [Atlantis](https://www.runatlantis.io/). Since september 2024, AWS Cloudformation [has this capability](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/gitsync-enable-comments-on-pull-requests.html#:~:text=By%20enabling%20the%20comments%20on%20pull%20requests%20feature%2C%20you%20allow%20CloudFormation%20to%20post%20a%20comment%20that%20describes%20the%20differences%20between%20the%20current%20stack%20configuration%20and%20the%20proposed%20changes%20when%20the%20repo%20files%20are%20updated.) as well.
 
+While these platforms are very compelling, there are things to consider: SSO integration, RBAC models, the migration of existing workflows, 'do we need local runners with sufficient network access?', 'where does our data go?' and 'who has the keys to our castle?'. 
 
+A lot of those topics might already have been addressed with the existing pipeline and git workflow tools that are used. Maximizing their value then is something that can be implemented _today_, unlike procurement of a platform which arrives no sooner than _tomorrow_. And, it can be done with pretty much every IaC tool: Terraform has a plan step. Kustomize and Helm offer diff capabilities. So [does CDK](https://docs.aws.amazon.com/cdk/v2/guide/cli.html#cli-diff), and Azure's Bicep has a [what-if](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/deploy-what-if) operation. 
 
-- What to show? E.g. PR affecting many, similar, edge devices
-- Noise (metadata changes, like 'last_updated', 'previous_version')
-- Apply-time errors
+This article illustrates how relatively simple improvements can deliver great value. If finding this interesting, I encourage you to read my previous blog post [about 'Terrible'](https://www.tibobeijen.nl/2024/04/30/terrible-and-ansible-were-already-terrible-in-2016/): It describes an in-house tool that allowed teams to run Terraform and Ansible with confidence for many years. As this article shows, these days there would be no need to build such a tool, since better DevEx can be accomplished with the basic DevOps building blocks every organization already uses.
 
+In a next article I will go more in depth into the technical aspects of integrating infrastructure as code, pipelines and GitHub.
 
-
-## Conclusion
-
-
-
-----
-
-### Why
-
-#### PR process already setup for collaboration
-
-Additional benefit: PR process is aimed at collaboration. The systems that show change sets might not.
-
-#### Prevents needing access
-
-To pipeline environment. Or in case of GitOps where there is no pipeline, to cluster.
-To affected resources, auth & network.
-Simple
-
-#### Unblocks teams
-
-No ticket queue, or aligning sprints. Stream aligned teams have autonomy to submit changes.
-
-Needs review. Depending on subject, this responsibility can be delegated entirely to the submitting team.
-
-#### Makes abstractions accessible
-
-Illustration complexity skip. Focus on input and output.
-
-Similar to functions in programming, or APIs.
-
-#### Easier onboarding
-
-Or infrequent work. 
-
-#### Auditability and context
-
-What happened previous time we rolled out a similar change?
-4-eyes principle
-
-### What about IDPs?
-
-And does the P mean platform? Or portal?
-
-Internal development platforms
-Self-servicability
-Requests, forms
-
-Illustration breadth/depth/area/baseline/threshold
-
-Applicable for all infra
-
-Processes you need to maintain, takes effort. Either limit capabilities (can be conscious choice)
-
-Pair with modules, charts, libraries that include all good practices. Mix knowledge from Open Source with company guidelines, compiance. Golden path.
-
-Improve DX and conformality, without needing to build a lot on top of IaC.
-
-https://tag-app-delivery.cncf.io/whitepapers/platforms/
-
-### What about team topologies
-
-
-### Challenges
-
-- What to show? E.g. PR affecting many, similar, edge devices
-- Noise (metadata changes, like 'last_updated', 'previous_version')
-- Apply-time errors
-
-### Conclusion
-
-Reference to Terrible. Platforms like Hashicorp cloud. Atlantis. Cloudformation Github integration.
-
-Remove the scary part from IaC. Allow collaboration, similar to 'normal' software.
-
-Reference to team topologies.
-
-Future post pipeline simple building blocks.
-
-
+Hopefully this gives inspiration to look at one's DevOps workflows and spot possible improvements. If wanting to discuss, be sure to find me on LinkedIn or BlueSky. Thanks for reading!
 
 [^footnote_cicd]: This assumes separated CI and CD pipelines. A good practice, but in reality these are often intertwined in a single pipeline. Nevertheless, there are steps that _build_ (CI) and steps that _deploy_ (CD).
 
