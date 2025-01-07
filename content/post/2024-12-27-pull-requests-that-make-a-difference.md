@@ -71,8 +71,6 @@ First, let's look at a basic workflow for infrastructure as code:
 
 {{< figure src="/img/iac_workflows.basic.svg" title="Example of a basic infrastructure as code workflow" >}}
 
-**TODO:** Check capitalization, consider highlighting manual, pipeline, review. Visualise pipeline steps.
-
 * *Final check:* This would typically be a step in a pipeline, right before applying that shows the changes that will be applied. Then in the automation platform, the proposed changes can be confirmed. If something looks not right, this would be the moment were the process is aborted, and a new pull request needs to be created.
 * *Focus*: These are the moments where a second person needs to shift focus to this workflow. The reviewer needs to grasp the intentions of the author, both at the moment of reviewing and when applying the changes. The author might need to chime in when changes are about to be applied, to verify any questions. This task switching [is expensive](https://www.psychologytoday.com/us/blog/brain-wise/201209/the-true-cost-of-multi-tasking) and increases the chance of errors.
 * *Repeat loops:* Repeats can obviously originate from the pull request, but also from the final check. Every repeat loop requires a new pull request. And that will bring more task switching.
@@ -80,14 +78,17 @@ First, let's look at a basic workflow for infrastructure as code:
 
 Now let's see how we can improve this workflow by some relatively small modifications:
 
+* We integrate the proposed changes into the pull request
+* We run validating checks on the proposed changes
+
 {{< figure src="/img/iac_workflows.improved.svg" title="Example of an improved infrastructure as code workflow" >}}
 
-**TODO:** Split out checks, after plan
+This results in:
 
-* *Remove risk:* By making the proposed changes available at review time, and ensuring that exactly those changes will be applied, there will be no unexpected changes.
+* *Removed risk:* By making the proposed changes available at review time, and ensuring that exactly those changes will be applied, there will be no unexpected changes.
 * *Reduced task switching:* All collaboration is now reduced to a single occurrence: The pull request. The code changes, but also the resulting planned infrastructure changes, are presented in the pull request. This requires the reviewer to change tasks only once, and provides full context.
 * *First time right:* The author, without needing any access or permissions on the target environment, can see the effect of the code changes. This allows the author to fix any issues _before_ submitting the pull request. This greatly reduces the chance of additional code changes, and by that a new pull request, being needed.
-* *Additional checks*: By making the planned changes part of the review, we can run additional checks on the planned changes. For example: Prevent (accidental) deletion of certain resource types, or run policy checks.
+* *Guardrails via additional checks*: By making the planned changes part of the review, we can run additional checks on the planned changes. For example: Prevent (accidental) deletion of certain resource types, or run policy checks.
 
 The example below shows `terraform plan` output in a pull request. Here, apparently, we are about to remove an event listener from a Keycloak realm, which was temporarily added using click-ops to test something[^footnote_clickops]. Without plan output this would either go unnoticed (lack of control) or require further examination at apply-time (increased cognitive load).
 
@@ -117,7 +118,11 @@ The method described in this article, uses basic building blocks that are likely
 
 It can be adapted to the systems and tools that are in use, and is relatively easy to implement. Developer experience (DevEx) can be considered good for teams routinely modifying infrastructure as code. To illustrate:
 
-**TODO** graphic
+{{< figure src="/img/iac_workflows.scope.svg" title="Comparing portal workflows and improved pull requests" >}}
+
+Focusing on the infrastructure as code part, a portal has the potential for better DevEx. But the investment of identifying and implementing a workflow might be high. Furthermore, the scope of the improved DevEx is typically limited to the implemented workflows.
+
+Putting a price tag on it: The cost vs. area of improvement of a portal is higher, which can be worth the investment, if the improved DevEx and scale are sufficient. 
 
 ## How does this fit into Team Topologies?
 
@@ -162,11 +167,11 @@ While these platforms are very compelling, there are things to consider: SSO int
 
 A lot of those topics might already have been addressed with the existing pipeline and git workflow tools that are used. Maximizing their value then is something that can be implemented _today_, unlike procurement of a platform which arrives no sooner than _tomorrow_. And, it can be done with pretty much every IaC tool: Terraform has a plan step. Kustomize and Helm offer diff capabilities. So [does CDK](https://docs.aws.amazon.com/cdk/v2/guide/cli.html#cli-diff), and Azure's Bicep has a [what-if](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/deploy-what-if) operation. 
 
-This article illustrates how relatively simple improvements can deliver great value. If finding this interesting, I encourage you to read my previous blog post [about 'Terrible'](https://www.tibobeijen.nl/2024/04/30/terrible-and-ansible-were-already-terrible-in-2016/): It describes an in-house tool that allowed teams to run Terraform and Ansible with confidence for many years. As this article shows, these days there would be no need to build such a tool, since better DevEx can be accomplished with the basic DevOps building blocks every organization already uses.
+This article illustrates how relatively simple improvements can deliver a lot of value. If finding this interesting, I encourage you to read my previous blog post [about 'Terrible'](https://www.tibobeijen.nl/2024/04/30/terrible-and-ansible-were-already-terrible-in-2016/): It describes an in-house tool that allowed teams to run Terraform and Ansible with confidence for many years. As this article shows, these days there would be no need to build such a tool, since better DevEx can be accomplished with the basic DevOps building blocks every organization already uses.
 
 In a next article I will go more in depth into the technical aspects of integrating infrastructure as code, pipelines and GitHub.
 
-Hopefully this gives inspiration to look at one's DevOps workflows and spot possible improvements. If wanting to discuss, be sure to find me on LinkedIn or BlueSky. Thanks for reading!
+Hopefully this gives inspiration to look at one's DevOps workflows and spot possible improvements. If wanting to discuss, be sure to find me on [LinkedIn](https://www.linkedin.com/in/tibobeijen/) or [BlueSky](https://bsky.app/profile/tibobeijen.nl). Thanks for reading!
 
 [^footnote_cicd]: This assumes separated CI and CD pipelines. A good practice, but in reality these are often intertwined in a single pipeline. Nevertheless, there are steps that _build_ (CI) and steps that _deploy_ (CD).
 
