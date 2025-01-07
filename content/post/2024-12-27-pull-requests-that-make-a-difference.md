@@ -13,7 +13,7 @@ tags:
   - Collaboration
   - Terraform
 description: How to effectively collaborate on infra-as-code and roll out changes with confidence
-thumbnail: ""
+thumbnail: img/iac_workflows.header.png
 
 ---
 
@@ -29,6 +29,8 @@ These challenges bring risks, which tend to slow teams down. Those risks also li
 By improving our review process we can make infrastructure changes as easy as the continuous delivery of software. 
 
 Let's look into what we can improve, and how this fits into platform engineering and [Team Topologies](https://teamtopologies.com/key-concepts).
+
+{{< figure src="/img/iac_workflows.header.svg" title="You do not want to accidentally replace a database" >}}
 
 ## Challenges
 
@@ -89,6 +91,8 @@ This results in:
 * *Reduced task switching:* All collaboration is now reduced to a single occurrence: The pull request. The code changes, but also the resulting planned infrastructure changes, are presented in the pull request. This requires the reviewer to change tasks only once, and provides full context.
 * *First time right:* The author, without needing any access or permissions on the target environment, can see the effect of the code changes. This allows the author to fix any issues _before_ submitting the pull request. This greatly reduces the chance of additional code changes, and by that a new pull request, being needed.
 * *Guardrails via additional checks*: By making the planned changes part of the review, we can run additional checks on the planned changes. For example: Prevent (accidental) deletion of certain resource types, or run policy checks.
+
+In the pull request workflow, the planned changes will augment the code changes, and in most cases become the focal point of the pull request.
 
 The example below shows `terraform plan` output in a pull request. Here, apparently, we are about to remove an event listener from a Keycloak realm, which was temporarily added using click-ops to test something[^footnote_clickops]. Without plan output this would either go unnoticed (lack of control) or require further examination at apply-time (increased cognitive load).
 
