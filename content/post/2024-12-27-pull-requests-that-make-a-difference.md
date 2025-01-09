@@ -92,7 +92,7 @@ This results in:
 * *First time right:* The author, without needing any access or permissions on the target environment, can see the effect of the code changes. This allows the author to fix any issues _before_ submitting the pull request. This greatly reduces the chance of additional code changes, and by that a new pull request, being needed.
 * *Guardrails via additional checks*: By making the planned changes part of the review, we can run additional checks on the planned changes. For example: Prevent (accidental) deletion of certain resource types, or run policy checks.
 
-In the pull request workflow, the planned changes will augment the code changes, and in most cases become the focal point of the pull request.
+In the pull request workflow, the planned changes will augment the code changes, and in most cases even become the focal point of the pull request.
 
 The example below shows `terraform plan` output in a pull request. Here, apparently, we are about to remove an event listener from a Keycloak realm, which was temporarily added using click-ops to test something[^footnote_clickops]. Without plan output this would either go unnoticed (lack of control) or require further examination at apply-time (increased cognitive load).
 
@@ -100,7 +100,7 @@ The example below shows `terraform plan` output in a pull request. Here, apparen
 
 ## How does this fit into platform engineering?
 
-On the topic of 'platform engineering', one is bound to run into the term 'Internal Development Plaform' (IDP). Quoting [one of the definitions](https://internaldeveloperplatform.org/what-is-an-internal-developer-platform/) that can be found:
+On the topic of 'platform engineering', one is bound to run into the term 'Internal Development Platform' (IDP). Quoting [one of the definitions](https://internaldeveloperplatform.org/what-is-an-internal-developer-platform/) that can be found:
 
 > An Internal Developer Platform (IDP) is built and provided as a product by the platform team to application developers and the rest of the engineering organization. An IDP glues together the tech and tools of an enterprise into golden paths that lower cognitive load and enable developer self-service. 
 
@@ -156,6 +156,7 @@ Centering the infrastructure as code workflow around the pull request, addresses
 
 * *Auditability*: Depending on the level of regulation or compliancy that is, your organization might be required to have a 'change management process', including a '4 eyes principle' when applying infrastructure changes. Pull requests are already set up for this: Branch protection and required reviewers satisfy the 4 eyes principle, while the closed pull requests, _and_ the rich context provided _in_ those pull request, can serve as an auditable log of infrastructure changes.
 * *Easier onboarding*: There is no need to set up local environments, or access, to start working on systems. Also, it is not required to immediately grasp every abstraction in a project: By changing some variables it immediately becomes clear what the effect will be. Furthermore, previous pull request can provide context and guidance. This helps platform teams when onboarding new team members, but it also helps when performing infrequent tasks.
+* *Set up for maintenance*: A codebase will see many changes during its lifecycle: Parts evolve, parts might need to be removed. Repetitive patterns emerge that might require refactoring at some point. When this can be done easily, with confidence to not introduce breaking changes, this will positively affect code quality and maintainability in the long run.
 
 Some particular complexities remain though, that might require (quite some) additional effort to tackle:
 
@@ -167,7 +168,7 @@ Some particular complexities remain though, that might require (quite some) addi
 
 Augmenting pull requests with planned changes and leveraging policies, is hardly revolutionary: Platforms such as [Terraform Cloud](https://developer.hashicorp.com/hcp) and [Spacelift](https://spacelift.io/) offer similar capabilities. Self-hosted, for Terraform, one could consider [Atlantis](https://www.runatlantis.io/). Since september 2024, AWS Cloudformation [has this capability](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/gitsync-enable-comments-on-pull-requests.html#:~:text=By%20enabling%20the%20comments%20on%20pull%20requests%20feature%2C%20you%20allow%20CloudFormation%20to%20post%20a%20comment%20that%20describes%20the%20differences%20between%20the%20current%20stack%20configuration%20and%20the%20proposed%20changes%20when%20the%20repo%20files%20are%20updated.) as well.
 
-While these platforms are very compelling, there are things to consider: SSO integration, RBAC models, the migration of existing workflows, 'do we need local runners with sufficient network access?', 'where does our data go?' and 'who has the keys to our castle?'. 
+While such platforms, or internal developer platforms in general, are very compelling, there are things to consider: SSO integration, RBAC models, the migration of existing workflows, 'do we need local runners with sufficient network access?', 'where does our data go?' and 'who has the keys to our castle?'. To name a few.
 
 A lot of those topics might already have been addressed with the existing pipeline and git workflow tools that are used. Maximizing their value then is something that can be implemented _today_, unlike procurement of a platform which arrives no sooner than _tomorrow_. And, it can be done with pretty much every IaC tool: Terraform has a plan step. Kustomize and Helm offer diff capabilities. So [does CDK](https://docs.aws.amazon.com/cdk/v2/guide/cli.html#cli-diff), and Azure's Bicep has a [what-if](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/deploy-what-if) operation. 
 
