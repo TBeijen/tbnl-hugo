@@ -1,22 +1,21 @@
 ---
 title: "Infra pull requests that make a DIFFerence"
 author: Tibo Beijen
-date: 2024-12-27T07:00:00+01:00
-url: /2024/12/27/infra-pull-requests-that-make-a-difference
+date: 2025-01-10T05:00:00+01:00
+url: /2025/01/10/infra-pull-requests-that-make-a-difference
 categories:
   - articles
 tags:
   - Infrastructure as code
   - DevOps
   - Platform engineering
-  - Team topologies
+  - Team Topologies
   - Collaboration
   - Terraform
-description: How to effectively collaborate on infra-as-code and roll out changes with confidence
+description: How to effectively collaborate on infrastructure as code and roll out changes with confidence
 thumbnail: img/iac_workflows.header.png
 
 ---
-
 
 ## Introduction
 
@@ -45,9 +44,9 @@ So, there can be a big disconnect between the (small) code change and the actual
 This is aggravated by various abstractions that are used for good reason: [Terraform modules](https://registry.terraform.io/browse/modules), [CDK constructs](https://constructs.dev/search?q=&cdk=aws-cdk&cdkver=2&offset=0), [Helm charts](https://artifacthub.io/) form reusable packages, encapsulating a lot of resources.
 So, the small maintenance task of bumping the version of a Terraform module, will likely introduce several changes. Now the author of such a module has a responsibility to avoid to unnecessarily break things, but ultimately _you_ are responsible when using the package.
 
-It is worth noting that unexpected changes can also occur when no code has changed. One source, which should be avoided, is click-ops, or automated systems competing for ownership. But an example of a more subtle source I have seen in the past, is Elasticache [automatic minor version upgrades](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_cluster#auto_minor_version_upgrade-1) (the default). If other parameters haven't been set accordingly, you are suddenly faced with a _replacement_ of your Elasticache setup. Not what you want.
+It is worth noting that unexpected changes can also occur when no code has changed. One source, which should be avoided, is click-ops. Another source are automated systems competing for ownership. But an example of a more subtle source I have seen in the past, is AWS ElastiCache [automatic minor version upgrades](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_cluster#auto_minor_version_upgrade-1) (the default). If other parameters haven't been set accordingly, you are suddenly faced with a _replacement_ of your ElastiCache setup. Not what you want.
 
-Another mechanism that complicates predictability, is the overlaying of values. For example, Kustomize allows one to use [overlays](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/#bases-and-overlays). A great concept, but it can make it hard to predict the effect of a code change on a given environment. To illustrate: Changing a value in a base, might not have any effect on production because it is already defined in the production overlay. This is impossible to predict by looking at the code change alone.
+Another mechanism that complicates predictability, is the overlaying of values. For example, Kustomize allows one to use [overlays](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/#bases-and-overlays). A great concept, but it can make it hard to predict the effect of a code change on a given environment. To illustrate: Changing a value in a base, might not have any effect on production because it is already defined in the production overlay. This is impossible to predict by looking at the code change alone since that does not show the unchanged overlay.
 
 To summarize:
 
@@ -57,7 +56,7 @@ To summarize:
 
 ### Challenge: Big bang rollouts
 
-In traditional software, we have various methods to safeguard us from production errors. We can run various tests in the CI pipeline, then let the CD pipeline move _the same_ artifact through various environments, up to production[^footnote_cicd]. The production deploy itself then, can use methods such as canary deploys and gradual rollouts.
+In traditional software, we have various methods to safeguard us from production errors. We can run various tests in the CI pipeline, then let the CD pipeline move _the same_ artifact through various environments, up to production[^footnote_cicd]. The production deploy itself then, can use methods such as canary deploys and rolling updates.
 
 Infrastructure changes are different: There is no single artifact that can be moved from environment to environment. Instead, each environment has its own artifact, in the form of the planned changes. There is also no concept of gradual rollout. Furthermore, rollouts are sometimes irreversible or destructive. For example, downgrading a database version is typically not possible.
 
@@ -73,10 +72,10 @@ First, let's look at a basic workflow for infrastructure as code:
 
 {{< figure src="/img/iac_workflows.basic.svg" title="Example of a basic infrastructure as code workflow" >}}
 
-* *Final check:* This would typically be a step in a pipeline, right before applying that shows the changes that will be applied. Then in the automation platform, the proposed changes can be confirmed. If something looks not right, this would be the moment were the process is aborted, and a new pull request needs to be created.
+* *Final check:* This would typically be a step in a pipeline, right before applying that shows the changes that will be applied. Then in the automation platform, the proposed changes can be confirmed. If something looks not right, this would be the moment where the process is aborted, and a new pull request needs to be created.
 * *Focus*: These are the moments where a second person needs to shift focus to this workflow. The reviewer needs to grasp the intentions of the author, both at the moment of reviewing and when applying the changes. The author might need to chime in when changes are about to be applied, to verify any questions. This task switching [is expensive](https://www.psychologytoday.com/us/blog/brain-wise/201209/the-true-cost-of-multi-tasking) and increases the chance of errors.
 * *Repeat loops:* Repeats can obviously originate from the pull request, but also from the final check. Every repeat loop requires a new pull request. And that will bring more task switching.
-* *Risk:* Just before applying, might be the first time the proposed changes are visible. This requires alignment between the author and the person applying, requiring focus from both. As mentioned before, task switching increases the chance of errors. So, a 'quick final check' might not get the attention it needs and people might overlook important details.
+* *Risk:* Just before applying, might be the first time the proposed changes are visible. This requires alignment between the author and the person applying, requiring focus from both. As mentioned before, task switching increases the chance of errors. So, a 'quick final check' might not get the attention it needs, and people might overlook important details.
 
 Now let's see how we can improve this workflow by some relatively small modifications:
 
@@ -89,7 +88,7 @@ This results in:
 
 * *Removed risk:* By making the proposed changes available at review time, and ensuring that exactly those changes will be applied, there will be no unexpected changes.
 * *Reduced task switching:* All collaboration is now reduced to a single occurrence: The pull request. The code changes, but also the resulting planned infrastructure changes, are presented in the pull request. This requires the reviewer to change tasks only once, and provides full context.
-* *First time right:* The author, without needing any access or permissions on the target environment, can see the effect of the code changes. This allows the author to fix any issues _before_ submitting the pull request. This greatly reduces the chance of additional code changes, and by that a new pull request, being needed.
+* *First time right:* The author, without needing any access or permissions on the target environment, can see the effect of the code changes. This allows the author to fix any issues _before_ submitting the pull request. This greatly reduces the chance of needing additional code changes, and by that a new pull request.
 * *Guardrails via additional checks*: By making the planned changes part of the review, we can run additional checks on the planned changes. For example: Prevent (accidental) deletion of certain resource types, or run policy checks.
 
 In the pull request workflow, the planned changes will augment the code changes, and in most cases even become the focal point of the pull request.
@@ -110,7 +109,7 @@ Depending on who you ask, IDP can also mean 'Internal Development _Portal_'. The
 
 > **Internal developer portals** serve as the interface through which developers can discover and access **internal developer platform** capabilities.
 
-In Internal Developer Portal brings and integrates various capabilities: Workflow automation, Service catalog, documentation, dashboards showing a projects health by metrics such as test coverage and vulnerabilities. They typically sit on top of existing services such as version control, or pipelines, and need to integrate with those services. The rewards can be high, but it takes serious investment to start extracting that value.
+An Internal Developer Portal brings and integrates various capabilities: Workflow automation, Service catalog, documentation, dashboards showing a projects health by metrics such as test coverage and vulnerabilities. They typically sit on top of existing services such as version control, or pipelines, and need to integrate with those services. The rewards can be high, but it takes serious investment to start extracting that value.
 
 Focusing on the infrastructure as code part, portals typically require you to identify self-service workflows, _then_ integrate these into the portal. And while that can nicely integrate into the portal, that does not automatically mean integrating into the code review process.
 
@@ -126,7 +125,7 @@ It can be adapted to the systems and tools that are in use, and is relatively ea
 
 Focusing on the infrastructure as code part, a portal has the potential for better DevEx. But the investment of identifying and implementing a workflow might be high. Furthermore, the scope of the improved DevEx is typically limited to the implemented workflows.
 
-Putting a price tag on it: The cost vs. area of improvement of a portal is higher, which can be worth the investment, if the improved DevEx and scale are sufficient. 
+Putting a price tag on it: The cost vs. area of improvement of a portal is higher, which can be worth the investment, _if_ the improved DevEx and scale are sufficient. 
 
 ## How does this fit into Team Topologies?
 
@@ -138,13 +137,13 @@ One of the four topologies, which can be seen as a 'kind of team' is the platfor
 
 > A grouping of other team types that provide a compelling internal product to accelerate delivery by Stream-aligned teams
 
-So, helping stream aligned teams to accelerate delivery. Which can be done by removing some of the friction points, an internal developer platform aims to solve:
+So: helping stream aligned teams to accelerate delivery. Which can be done by removing some of the friction points an internal developer platform aims to solve:
 
 * High cognitive load
 * Ticket Ops / Missing self-service
 * Slow delivery
 
-Improving the pull request workflow, as described in this article, benefits the platform team itself, but it can also allow other teams to easily contribute. This puts them back in control over their roadmap. Instead of 'issuing tickets' they can 'create pull requests'.
+Improving the pull request workflow, as described in this article, benefits the platform team itself, but it can also allow other teams to easily contribute. This puts them back in control over their roadmap. Instead of 'issuing tickets' they can 'create pull requests'. And depending on the situation, they might even be able to self-approve the pull request.
 
 When paired with a curated, opinionated library of packages, such as Terraform modules, CDK constructs or Helm charts, cognitive load can be further reduced: Day-to-day changes then become the mere changing of a limited set of parameters. Optionally, guardrails can ensure the usage of those packages, reducing an organization's configuration sprawl.
 
@@ -156,7 +155,7 @@ Centering the infrastructure as code workflow around the pull request, addresses
 
 * *Auditability*: Depending on the level of regulation or compliancy that is, your organization might be required to have a 'change management process', including a '4 eyes principle' when applying infrastructure changes. Pull requests are already set up for this: Branch protection and required reviewers satisfy the 4 eyes principle, while the closed pull requests, _and_ the rich context provided _in_ those pull request, can serve as an auditable log of infrastructure changes.
 * *Easier onboarding*: There is no need to set up local environments, or access, to start working on systems. Also, it is not required to immediately grasp every abstraction in a project: By changing some variables it immediately becomes clear what the effect will be. Furthermore, previous pull request can provide context and guidance. This helps platform teams when onboarding new team members, but it also helps when performing infrequent tasks.
-* *Set up for maintenance*: A codebase will see many changes during its lifecycle: Parts evolve, parts might need to be removed. Repetitive patterns emerge that might require refactoring at some point. When this can be done easily, with confidence to not introduce breaking changes, this will positively affect code quality and maintainability in the long run.
+* *Prepare for maintenance*: A codebase will see many changes during its lifecycle: Parts evolve, parts might need to be removed. Repetitive patterns emerge that might require refactoring at some point. When this can be done easily, with confidence to not introduce breaking changes, this will positively affect code quality and maintainability in the long run.
 
 Some particular complexities remain though, that might require (quite some) additional effort to tackle:
 
@@ -166,7 +165,7 @@ Some particular complexities remain though, that might require (quite some) addi
 
 ## Conclusion
 
-Augmenting pull requests with planned changes and leveraging policies, is hardly revolutionary: Platforms such as [Terraform Cloud](https://developer.hashicorp.com/hcp) and [Spacelift](https://spacelift.io/) offer similar capabilities. Self-hosted, for Terraform, one could consider [Atlantis](https://www.runatlantis.io/). Since september 2024, AWS Cloudformation [has this capability](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/gitsync-enable-comments-on-pull-requests.html#:~:text=By%20enabling%20the%20comments%20on%20pull%20requests%20feature%2C%20you%20allow%20CloudFormation%20to%20post%20a%20comment%20that%20describes%20the%20differences%20between%20the%20current%20stack%20configuration%20and%20the%20proposed%20changes%20when%20the%20repo%20files%20are%20updated.) as well.
+Augmenting pull requests with planned changes and leveraging policies, is hardly revolutionary: Platforms such as [Terraform Cloud](https://developer.hashicorp.com/hcp) and [Spacelift](https://spacelift.io/) offer similar capabilities. Self-hosted, for Terraform, one could consider [Atlantis](https://www.runatlantis.io/). Since September 2024, AWS Cloudformation [has this capability](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/gitsync-enable-comments-on-pull-requests.html#:~:text=By%20enabling%20the%20comments%20on%20pull%20requests%20feature%2C%20you%20allow%20CloudFormation%20to%20post%20a%20comment%20that%20describes%20the%20differences%20between%20the%20current%20stack%20configuration%20and%20the%20proposed%20changes%20when%20the%20repo%20files%20are%20updated.) as well.
 
 While such platforms, or internal developer platforms in general, are very compelling, there are things to consider: SSO integration, RBAC models, the migration of existing workflows, 'do we need local runners with sufficient network access?', 'where does our data go?' and 'who has the keys to our castle?'. To name a few.
 
@@ -182,5 +181,5 @@ Hopefully this gives inspiration to look at one's DevOps workflows and spot poss
 
 [^footnote_clickops]: Shame. Shame. Also: Pragmatic. But one needs to be aware the click-ops change can be reverted at any moment _and_ can thwart others workflow by showing unexpected changes.
 
-[^footnote_idp]: [This blogpost](https://humanitec.com/blog/wtf-internal-developer-platform-vs-internal-developer-portal-vs-paas#what-is-an-internal-developer-portal
+[^footnote_idp]: [This blog post](https://humanitec.com/blog/wtf-internal-developer-platform-vs-internal-developer-portal-vs-paas#what-is-an-internal-developer-portal
 ) by Humanitec, themselves an IDP vendor, gives some context on the platform/portal confusion of IDPs.
