@@ -26,7 +26,9 @@ First thing to think about is in what order to take the exams. Some build up to 
 
 One could consider doing KCSA later, between CKA and CKS. The topic being security, it nicely helps shifting the focus there. And the hands-on exams are more 'fun' and tangible, so this could help keep momentum. This is of course highly subjective.
 
-Now for a bit of context: I use Kubernetes since 2018, mostly AWS EKS, and work in tech for about 20 years. Yet, it's easy to spend years using Kubernetes and hardly ever have to deal with things like `etcdctl`, `kubeadm`, encrypting etcd, `ImagePolicyWebhook`, etc. So, I was mostly focused on CKA and CKS to fill in knowledge gaps, and then the inner completionist got the upper hand. I started with CKA, followed by CKS and then wound up the series a couple of weeks after that in a short timespan. That worked very well or me, starting with the 'new' stuff which is engaging and motivating. But, as always: YMMV.
+Now for a bit of context: I use Kubernetes since 2018, mostly AWS EKS, and work in tech for about 20 years. Yet, it's easy to spend years using Kubernetes and hardly ever have to deal with things like `etcdctl`, `kubeadm`, encrypting etcd, `ImagePolicyWebhook`, etc. So, I was mostly focused on CKA and CKS to fill in knowledge gaps, and then the inner completionist got the upper hand. I started with CKA, followed by CKS and then wound up the series a couple of weeks after that in a short timespan. 
+
+That worked very well _for me_, starting with the 'new' stuff which I found engaging and motivating. But, as always: YMMV.
 
 Whatever your experience level is, know that CKS is (by far) the hardest and not to be underestimated: It has the widest range of topics in scope, and is the hardest to complete within the 2 hours you have during the exam. Also, October 15, 2024, some [new topics have been added](https://training.linuxfoundation.org/cks-program-changes/), so be aware that not all study material reflects that.
 
@@ -40,15 +42,15 @@ Also, during the hands-on training, I sometimes noted keywords that lead to the 
 
 In general, I found the ['tasks' pages in the documentation](https://kubernetes.io/docs/tasks/) the most usable during the hands-on exams.
 
-## KillerCoda
+## Killercoda
 
-Having a homelab can help, but in my experience is absolutely not necessary. Regardless of having one or not, I can highly recommend using [KillerCoda](https://killercoda.com/) for two reasons:
+Having a homelab is a great source of learning in general, but in my experience not necessary for preparing the Kubestronaut exams. Regardless of having one or not, I can highly recommend using [Killercoda](https://killercoda.com/) for two reasons:
 
 First, by its very nature it resets. So you can easily repeat certain exercises, or start over when messing up. Especially topics like upgrading a cluster, or encrypting etcd secrets, become very accessible and repeatable this way.
 
-Second, taking the [Plus membership](https://killercoda.com/account/membership) brings an additional advantage: It allows you to solve the CKA, CKS, CKAD scenarios in the Exam Remote Desktop. Mind you, this not a _nice_ experience: There is lag, clunky copy-paste, reduced screen estate. But that's how the exam is, and I found that helped massively in getting comfortable with the exam environment.
+Second, taking the [Plus membership](https://killercoda.com/account/membership) brings an additional advantage: It allows you to solve the CKA, CKS and CKAD scenarios in the Exam Remote Desktop. Mind you, this not a _nice_ experience: There is lag, clunky copy-paste, reduced screen estate. But that's how the exam is, and I found that helped massively in getting comfortable with the exam environment.
 
-Based on study material and notes taken, define some practices for yourself and simply use the playgrounds where you can turn everything inside-out at will.
+Based on study material and notes taken, define some practices for yourself and simply use the Killercoda playgrounds where you can turn everything inside-out at will.
 
 ## Keep it simple, make it routine
 
@@ -56,7 +58,7 @@ In your day-to-day job you might have a highly tailored set of aliases and shell
 
 You can't bring those to the exam.
 
-So, similar to using the real clunky remote desktop in KillerCoda, practice in a setup that is representative for what you will be using during the exam. One of the most challenging aspects of the exams, especially CKS, is the lack of time. In my experience you won't lose critical time from typing something out that is routine. Instead, it's the unexpected fumbling, that will take time, _and_ put you of track.
+So, similar to using the real clunky remote desktop in Killercoda, practice using a setup that is representative for what you will be using during the exam. One of the most challenging aspects of the exams, especially CKS, is the lack of time. In my experience you won't lose critical time from typing something out that is routine. Instead, it's the unexpected fumbling, that will take time, _and_ put you off the track.
 
 Be aware that you will be SSH-ing into various virtual machines during the exam, so anything you customize in one place, will be gone in the next. So:
 
@@ -66,67 +68,77 @@ Be aware that you will be SSH-ing into various virtual machines during the exam,
 
 You _can_ use them if you insist, but if they're suddenly not there, you find yourself waiting for a pod to terminate, or need to replace the pod you accidentally created. In my opinion not worth it. Once again: YMMV.
 
+What worked for me: Two terminal tabs. One primary for working on the task, one secondary, for example to `k explain` my way around a certain topic. Also I started every exam with opening mousepad, for notes about questions to come back to. I found that easier than the notepad built into the PSI Secure Browser[^footnote_mousepad].
+
 ## CKAD, CKA and CKS 
 
-Killercoda
+Besides using KillerCoda I would suggest using one of the two [Killer.sh](https://killer.sh/) practice exams quite early in your study plan, for several reasons:
 
-Use one practice exam. Remains accessible for about 30 hours. Be sure to save the page
+* Gauge one's readiness. So, see how far you get within the 2 hours. But also, get a feeling of what's expected.
+* Use it as a practice environment for the duration of 36 hours. So: Best plan _when_ you want to activate the practice exam, to get the most out of it. No point in starting it at the start of a busy work week.
+* A web page with detailed step-by-step solutions and explanations will be available in that 36 hour. Be sure to save that page on disk to refer to later. It is great study material.
+
+For studying the topics of CKS, [Kim Wüstkamp's CKS course is available for free on Youtube](https://www.youtube.com/watch?v=d9xfB5qaOfg). While it does not include all the recently added topics, it still contains most of what you need to know. If just wanting to _pass_ the exam, 11 hours of video content might not be the most time-effective option. And, mind you, that is excluding the time to do the hands-on labs that are included. Focusing on scenarios and researching anything unknown, might be faster. But if you actually want to _learn_, it's a great trove of knowledge.
 
 ## KCNA and KCSA
 
-Relatively easy. Use practice exams to gauge one's readiness.
+These two are relatively easy. A good starting point would be some practice exams to see what topics are included. Based on that one could determine if purchasing a video course is needed or one already has enough knowledge.
 
-Free resources;
+Some free resources:
 
-* https://www.itexams.com/exam/KCNA - Not used myself. Looks free and representative although UI a bit clunky.
-* https://www.examtopics.com/exams/linux-foundation/kcna/view/
-* https://github.com/thiago4go/kubernetes-security-kcsa-mock
+* [Kubernetes Security KCSA Mock Exam](https://kubernetes-security-kcsa-mock.vercel.app/), A great resource of almost 300 practice questions by Thiago S Shimada Ramos. ([Github source](https://github.com/thiago4go/kubernetes-security-kcsa-mock)).
+* [KCNA questions on examtopics.com](https://www.examtopics.com/exams/linux-foundation/kcna/). Haven't used this myself. Looks suitable to get an impression on the types of question to expect.
+
+Of course there are also paid options on various e-learning platforms. I purchased some KCNA(https://www.udemy.com/course/kcna-kubernetes-and-cloud-native-associate-practice-exams/) and [KCSA](https://www.udemy.com/course/kcsa-kubernetes-cloud-native-security-associate-exam-prep/) practice exams on Udemy when they were on a bargain (EUR 10-ish each). They are fine and provide some explanation on each question, but I could have done with the free options. Especially KCSA, since the aforementioned mock exam provides ample practice material.
 
 ## During the exam
 
-Disable smooth scrolling
+Somehow scrolling in Firefox in the remote desktop makes you feel like you're drunk. You scroll a bit, and the part you're interested in scrolls right past out of the screen. What I found helpful is disabling 'smooth scrolling'.
 
-Consider reducing font size
+Also, depending on screen size and distance you use, it might be worth reducing font size (`ctrl -`) in both the terminal and Firefox, to allow more content to be in view. 
 
-Open a note in mousepad and keep open
+Furthermore, in the exam there are no reset or retry options. So, if asked to modify a deployment, given an original file, it might be worth copying that file to `<filename>.ori` _first_.
+
+Also, when generating YAML to be modified later, find a consistent naming scheme dat works for you. For example `q13-netpol-deny-all.yaml`. I can't fully remember, but if more than one exam question use the same VM, that will keep things organised.
+
+And, as mentioned before, use mousepad to take notes.
 
 ## CLI essentials
 
-Muscle memory
+You don't need to be a command line _wizzard_ but an understanding of Linux and linux command line fundamentals is needed. Some tips:
 
-`--dry-run=client -o yaml`
-`--grace-period=0 --force`
+```bash
+# Build muscle memory:
+--dry-run=client -o yaml
+--grace-period=0 --force
 
-Use `k explain`
-
-```sh
+# Use k explain
 k explain ciliumnetworkpolicy.spec.egressDeny
-```
 
-Use `man`
-
-```sh
+# Use man
 man Dockerfile
 man docker-run
 man docker-build
-```
 
-Search & navigate 
-
-Vim basics
-
-select, cut, copy, paste. Remove line, increase/decrease indent
-
-```sh
-# curl with max timeout 1 sec
-curl -m 1 http://my-svc.my-ns.svc.cluster.local
-
-# When asked for formatting displaying 'time in nanoseconds'
+# Quickly find falco params about nanoseconds
 falco --list |grep nano
 
-# -n: Create 16-char length base64 pw without newline being appended to value
-echo -n "this-is-very-sec" |base64
+# Test connectivity, limiting time-out wait time
+curl -m 1 http://my-svc.my-ns.svc.cluster.local
 ```
+
+Vim basics:
+
+* Enter 'insert mode'/exit back to 'command mode': `i`/`esc`
+* Save file (when in command mode): `:w`. Save & exit: `:wq`. Exit without saving: `:q!`
+* Select block: `shift-v`, then cut `d`, copy `y`. 
+* Paste copied/cut block elsewhere, move to insert point and: `shift-p`.
+* Decrease/increase selected block: `<`/`>`. Repeat with `.`
+* Move to start/end line: `^`/`$`
+* Backward/forward one word: `b`/`w`
 
 ## Concluding
 
+
+
+[^footnote_mousepad]: Apparently Killercoda recommends mousepad for notes as well, which I just recently noticed. Anyway, it's a good tip.
