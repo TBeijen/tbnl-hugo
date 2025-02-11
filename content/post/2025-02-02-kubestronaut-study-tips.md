@@ -18,6 +18,16 @@ thumbnail: img/kubestronaut-study-header.jpg
 
 ## Introduction
 
+At KubeCon 2024 in Paris, CNCF introduced the [Kubestronaut](https://www.cncf.io/training/kubestronaut/) program. Quoting:
+
+> The Kubestronaut program recognises community leaders who have consistently invested in their ongoing education and grown their skill level with Kubernetes.
+
+> Individuals who have successfully passed every CNCF’s Kubernetes certifications – CKA, CKAD, CKS, KCNA, KCSA – will receive the title of “Kubestronaut”
+
+From October 2024 through Januari 2025 I completed the five exams. Overal, I think about 2/3 of my preparation time has been spent on CKS alone.
+
+In this article I'll share what worked for me while studying and taking the exams. I hope it encourages and helps anyone in passing them all!
+
 {{< figure src="/img/kubestronaut-study-certificates.jpg" title="Kubestronaut certificates, inspired by my son's night lamp" >}}
 
 ## Order of exams
@@ -28,21 +38,21 @@ First thing to think about is in what order to take the exams. Some build up to 
 
 One could consider doing KCSA later, between CKA and CKS. The topic being security, it nicely helps shifting the focus there. And the hands-on exams are more 'fun' and tangible, so this could help keep momentum. This is of course highly subjective.
 
-Now for a bit of context: I use Kubernetes since 2018, mostly AWS EKS, and work in tech for about 20 years. Yet, it's easy to spend years using Kubernetes and hardly ever have to deal with things like `etcdctl`, `kubeadm`, encrypting etcd, `ImagePolicyWebhook`, etc. So, I was mostly focused on CKA and CKS to fill in knowledge gaps, and then the inner completionist got the upper hand. I started with CKA, followed by CKS and then wound up the series a couple of weeks after that in a short time span. 
+Now for a bit of context: I use Kubernetes since 2018, mostly AWS EKS, and work in tech for about 20 years. Yet, it's easy to spend years using Kubernetes and hardly ever have to deal with things like `etcdctl`, `kubeadm`, encrypting etcd, `ImagePolicyWebhook`, etc. So, I was mostly focused on CKA and CKS to fill in knowledge gaps. And then the inner completionist got the upper hand. I started with CKA, followed by CKS and then wound up the series a couple of weeks after that in a short time span. 
 
 That worked very well _for me_, starting with the 'new' material which I found engaging and motivating. But, as always: YMMV.
 
-Whatever your experience level is, know that CKS is (by far) the hardest and not to be underestimated: It has the widest range of topics in scope, and is the hardest to complete within the 2 hours you have during the exam. Also, October 15, 2024, some [new topics have been added](https://training.linuxfoundation.org/cks-program-changes/), so be aware that not all study material reflects that.
+Whatever your experience level is, know that CKS is (by far) the hardest and not to be underestimated: It has the widest range of topics in scope, and is the hardest to complete within the 2 hours you have during the exam. Also, October 15, 2024, some [new topics have been added](https://training.linuxfoundation.org/cks-program-changes/), so be aware that not all study material reflects that yet.
 
 Similarly, February 18, 2025, there will be a [change to the CKA exam](https://training.linuxfoundation.org/certified-kubernetes-administrator-cka-program-changes/).
 
 ## Practice and take notes
 
-Whether it is reading written material, watching video content, or doing interactive hands-on practices, what worked for me is: Take notes. Just start a repo with a markdown file. Write down topics, keywords, or sample commands. For me this has two purposes: It forces me te keep focus. And some of the topics I later move to a 'to-do' section, indicating I need to study that more.
+Whether it is reading written material, watching video content, or doing interactive hands-on practices, what worked for me is: Take notes. Just start a repo with a markdown file. Write down topics, keywords, or sample commands. For me this has two purposes: It forces me to stay focused. And some of the topics I later move to a 'to-do' section, indicating I need to study that more.
 
-Also, during the hands-on training, I sometimes noted keywords that lead to the correct page in the Kubernetes documentation. For example, 'kubeadm reconfigure' leads to [the page describing how to use various configmaps](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-reconfigure/) to configure various components throughout a cluster.
+Also, during the hands-on training, I sometimes noted keywords that lead to the correct page in the Kubernetes documentation. For example, 'kubeadm reconfigure' leads to [the page describing how to use various configmaps](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-reconfigure/) to configure cluster components, including kubelet. Initially my searches only yielded pages about configuring kubelet itself, not specifically the kubeadm way.
 
-In general, I found the ['tasks' pages in the documentation](https://kubernetes.io/docs/tasks/) the most usable during the hands-on exams.
+In general, I found the ['tasks' pages in the documentation](https://kubernetes.io/docs/tasks/) the most valuable during the hands-on exams.
 
 ## Killercoda
 
@@ -82,6 +92,8 @@ Besides using KillerCoda I would suggest using one of the two [Killer.sh](https:
 
 For studying the topics of CKS, [Kim Wüstkamp's CKS course is available for free on Youtube](https://www.youtube.com/watch?v=d9xfB5qaOfg). While it does not include all the recently added topics, it still contains most of what you need to know. If just wanting to _pass_ the exam, 11 hours of video content might not be the most time-effective option. (And, mind you, that is excluding the time to do the hands-on labs that are included). Focusing on scenarios and researching anything unknown, might be faster. But if you actually want to _learn_, it's a great trove of knowledge.
 
+In general, time is scarce. So know what can be done fast using imperative `kubectl` commands, and when you need to save and edit YAML first. For example, in your day job, using Helm or Kustomize, you might never use `kubectl expose`. But in the exam it is the fastest way to create a service.
+
 ## KCNA and KCSA
 
 These two are relatively easy. A good starting point would be some practice exams to see what topics are included. Based on that one could determine if purchasing additional courses is needed or one already has enough knowledge.
@@ -102,6 +114,8 @@ Depending on screen size and distance to the screen, it might be worth reducing 
 Furthermore, in the exam there are no reset or retry options. So, if asked to modify a deployment, given an original file, it might be worth copying that file to `<filename>.ori` _first_.
 
 Also, when generating YAML to be modified later, find a consistent naming scheme that works for you. For example `q13-netpol-deny-all.yaml`. I can't fully remember, but if more than one exam question use the same VM, it will help when needing to re-address a particular question.
+
+During the exam, some tasks might have you wait. For example upgrading a node using `kubeadm`. This can stress you out if you are already running out of time. You _could_ use that time to do some research on previous questions. But keep in mind that it also causes a distraction and increases the risk of making a mistake. Tip: Follow the steps _exactly_. While never really needed in any of the practice material, during the exam `kubeadm` only upgraded _after_ executing `apt-mark unhold kubeadm`.
 
 And, as mentioned before, use mousepad to take notes.
 
