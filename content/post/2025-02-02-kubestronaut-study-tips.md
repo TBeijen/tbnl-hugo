@@ -94,6 +94,8 @@ For studying the topics of CKS, [Kim Wüstkamp's CKS course is available for fre
 
 In general, time is scarce. So know what can be done fast using imperative `kubectl` commands, and when you need to save and edit YAML first. For example, in your day job, using Helm or Kustomize, you might never use `kubectl expose`. But in the exam it is the fastest way to create a service.
 
+I have created a gist containing [topic summaries and command examples I created while studying CKS](https://gist.github.com/TBeijen/028556fea2a62623f455590d82dabb46).
+
 ## KCNA and KCSA
 
 These two are relatively easy. A good starting point would be some practice exams to see what topics are included. Based on that one could determine if purchasing additional courses is needed or one already has enough knowledge.
@@ -115,13 +117,11 @@ Furthermore, in the exam there are no reset or retry options. So, if asked to mo
 
 Also, when generating YAML to be modified later, find a consistent naming scheme that works for you. For example `q13-netpol-deny-all.yaml`. I can't fully remember, but if more than one exam question use the same VM, it will help when needing to re-address a particular question.
 
-During the exam, some tasks might have you wait. For example upgrading a node using `kubeadm`. This can stress you out if you are already running out of time. You _could_ use that time to do some research on previous questions. But keep in mind that it also causes a distraction and increases the risk of making a mistake. Tip: Follow the steps _exactly_. While never really needed in any of the practice material, during the exam `kubeadm` only upgraded _after_ executing `apt-mark unhold kubeadm`.
+During the exam, some tasks might have you wait. For example upgrading a node using `kubeadm`. This can stress you out if you are already running out of time. You _could_ use that time to do some research on previous questions. But keep in mind that it also causes a distraction and increases the risk of making a mistake. Tip: Follow the steps _exactly_. Example: During the exam `kubeadm` only upgraded _after_ I executed `apt-mark unhold kubeadm`. I got into a habit of skipping that because it was never needed in the Killercoda environment.
 
 And, as mentioned before, use mousepad to take notes.
 
 {{< figure src="/img/kubestronaut-firefox-terminal.png" title="Two terminal tabs ✔. Mousepad ✔. Smooth scroll disabled ✔. Ready to go!" >}}
-
-
 
 ## CLI essentials
 
@@ -159,6 +159,12 @@ Vim basics:
 
 ## Concluding
 
+In general, I am somewhat skeptical of the type of exams that has you memorize small details of various cloud services. Those can be looked up easily, and are subject to change. Compared to those, the hands-on exams were a nice experience.
 
+Interestingly, in a professional setting, one might hardly ever use `kubectl` to configure clusters: Git and automation are the norm. Even so, knowing the fundamentals of Kubernetes helps. And, in my opinion, the exam format succeeds in testing that fundamental knowledge: Without preparation you'll run out of time. Prepared, one can still quickly look up details, just like the real world.
+
+Final note: If liking multiple choice exams, one can now pursue 'Golden Kubestronaut' status. Introduced in KubeCon India, this requires 7 more exams, for a total of 12. If I were to pursue that, I suppose by the time I complete that, I have to start renewing the original 5.
+
+Hopefully this gave inspiration to pursue new learnings and maybe even Kubestronaut status! Don't hesitate to find me on [LinkedIn](https://www.linkedin.com/in/tibobeijen/) or [BlueSky](https://bsky.app/profile/tibobeijen.nl). Thanks for reading!
 
 [^footnote_mousepad]: Apparently Killercoda recommends mousepad for notes as well, which I just recently noticed. Anyway, it's a good tip.
