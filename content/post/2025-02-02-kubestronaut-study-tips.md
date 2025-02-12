@@ -163,7 +163,7 @@ In general, I am somewhat skeptical of the type of exams that has you memorize s
 
 Interestingly, in a professional setting, one might hardly ever use `kubectl` to configure clusters: Git and automation are the norm. Even so, knowing the fundamentals of Kubernetes helps. And, in my opinion, the exam format succeeds in testing that fundamental knowledge: Without preparation you'll run out of time. Prepared, one can still quickly look up details, just like the real world.
 
-Final note: If liking multiple choice exams, one can now pursue 'Golden Kubestronaut' status. Introduced in KubeCon India, this requires 7 more exams, for a total of 12. If I were to pursue that, I suppose by the time I complete that, I have to start renewing the original 5.
+Final note: If liking multiple choice exams, one can now pursue 'Golden Kubestronaut' status. Introduced at KubeCon India, this requires 7 more exams, for a total of twelve. If I were to pursue that, I suppose by the time that is completed, I have to start renewing the original five...
 
 Hopefully this gave inspiration to pursue new learnings and maybe even Kubestronaut status! Don't hesitate to find me on [LinkedIn](https://www.linkedin.com/in/tibobeijen/) or [BlueSky](https://bsky.app/profile/tibobeijen.nl). Thanks for reading!
 
