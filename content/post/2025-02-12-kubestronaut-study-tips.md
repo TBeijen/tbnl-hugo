@@ -1,16 +1,17 @@
 ---
 title: "Study tips for becoming a Kubestronaut"
 author: Tibo Beijen
-date: 2025-02-10T05:00:00+01:00
-url: /2025/02/10/study-tops-for-becoming-a-kubestronaut
+date: 2025-02-12T05:00:00+01:00
+url: /2025/02/12/study-tops-for-becoming-a-kubestronaut
 categories:
   - articles
 tags:
   - CNCF
   - Certification
-  - CKAD
-  - CKA
+  - Kubestronaut
   - CKS
+  - CKA
+  - CKAD
 description: Tips for studying and preparing for the five CNCF exams that grant the Kubestronaut title
 thumbnail: img/kubestronaut-study-header.jpg
 
