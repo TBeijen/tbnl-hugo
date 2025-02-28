@@ -3,6 +3,7 @@
 *.code-workspace
 *.DS_Store
 *.drawio.bkp
+.temp/
 
 # Temp. pocs and misc.
 .temp/
