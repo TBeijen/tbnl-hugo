@@ -182,7 +182,48 @@ Now the bits of configuration we need to remember when setting up applications:
 
 **Note:** Since I consider dev clusters ephemeral and short-lived, topics like safely rotating issuer certificates don't need attention. When setting up trust manager in production environments, be sure to consider [what namespace to install](https://cert-manager.io/docs/trust/trust-manager/installation/#trust-namespace) in and [prepare for issuer certificate rotation](https://cert-manager.io/docs/trust/trust-manager/#cert-manager-integration-intentionally-copying-ca-certificates).
 
-## Improvement 2: Fixing nort-south routing
+## Improvement 2: Fixing north-south routing
+
+As mentioned in the introduction, DNS resolvers like `nip.io` are helpful for routing from host to development cluster, but will not work within the cluster: It will resolve to `127.0.0.1` and the target service won't be there.
+
+One way to handle this is to install [Dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html), and configure resolving on the host in such a way that `.local` will use `127.0.0.1` to resolve DNS. Which will then respond with `127.0.0.1`. Using the port matching the K3D cluster will then ensure the correct cluster receives the traffic.
+
+```
+brew install dnsmasq
+# Ensure service can bind to port 53 and starts at reboot
+sudo brew services start dnsmasq
+```
+
+Configure Dnsmasq, use `brew --prefix` to determine where the config is located. On a silicon Mac that will be `/opt/homebrew`.
+
+Ensure the following line in `/opt/homebrew/etc/dnsmasq.conf` is uncommented:
+
+```
+conf-dir=/opt/homebrew/etc/dnsmasq.d/,*.conf
+```
+
+Then we can configure Dnsmasq to resolve `.local` to `127.0.0.1`:
+
+```
+echo "address=/local/127.0.0.1" > $(brew --prefix)/etc/dnsmasq.d/local.conf
+```
+
+Finally we tell OSX to use Dnsmasq at `127.0.0.1` to resolv DNS queries for `.local`:
+
+```
+sudo sh -c "echo 'nameserver 127.0.0.1' > /etc/resolver/local"
+```
+
+Now tools like `dig` and `nslookup` behave a bit different from the usual program on OSx so they are not the best way to test.
+If we have set up a K3D cluster, forwarding host ports to the http and https ports using `-p`, we could try to reach an application:
+
+```
+# Assuming we have set up keycloak and port 10443 is forwarded to k3d https port
+# Using -k since curl is not aware of our CA
+curl -k https://keycloak.cl0.k3d.local:10443/ -I
+HTTP/2 302
+location: https://keycloak.cl0.k3d.local:10443/admin/
+```
 
 ## Improvement 3: Fixing east-west routing
 
@@ -197,7 +238,9 @@ Now the bits of configuration we need to remember when setting up applications:
 
 
 
-Note: If not wanting to setup DNSmasq, one could segment k3d clusters like `myapp.cl1.127.0.0.1.nip.io`. 
+Note: If not wanting to setup DNSmasq, one could segment k3d clusters like `myapp.cl1.127.0.0.1.nip.io`. Or somehow bind an ip to the host, that allows routing from the host, as well as from within the cluster.
+
+
 
 Next steps:
 
