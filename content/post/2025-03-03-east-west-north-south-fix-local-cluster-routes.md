@@ -87,7 +87,7 @@ X509v3 extensions:
           DNS:.local
 ```
 
-Let's test if name constraints works:
+Let's test if name constraints works by issuing a certificate that does not match the name constraint:
 
 ```
 # Create a certificate for example.com
@@ -116,8 +116,85 @@ sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keyc
 
 ### Setup Kubernetes cluster issuer and trust bundle
 
+We can now install [cert-manager](https://cert-manager.io/docs/) to issue TLS certificates and [trust-manager](https://cert-manager.io/docs/trust/trust-manager/) to distribute trust bundles:
 
 ```
+helm repo add jetstack https://charts.jetstack.io --force-update
+
+# cert-manager
+# Note the NameConstraints feature gates!
+helm upgrade --install \
+  cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --create-namespace \
+  --set crds.enabled=true \
+  --set webhook.featureGates="NameConstraints=true" \
+  --set featureGates="NameConstraints=true"
+
+# trust-manager
+helm upgrade --install \
+  trust-manager jetstack/trust-manager \
+  --namespace cert-manager
+```
+
+Add the CA certificate and create a `ClusterIssuer`:
+
+```
+kubectl -n cert-manager create secret tls root-ca --cert=ca.crt --key=ca.key
+
+cat <<EOF | kubectl apply -f -
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: root-ca
+spec:
+  ca:
+    secretName: root-ca
+EOF
+```
+
+Create a trust `Bundle`:
+
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: trust.cert-manager.io/v1alpha1
+kind: Bundle
+metadata:
+  name: default-ca-bundle
+spec:
+  sources:
+  - useDefaultCAs: true
+  - secret:
+      name: "root-ca"
+      key: "tls.crt"
+  target:
+    configMap:
+      key: "bundle.pem"
+    namespaceSelector:
+      matchLabels:
+        trust: enabled
+```
+
+Now the bits of configuration we need to remember when setting up applications:
+
+* The cluster issuer name is `root-ca`, so Ingress objects need the annotation `cert-manager.io/cluster-issuer: root-ca`
+* The CA bundle, including our issuer CA, can be found in a configmap `default-ca-bundle` under key `pundle.pem`, _if_ the namespace is labeled `trust: enabled`.
+
+**Note:** Since I consider dev clusters ephemeral and short-lived, topics like safely rotating issuer certificates don't need attention. When setting up trust manager in production environments, be sure to consider [what namespace to install](https://cert-manager.io/docs/trust/trust-manager/installation/#trust-namespace) in and [prepare for issuer certificate rotation](https://cert-manager.io/docs/trust/trust-manager/#cert-manager-integration-intentionally-copying-ca-certificates).
+
+## Improvement 2: Fixing nort-south routing
+
+## Improvement 3: Fixing east-west routing
+
+
+
+
+## Combining and automating
+
+
+
+
+
 
 
 Note: If not wanting to setup DNSmasq, one could segment k3d clusters like `myapp.cl1.127.0.0.1.nip.io`. 
