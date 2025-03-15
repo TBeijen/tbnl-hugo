@@ -32,11 +32,27 @@ For starters, this works for routing traffic _to_ the K3D cluster, we could call
 
 This puts us in a catch-22: nip.io, or an entry in `/etc/hosts` only works for north-south. `svc.cluster.local` only works for east-west. 
 
-Another problem is that the default certificates issued by Traefik are not trusted by other systems or browsers. So we frequently need to bypass security warnings, which by itself is indicative of a problem and encourages bad habits. Furthermore, even if we manage to configure our setup to use the ingress service from within the cluster, it depends on the backend application if it allows to bypass TLS host checking.
+Another problem is that the default certificates issued by Traefik, are not trusted by other systems or browsers. So we frequently need to bypass security warnings, which by itself is indicative of a problem and encourages bad habits. Furthermore, even if we manage to configure our setup to use the ingress service from within the cluster, it depends on the backend application if it allows bypassing TLS host checking.
 
 To improve this, we need to address some things. In this article:
 
 {{< toc >}}
+
+☞ Don't fancy reading? Head straight to the [github repo containing taskfile automation](https://github.com/TBeijen/dev-cluster-config)
+
+## The plan
+
+So, let's identify and configure the components needed to create a smooth local kubernetes setup, providing trusted TLS and predictable endpoints. 
+
+This will result in applications being accessible via the following pattern:
+
+| k3d cluster | Hostnames                | HTTP port | HTTPS port |
+|-------------|--------------------------|-----------|------------|
+| cl0         | *.cl0.k3d.local          | 10080     | 10443      |
+| cl1         | *.cl1.k3d.local          | 11080     | 11443      |
+| cl2         | *.cl2.k3d.local          | 12080     | 12443      |
+| etc, etc... |                          |           |            |
+
 
 ## Improvement 1: TLS certificates and trust
 
@@ -214,16 +230,18 @@ Finally we tell OSX to use Dnsmasq at `127.0.0.1` to resolv DNS queries for `.lo
 sudo sh -c "echo 'nameserver 127.0.0.1' > /etc/resolver/local"
 ```
 
-Now tools like `dig` and `nslookup` behave a bit different from the usual program on OSx so they are not the best way to test.
+Be aware tools like `dig` and `nslookup` behave a bit different from the usual program on OSx so they are not the best way to test.
 If we have set up a K3D cluster, forwarding host ports to the http and https ports using `-p`, we could try to reach an application:
 
 ```
 # Assuming we have set up keycloak and port 10443 is forwarded to k3d https port
-# Using -k since curl is not aware of our CA
+# Using -k since curl does not use the system trust bundle, so is not aware of our CA
 curl -k https://keycloak.cl0.k3d.local:10443/ -I
 HTTP/2 302
 location: https://keycloak.cl0.k3d.local:10443/admin/
 ```
+
+Application is there. Good. Let's move on.
 
 ## Improvement 3: Fixing east-west routing
 
