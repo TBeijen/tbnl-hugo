@@ -10,7 +10,7 @@ tags:
   - Kubernetes
   - K3D
   - Cert-manager
-  - OSx
+  - macOS
 description: How to easily apply the bits of glue needed to run applications on local clusters without friction.
 thumbnail: 
 
@@ -202,7 +202,7 @@ Now the bits of configuration we need to remember when setting up applications:
 
 As mentioned in the introduction, DNS resolvers like `nip.io` are helpful for routing from host to development cluster, but will not work within the cluster: It will resolve to `127.0.0.1` and the target service won't be there.
 
-One way to handle this is to install [Dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html), and configure resolving on the host in such a way that `.local` will use `127.0.0.1` to resolve DNS. Which will then respond with `127.0.0.1`. Using the port matching the K3D cluster will then ensure the correct cluster receives the traffic.
+One way to handle this is to install [dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html), and configure resolving on the host in such a way that `.local` will use `127.0.0.1` to resolve DNS. Which will then respond with `127.0.0.1`. Using the port matching the K3D cluster will then ensure the correct cluster receives the traffic.
 
 ```
 brew install dnsmasq
@@ -210,7 +210,7 @@ brew install dnsmasq
 sudo brew services start dnsmasq
 ```
 
-Configure Dnsmasq, use `brew --prefix` to determine where the config is located. On a silicon Mac that will be `/opt/homebrew`.
+Configure dnsmasq, use `brew --prefix` to determine where the config is located. On a silicon Mac that will be `/opt/homebrew`.
 
 Ensure the following line in `/opt/homebrew/etc/dnsmasq.conf` is uncommented:
 
@@ -218,20 +218,19 @@ Ensure the following line in `/opt/homebrew/etc/dnsmasq.conf` is uncommented:
 conf-dir=/opt/homebrew/etc/dnsmasq.d/,*.conf
 ```
 
-Then we can configure Dnsmasq to resolve `.local` to `127.0.0.1`:
+Then we can configure dnsmasq to resolve `.local` to `127.0.0.1`:
 
 ```
 echo "address=/local/127.0.0.1" > $(brew --prefix)/etc/dnsmasq.d/local.conf
 ```
 
-Finally we tell OSX to use Dnsmasq at `127.0.0.1` to resolv DNS queries for `.local`:
+Finally we tell macOS to use dnsmasq at `127.0.0.1` to resolve DNS queries for `.local`:
 
 ```
 sudo sh -c "echo 'nameserver 127.0.0.1' > /etc/resolver/local"
 ```
 
-Be aware tools like `dig` and `nslookup` behave a bit different from the usual program on OSx so they are not the best way to test.
-If we have set up a K3D cluster, forwarding host ports to the http and https ports using `-p`, we could try to reach an application:
+Be aware that tools like `dig` and `nslookup` behave a bit different from the usual program on macOS so they are not the best way to test[^footnote_macos_dns]. If we have set up a K3D cluster, forwarding host ports to the http and https ports using `-p`, we could try to reach an application:
 
 ```
 # Assuming we have set up keycloak and port 10443 is forwarded to k3d https port
@@ -245,26 +244,113 @@ Application is there. Good. Let's move on.
 
 ## Improvement 3: Fixing east-west routing
 
+Our dnsmasq setup works from host, via ingress to a service. But when needing to access another service within the cluster, using the same domain, it won't. 
 
+Of course, we can access services the usual way via `service-name.namespace.svc.cluster.local`. But this means within the cluster we need to use a different domain than from the outside. Confusing at best, and in some cases not possible. One example being Keycloak client applications, as outlined in the introduction, where only one configuration item for the Keycloak domain exists.
 
+If, from _within_ our cluster, we try to resolve `keycloak.cl0.k3d.local` from a pod, the following happens:
+
+* CoreDNS knows nothing about this, it's not a pod, it's not a service
+* CoreDNS forwards DNS resolving to host
+* The host (our Macbook) will recognise `.local` and tell DNS to query for the domain at `127.0.0.1:53`
+* There is no DNS server running in the pod so DNS resolving will fail
+
+To fix this, we make two adjustments.
+
+First, we copy the existing `traefik` service to `traefik-internal`, changing the type from `LoadBalancer` into `ClusterIP` and adjusting the ports to align with the ports mapped to the host. The resulting service looks like this:
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik-internal
+  namespace: kube-system
+spec:
+  ports:
+  - name: webext
+    port: 10080
+    protocol: TCP
+    targetPort: web
+  - name: websecureext
+    port: 10443
+    protocol: TCP
+    targetPort: websecure
+  selector:
+    app.kubernetes.io/instance: traefik-kube-system
+    app.kubernetes.io/name: traefik
+  type: ClusterIP
+```
+
+Next, we need to ensure that connecting to e.g. `keycloak.cl0.k3d.local` from _within_ our cluster, will end up at the `traefik-internal` service. 
+
+For this we can add a [custom dns entry to CoreDNS](https://coredns.io/2017/05/08/custom-dns-entries-for-kubernetes/). We can do so by adding a configmap:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  k3d.local.server: |
+    k3d.local:53 {
+        errors
+        cache 30
+        rewrite name regex (.*)\.cl0\.k3d\.local traefik-internal.kube-system.svc.cluster.local
+        # We need to rewrite everything coming into this configuration block to avoid infinite loops
+        rewrite name regex (.*)\.k3d\.local host.k3d.internal
+        forward . 127.0.0.1:53
+    }
+```
+
+Note that, as the comment says, we need to ensure we rewrite _everything_, since we feed the rewritten domain back to CoreDNS. This is why using `k3d.local` as domain to put clusters under, works fine, whereas `k3d.internal` does _not_. In case of the latter, we would rewrite to a new FQDN that re-enters the custom config, resulting in an infinite loop and CoreDNS crash.
 
 ## Combining and automating
 
+Although we now have a configuration that works, it is not particularly easy to set up. So, what do we do? We automate.
 
+[Taskfile](https://taskfile.dev/) is single-binary `Make` alternative that provides all the templating and configurability needed, to easily spin up K3D clusters configured as described in this article.
 
+Check out the [dev-cluster-config](https://github.com/TBeijen/dev-cluster-config) repository. Then:
 
+```
+# review .default.env
+cat .default.env
 
+# If needing to adjust config 
+cp .default.env .env
+vim .env
 
+# Once: Setup CA certificate
+task cert
 
-Note: If not wanting to setup DNSmasq, one could segment k3d clusters like `myapp.cl1.127.0.0.1.nip.io`. Or somehow bind an ip to the host, that allows routing from the host, as well as from within the cluster.
+# Once: Setup dnsmasq
+task dnsmasq_brew
 
+# Setup & configure clusters
+task k3d-cluster-setup-0
+task k3d-cluster-setup-1
 
+# Optionally: Add example applications (nginx/curl)
+task k3d-cluster-examples-0
+task k3d-cluster-examples-1
 
-Next steps:
+# Use k3d to remove a cluster
+k3d cluster delete cl0
+k3d cluster delete cl1
+```
 
-* Local haproxy port 443
-* Internal, publicly resolvable domain name. Let's encrypt. Easier to use accross environments, e.g. home network, VPS-es.
+## Next steps and wrapping it up
 
-final paragraph.
+Optionally, we could also set up a loadbalancer like [haproxy](https://www.haproxy.org/) on the macOS host that listens on the default http and https ports 80 and 443. It would serve the trusted certificate, and based on host forward to the proper k3d cluster. This would remove the need to use custom ports.
+
+If on the other hand, one does not want to set up dnsmasq, one could address clusters like `myapp.cl1.k3d.127.0.0.1.nip.io`, and update the CoreDNS accordingly, to intercept DNS lookups to `*.k3d.127.0.0.1.nip.io` and return the host `host.k3d.internal` IP address.
+
+The setup described in this article, consists of several discrete parts. It is not a one-stop integrated solution. However, as illustrated above, it can be easily extended and adjusted, so that can be considered an advantage. If wanting to run [Minkube](https://minikube.sigs.k8s.io/docs/), [Rancher Desktop](https://docs.rancherdesktop.io/) or [Colima](https://github.com/abiosoft/colima), a similar approach will work.
+
+Now, local development setups, like OS and editor choices, is typically something engineers are very opinionated about. And that's good! So, if you are wondering "why are you doing all this and not doing this other thing instead?". By all means, reach out on [LinkedIn](https://www.linkedin.com/in/tibobeijen/) or [BlueSky](https://bsky.app/profile/tibobeijen.nl). I'm curious!
+
+Regardless, I hope the above provides some guidance on getting the most out of your local development clusters.
 
 [^footnote_oidc]: Yes, we are mixing Keycloak and DEX. The beauty of standards such as OIDC.
+[^footnote_macos_dns]: It's... complicated. [This article](https://rakhesh.com/infrastructure/macos-vpn-doesnt-use-the-vpn-dns/) about configuring DNS and VPN gives some insights.
