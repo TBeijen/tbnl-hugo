@@ -1,8 +1,8 @@
 ---
 title: "East, west, north, south: How to fix your local cluster routes"
 author: Tibo Beijen
-date: 2025-03-03T05:00:00+01:00
-url: /2025/03/03/east-west-north-south-fix-local-cluster-routes
+date: 2025-03-24T05:00:00+01:00
+url: /2025/03/24/east-west-north-south-fix-local-cluster-routes
 categories:
   - articles
 tags:
@@ -307,7 +307,7 @@ data:
     }
 ```
 
-Note that, as the comment says, we need to ensure we rewrite _everything_, since we feed the rewritten domain back to CoreDNS. This is why using `k3d.local` as domain to put clusters under, works fine, whereas `k3d.internal` does _not_. In case of the latter, we would rewrite to a new FQDN that re-enters the custom config, resulting in an infinite loop and CoreDNS crash.
+**Note:** As the comment says, we need to ensure we rewrite _everything_, since we feed the rewritten domain back to CoreDNS. This is why using `k3d.local` as domain to put clusters under, works fine, whereas `k3d.internal` does _not_. In case of the latter, we would rewrite to a new FQDN that re-enters the custom config, resulting in an infinite loop and CoreDNS crash.
 
 With the 3 improvements in place, we now have a setup that works:
 
@@ -356,9 +356,10 @@ If on the other hand, one does not want to set up dnsmasq, one could address clu
 
 The setup described in this article, consists of several discrete parts. It is not a one-stop integrated solution. However, as illustrated above, it can be easily extended and adjusted, so that can be considered an advantage. If wanting to run [Minkube](https://minikube.sigs.k8s.io/docs/), [Rancher Desktop](https://docs.rancherdesktop.io/) or [Colima](https://github.com/abiosoft/colima), a similar approach will work.
 
-Now, local development setups, like OS and editor choices, is typically something engineers are very opinionated about. And that's good! So, if you are wondering "why are you doing all this and not doing this other thing instead?". By all means, reach out on [LinkedIn](https://www.linkedin.com/in/tibobeijen/) or [BlueSky](https://bsky.app/profile/tibobeijen.nl). I'm curious!
+Now, local development setups, like OS and editor choices, is typically something engineers are very opinionated about. And that's fine!![^footnote_dev_setup] So, if you are wondering "why are you doing all this and not doing this other thing instead?". By all means, reach out on [LinkedIn](https://www.linkedin.com/in/tibobeijen/) or [BlueSky](https://bsky.app/profile/tibobeijen.nl). I'm curious!
 
 Regardless, I hope the above provides some guidance on getting the most out of your local development clusters.
 
 [^footnote_oidc]: Yes, we are mixing Keycloak and DEX. The beauty of standards such as OIDC.
 [^footnote_macos_dns]: It's... complicated. [This article](https://rakhesh.com/infrastructure/macos-vpn-doesnt-use-the-vpn-dns/) about configuring DNS and VPN gives some insights.
+[^footnote_dev_setup]: Although there is often a balance to strike between 'own improvements' and 'team standards'.
