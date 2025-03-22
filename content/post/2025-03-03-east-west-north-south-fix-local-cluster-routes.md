@@ -12,13 +12,13 @@ tags:
   - Cert-manager
   - macOS
 description: How to easily apply the bits of glue needed to run applications on local clusters without friction.
-thumbnail: 
+thumbnail: img/dev_routes_square.jpg
 
 ---
 
 ## Introduction
 
-Recently I needed to test a Keycloak upgrade. This required me to deploy both the new Keycloak version and a sample OIDC application on my local Kubernetes setup. And it pointed me to a thing I kept postponing:
+Recently I needed to test a [Keycloak](https://www.keycloak.org/) upgrade. This required me to deploy both the new Keycloak version and a sample OIDC application on my local Kubernetes setup. And it pointed me to a thing I kept postponing:
 
 > Improve my local development DNS, routing and TLS setup
 
@@ -30,9 +30,11 @@ Nice. But not without flaws.
 
 For starters, this works for routing traffic _to_ the K3D cluster, we could call this 'north-south'. But not for routing traffic _within_ the cluster (east-west). This becomes apparent when trying to setup an OIDC sample application[^footnote_oidc], such as [the one shipped with DEX](https://github.com/dexidp/dex/pkgs/container/example-app). The domain pointing to Keycloak is used in two places: By the browser of the user logging in, so in this case from the host OS, _and_ directly from the backend, so within the cluster. 
 
-This puts us in a catch-22: nip.io, or an entry in `/etc/hosts` only works for north-south. `svc.cluster.local` only works for east-west. 
+This puts us in a catch-22: `nip.io`, or an entry in `/etc/hosts` only works for north-south. `svc.cluster.local` only works for east-west. 
 
-Another problem is that the default certificates issued by Traefik, are not trusted by other systems or browsers. So we frequently need to bypass security warnings, which by itself is indicative of a problem and encourages bad habits. Furthermore, even if we manage to configure our setup to use the ingress service from within the cluster, it depends on the backend application if it allows bypassing TLS host checking.
+Another problem is that the default certificates issued by [Traefik](https://github.com/traefik/traefik), are not trusted by other systems or browsers. So we frequently need to bypass security warnings, which by itself is indicative of a problem and encourages bad habits. Furthermore, even if we manage to configure our setup to use the ingress service from within the cluster, it depends on the backend application if it allows bypassing TLS host checking.
+
+{{< figure src="/img/dev_routes-meh.svg" title="Problem routing both north-south and east-west traffic" >}}
 
 To improve this, we need to address some things. In this article:
 
@@ -53,6 +55,8 @@ This will result in applications being accessible via the following pattern:
 | cl2         | *.cl2.k3d.local          | 12080     | 12443      |
 | etc, etc... |                          |           |            |
 
+
+{{< figure src="/img/dev_routes.jpg" title="East, west, nort, south. The components used to fix the routes. Source: Wikimedia & Open Source projects" >}}
 
 ## Improvement 1: TLS certificates and trust
 
@@ -305,6 +309,10 @@ data:
 
 Note that, as the comment says, we need to ensure we rewrite _everything_, since we feed the rewritten domain back to CoreDNS. This is why using `k3d.local` as domain to put clusters under, works fine, whereas `k3d.internal` does _not_. In case of the latter, we would rewrite to a new FQDN that re-enters the custom config, resulting in an infinite loop and CoreDNS crash.
 
+With the 3 improvements in place, we now have a setup that works:
+
+{{< figure src="/img/dev_routes-yay.svg" title="Consistent DNS and trusted certificates" >}}
+
 ## Combining and automating
 
 Although we now have a configuration that works, it is not particularly easy to set up. So, what do we do? We automate.
@@ -342,7 +350,7 @@ k3d cluster delete cl1
 
 ## Next steps and wrapping it up
 
-Optionally, we could also set up a loadbalancer like [haproxy](https://www.haproxy.org/) on the macOS host that listens on the default http and https ports 80 and 443. It would serve the trusted certificate, and based on host forward to the proper k3d cluster. This would remove the need to use custom ports.
+Optionally, we could also set up a loadbalancer like [haproxy](https://www.haproxy.org/) on the macOS host that listens on the default http and https ports 80 and 443. It would serve the trusted certificate and, based on host, forward to the proper k3d cluster. This would remove the need to use custom ports.
 
 If on the other hand, one does not want to set up dnsmasq, one could address clusters like `myapp.cl1.k3d.127.0.0.1.nip.io`, and update the CoreDNS accordingly, to intercept DNS lookups to `*.k3d.127.0.0.1.nip.io` and return the host `host.k3d.internal` IP address.
 
