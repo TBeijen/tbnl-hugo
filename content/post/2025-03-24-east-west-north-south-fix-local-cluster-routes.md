@@ -44,7 +44,7 @@ To improve this, we need to address some things. In this article:
 
 ## The plan
 
-So, let's identify and configure the components needed to create a smooth local kubernetes setup, providing trusted TLS and predictable endpoints. 
+So, let's identify and configure the components needed to create a smooth local Kubernetes setup, providing trusted TLS and predictable endpoints. 
 
 This will result in applications being accessible via the following pattern:
 
@@ -56,7 +56,7 @@ This will result in applications being accessible via the following pattern:
 | etc, etc... |                          |           |            |
 
 
-{{< figure src="/img/dev_routes.jpg" title="East, west, nort, south. The components used to fix the routes. Source: Wikimedia & Open Source projects" >}}
+{{< figure src="/img/dev_routes.jpg" title="East, west, north, south. The components used to fix the routes. Source: Wikimedia & Open Source projects" >}}
 
 ## Improvement 1: TLS certificates and trust
 
@@ -198,7 +198,7 @@ spec:
 Now the bits of configuration we need to remember when setting up applications:
 
 * The cluster issuer name is `root-ca`, so Ingress objects need the annotation `cert-manager.io/cluster-issuer: root-ca`
-* The CA bundle, including our issuer CA, can be found in a configmap `default-ca-bundle` under key `pundle.pem`, _if_ the namespace is labeled `trust: enabled`.
+* The CA bundle, including our issuer CA, can be found in a ConfigMap `default-ca-bundle` under key `pundle.pem`, _if_ the namespace is labeled `trust: enabled`.
 
 **Note:** Since I consider dev clusters ephemeral and short-lived, topics like safely rotating issuer certificates don't need attention. When setting up trust manager in production environments, be sure to consider [what namespace to install](https://cert-manager.io/docs/trust/trust-manager/installation/#trust-namespace) in and [prepare for issuer certificate rotation](https://cert-manager.io/docs/trust/trust-manager/#cert-manager-integration-intentionally-copying-ca-certificates).
 
@@ -228,13 +228,13 @@ Then we can configure dnsmasq to resolve `.local` to `127.0.0.1`:
 echo "address=/local/127.0.0.1" > $(brew --prefix)/etc/dnsmasq.d/local.conf
 ```
 
-Finally we tell macOS to use dnsmasq at `127.0.0.1` to resolve DNS queries for `.local`:
+Finally, we tell macOS to use dnsmasq at `127.0.0.1` to resolve DNS queries for `.local`:
 
 ```
 sudo sh -c "echo 'nameserver 127.0.0.1' > /etc/resolver/local"
 ```
 
-Be aware that tools like `dig` and `nslookup` behave a bit different from the usual program on macOS so they are not the best way to test[^footnote_macos_dns]. If we have set up a K3D cluster, forwarding host ports to the http and https ports using `-p`, we could try to reach an application:
+Be aware that tools like `dig` and `nslookup` behave a bit different from the usual program on macOS so they are not the best way to test[^footnote_macos_dns]. If we have set up a K3D cluster, [mapping host ports](https://k3d.io/v5.3.0/usage/commands/k3d_cluster_create/#options) to the http and https ports using `-p`, we could try to reach an application:
 
 ```
 # Assuming we have set up keycloak and port 10443 is forwarded to k3d https port
@@ -256,7 +256,7 @@ If, from _within_ our cluster, we try to resolve `keycloak.cl0.k3d.local` from a
 
 * CoreDNS knows nothing about this, it's not a pod, it's not a service
 * CoreDNS forwards DNS resolving to host
-* The host (our Macbook) will recognise `.local` and tell DNS to query for the domain at `127.0.0.1:53`
+* The host (our Macbook) will recognize `.local` and tell DNS to query for the domain at `127.0.0.1:53`
 * There is no DNS server running in the pod so DNS resolving will fail
 
 To fix this, we make two adjustments.
@@ -350,11 +350,11 @@ k3d cluster delete cl1
 
 ## Next steps and wrapping it up
 
-Optionally, we could also set up a loadbalancer like [haproxy](https://www.haproxy.org/) on the macOS host that listens on the default http and https ports 80 and 443. It would serve the trusted certificate and, based on host, forward to the proper k3d cluster. This would remove the need to use custom ports.
+Optionally, we could also set up a load balancer like [haproxy](https://www.haproxy.org/) on the macOS host that listens on the default http and https ports 80 and 443. It would serve the trusted certificate and, based on host, forward to the proper k3d cluster. This would remove the need to use custom ports.
 
-If on the other hand, one does not want to set up dnsmasq, one could address clusters like `myapp.cl1.k3d.127.0.0.1.nip.io`, and update the CoreDNS accordingly, to intercept DNS lookups to `*.k3d.127.0.0.1.nip.io` and return the host `host.k3d.internal` IP address.
+If on the other hand, one does not want to set up dnsmasq, one could address clusters like `myapp.cl1.k3d.127.0.0.1.nip.io`, and update the CoreDNS configuration accordingly, to intercept DNS lookups to `*.k3d.127.0.0.1.nip.io` and return the host `host.k3d.internal` IP address.
 
-The setup described in this article, consists of several discrete parts. It is not a one-stop integrated solution. However, as illustrated above, it can be easily extended and adjusted, so that can be considered an advantage. If wanting to run [Minkube](https://minikube.sigs.k8s.io/docs/), [Rancher Desktop](https://docs.rancherdesktop.io/) or [Colima](https://github.com/abiosoft/colima), a similar approach will work.
+The setup described in this article, consists of several discrete parts. It is not a one-stop integrated solution. However, as illustrated above, it can be easily extended and adjusted, so that can be considered an advantage. If wanting to run [Kind](https://kind.sigs.k8s.io/), [Minikube](https://minikube.sigs.k8s.io/docs/), [Rancher Desktop](https://docs.rancherdesktop.io/) or [Colima](https://github.com/abiosoft/colima), a similar approach will work.
 
 Now, local development setups, like OS and editor choices, is typically something engineers are very opinionated about. And that's fine!![^footnote_dev_setup] So, if you are wondering "why are you doing all this and not doing this other thing instead?". By all means, reach out on [LinkedIn](https://www.linkedin.com/in/tibobeijen/) or [BlueSky](https://bsky.app/profile/tibobeijen.nl). I'm curious!
 
