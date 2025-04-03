@@ -108,6 +108,15 @@ Mentions Swedish bank, not using budgets since 70s, never having needed tax paye
 
 _By James Lewis_
 
+Fun and inspring talk with perhaps my favorite quote of the day:
+
+> Why shared test environments should be nuked from orbit
+
+The building blocks of flow are coordination, cadence (schedule) and queues. Shared testing environments combine all three, making them unfit for fast flow.
+
+Several platform models were illustrated via [M/M/c queues](https://en.wikipedia.org/wiki/M/M/c_queue), showing wy IaaS clouds like AWS enable flow: Throughput is not determined by number of platform operators.
+
+{{< figure src="/img/fastflowconf_platforms.jpg" title="Why AWS (IaaS) is a thing and the others are expensive and slow because c = number of people" >}}
 
 
 ## Conclusion
