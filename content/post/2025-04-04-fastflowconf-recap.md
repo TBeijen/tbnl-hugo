@@ -1,8 +1,8 @@
 ---
 title: "FastFlowConf recap"
 author: Tibo Beijen
-date: 2025-03-29T05:00:00+01:00
-url: /2025/03/29/fastflowconf-recap
+date: 2025-04-04T05:00:00+01:00
+url: /2025/04/04/fastflowconf-recap
 categories:
   - articles
 tags:
@@ -24,7 +24,7 @@ As the [Team Topologies](https://teamtopologies.com/) site describes itself:
 
 > Team Topologies is the result of years of research into how successful leaders design team-of-teams organizations delivering business outcomes through technology
 
-Team Topologies, to me, feels like a logical evolution of [Agile](https://en.wikipedia.org/wiki/Agile_software_development). Most practices described in the Agile principles, take a team as a starting point. When multiple teams are involved, organizing those to work together can become challenging. So, frameworks like [Scaled Agile](https://en.wikipedia.org/wiki/Scaled_agile_framework) emerged, which are quite prescriptive. Depending on who you ask, a framework like Scaled Agile, has become quite detached from the original Agile principles.
+Team Topologies, to me, feels like a logical evolution of [Agile](https://en.wikipedia.org/wiki/Agile_software_development). Most practices described in the Agile principles, take a team as a starting point. When multiple teams are involved, organizing those to work together can become challenging. So, frameworks like [Scaled Agile](https://en.wikipedia.org/wiki/Scaled_agile_framework) emerged, which provide structure to collaboration, but don't automatically preserve agility.
 
 Team Topologies takes the (fast) flow of Value Streams as a guiding principle. What I find very interesting is how the role and place of architecture has changed in this agile, flow-focused way of working. Traditionally, in the [Waterfall model](https://en.wikipedia.org/wiki/Waterfall_model), architecture, or the designing of software, was a discrete phase. Something done _up front_, before implementing. Trying to do that in Agile brings all kinds of friction: Architecture becomes a bottleneck (blocker of flow), it discourages changing requirements, it reduces sense of ownership by the team. To name a few.
 
