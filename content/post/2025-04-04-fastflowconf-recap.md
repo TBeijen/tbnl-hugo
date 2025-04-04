@@ -26,7 +26,7 @@ As the [Team Topologies](https://teamtopologies.com/) site describes itself:
 
 Team Topologies, to me, feels like a logical evolution of [Agile](https://en.wikipedia.org/wiki/Agile_software_development). Most practices described in the Agile principles, take a team as a starting point. When multiple teams are involved, organizing those to work together can become challenging. So, frameworks like [Scaled Agile](https://en.wikipedia.org/wiki/Scaled_agile_framework) emerged, which provide structure to collaboration, but don't automatically preserve agility.
 
-Team Topologies takes the (fast) flow of Value Streams as a guiding principle. What I find very interesting is how the role and place of architecture has changed in this agile, flow-focused way of working. Traditionally, in the [Waterfall model](https://en.wikipedia.org/wiki/Waterfall_model), architecture, or the designing of software, was a discrete phase. Something done _up front_, before implementing. Trying to do that in Agile brings all kinds of friction: Architecture becomes a bottleneck (blocker of flow), it discourages changing requirements, it reduces sense of ownership by the team. To name a few.
+Team Topologies takes the (fast) flow of Value Streams as a guiding principle. What I find very interesting is how the role and place of architecture has changed in this agile, flow-focused way of working. Traditionally, in the [Waterfall model](https://en.wikipedia.org/wiki/Waterfall_model), architecture, or the designing of software, was a discrete phase. Something done _up front_, before implementing. Trying to do that in Agile brings all kinds of friction: Architecture becomes a bottleneck (blocker of flow). It discourages changing of requirements. It reduces sense of ownership by the team. Just to name a few.
 
 However, moving from waterfall to more agile methodologies, architecture is perhaps more important than ever. Not so much in a design-gatekeeping way, but in a guiding way. How do we see our processes? How do we see our systems? What level of autonomy do we deem fitting? Domain Driven Design concepts like Event Storming, Ubiquitous Language and Bounded Context, help clarify our landscape. And that insight can help model team composition and interactions, often referred to as the [Reverse Conway Manouvre](https://www.agileanalytics.cloud/blog/team-topologies-the-reverse-conway-manoeuvre). 
 
@@ -55,7 +55,7 @@ What to do?
 
 * Bring in product manager
 * User research / observe platform usage
-* Community of Practice / share stories / evangelise
+* Community of Practice / share stories / evangelize
 * Improve developer experience
 
 One can use the [CNCF Platform Engineering Maturity Model](https://tag-app-delivery.cncf.io/whitepapers/platform-eng-maturity-model/) as a map for one's platform engineering journey
@@ -94,17 +94,17 @@ _By João Rosa_
 
 > Everyone wants a platform... To dump work on it!
 
-Enabling teams to the rescue! But who rescues the enabling teams? (Fire fighters, blocking flow, doing operational work not done by other teams)
+Enabling teams to the rescue! But who rescues the enabling teams? (Firefighters, blocking flow, doing operational work not done by other teams)
 
 Budget (the traditional kind) is useful in context: A world that is moving slower than today. A world that is predictable.
 
 > Forget about absolute numbers. We just need relative performance to beat the competition!
 
-> More fiction is written in excel than in novels (PowerPoint might come close)
+> More fiction is written in Excel than in novels (PowerPoint might come close)
 
 Rolling window budgeting is more suitable for agile organizations (Amazon does this).
 
-Mentions Swedish bank, not using budgets since 70s, never having needed tax payer's money to be bailed out, pays share value to employees. Creates collaboration.
+Mentions Swedish bank, not using budgets since 70s, never having needed taxpayer's money to be bailed out, pays share value to employees. Creates collaboration.
 
 ## How Flow Works and other curiosities
 
@@ -131,7 +131,7 @@ The circle of developer experience: Flow state, feedback loop, cognitive load
 Working memory is made up of:
 * Extraneous load (_Distractions_): Backup details, CI/CD implementation, release mechanics
 * Intrinsic load (_Complexity_): Code quality, unclear goals/tasks, skill vs. task
-* Germane load (_Learning_): Problem domain, user behaviour, customer value
+* Germane load (_Learning_): Problem domain, user behavior, customer value
 
 Shown was an example of user needs mapping where the developer needs, such as self-service, test, push, resulted in just 3 tools to master: Git, Backstage and "Bura", an in-house CLI.
 
@@ -141,7 +141,7 @@ _By Susanne Kaiser & Nina Siessegger_
 
 Event storming can help identify candidates for bounded contexts
 
-{{< figure src="/img/fastflowconf_decision_models.jpg" title="Consent decision making: A balanced approach. Source: Video of presentation." >}}
+{{< figure src="/img/fastflowconf_decision_models.jpg" title="Consent decision-making: A balanced approach. Source: Video of presentation." >}}
 
 ## Unlocking Flow: Combining Team Topologies and Platform Engineering at ASML IT
 
@@ -177,7 +177,7 @@ Squeezing the tube: Variance at start, determine what differentiates you, then f
 
 What we want to deliver to the customer: The intersection between safety (UX, standards, security, etc.) and speed (freedom, cutting edge, innovative, etc.). We don't want safety without speed or speed without safety.
 
-The full stack falacy: I-shaped, T-shaped, Pi-shaped, comb-shaped. Comp-shaped unicorns don't exist. They need platform engineering for manageable cognitive load.
+The full stack fallacy: I-shaped, T-shaped, Pi-shaped, comb-shaped. Comp-shaped unicorns don't exist. They need platform engineering for manageable cognitive load.
 
 Platform engineering: Don't start too low in the stack.
 
@@ -208,7 +208,7 @@ Let's actively reshape the narrative:
 
 ## Conclusion
 
-Looking back to all the presentations, there seem to bo some overarching themes: 
+Looking back to all the presentations, there seem to be some overarching themes: 
 
 * Foster a product mindset
 * Involve all layers of an organization
@@ -217,5 +217,3 @@ Looking back to all the presentations, there seem to bo some overarching themes:
 This was a great conference. Besides interesting talks, the relatively small scale, and the fine location, allowed for some nice hallway conversations. Or actually: Sunny outside terrace conversations.
 
 My take-away; "How does this affect flow?" is a valuable perspective for individuals, teams and organizations.
-
-
