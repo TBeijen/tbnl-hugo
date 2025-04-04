@@ -12,7 +12,7 @@ tags:
   - Platform Engineering
   - Architecture
 description: Some take-aways of FastFlowConf that took place 2025 march 23rd in Den Bosch.
-thumbnail: 
+thumbnail: img/fastflowconf_header.jpg
 
 ---
 
@@ -32,7 +32,9 @@ However, moving from waterfall to more agile methodologies, architecture is perh
 
 This is at [the core of Team Topologies](https://teamtopologies.com/key-concepts), which identifies 4 team types and 3 interaction modes.
 
-Ok, enough of my interpretation of Team Topologies. Let's gloss over some brief 'notes & quotes' of some of the talks. Be aware that videos [of the talks](https://www.fastflowconf.com/agenda) are online.
+Ok, enough of my interpretation of Team Topologies. Let's gloss over some brief 'notes & quotes' of some of the talks. Be aware that [videos of the talks](https://www.youtube.com/@fastflowconf/videos) are online.
+
+{{< figure src="/img/fastflowconf_banner.jpg" title="Fastflowconf" >}}
 
 ## Platform as a Product: are we nearly there yet?
 
@@ -56,7 +58,7 @@ What to do?
 * Community of Practice / share stories / evangelise
 * Improve developer experience
 
-One can use the [CNCF Platform Engineering Maturity Model](https://tag-app-delivery.cncf.io/whitepapers/platform-eng-maturity-model/) as a map for ones platform engineering journey
+One can use the [CNCF Platform Engineering Maturity Model](https://tag-app-delivery.cncf.io/whitepapers/platform-eng-maturity-model/) as a map for one's platform engineering journey
 
 Quote:
 
@@ -116,17 +118,104 @@ The building blocks of flow are coordination, cadence (schedule) and queues. Sha
 
 Several platform models were illustrated via [M/M/c queues](https://en.wikipedia.org/wiki/M/M/c_queue), showing wy IaaS clouds like AWS enable flow: Throughput is not determined by number of platform operators.
 
-{{< figure src="/img/fastflowconf_platforms.jpg" title="Why AWS (IaaS) is a thing and the others are expensive and slow because c = number of people" >}}
+{{< figure src="/img/fastflowconf_platforms.jpg" title="Why AWS (IaaS) is a thing and the others are expensive and slow because c = number of people. Source: Video of presentation." >}}
+
+## DevX - Beyond Platform Engineering
+
+_By Ophelia Zhang Dalsgaard & Henrik Høegh_
+
+Developer experience does not equal platform engineering (it's more)
+
+The circle of developer experience: Flow state, feedback loop, cognitive load
+
+Working memory is made up of:
+* Extraneous load (_Distractions_): Backup details, CI/CD implementation, release mechanics
+* Intrinsic load (_Complexity_): Code quality, unclear goals/tasks, skill vs. task
+* Germane load (_Learning_): Problem domain, user behaviour, customer value
+
+Shown was an example of user needs mapping where the developer needs, such as self-service, test, push, resulted in just 3 tools to master: Git, Backstage and "Bura", an in-house CLI.
+
+## Team Topologies in Practice: A Journey of Re-Teaming Using Architecture for Flow
+
+_By Susanne Kaiser & Nina Siessegger_
+
+Event storming can help identify candidates for bounded contexts
+
+{{< figure src="/img/fastflowconf_decision_models.jpg" title="Consent decision making: A balanced approach. Source: Video of presentation." >}}
+
+## Unlocking Flow: Combining Team Topologies and Platform Engineering at ASML IT
+
+_By Tom Slenders & Andrea Klettke_
+
+ASML uses Scaled agile/Release trains (ART)
+
+Pilot groups (ARTs) consisting of different views/perspectives:
+
+* Senior management
+* ART leadership
+* Team members
+
+This helped:
+
+* Formulate communication that is clear for each every participant
+* Establish trust by all views being represented
+
+Leverage the industry standards and meet with peers:
+
+* Learn from each other
+* Proves on right path. Industry is moving in this directions
+
+Very important: “Keep on repeating”
+
+## Transforming claims resolution at Parasol: Accelerating outcomes with Platform Engineering
+
+_By Stefan van Oirschot_
+
+Balance is essential: Output consists of debts, risks, defects and features. Once the former three grow, feature output declines.
+
+Squeezing the tube: Variance at start, determine what differentiates you, then focus (remove distractions) to achieve high flow.
+
+What we want to deliver to the customer: The intersection between safety (UX, standards, security, etc.) and speed (freedom, cutting edge, innovative, etc.). We don't want safety without speed or speed without safety.
+
+The full stack falacy: I-shaped, T-shaped, Pi-shaped, comb-shaped. Comp-shaped unicorns don't exist. They need platform engineering for manageable cognitive load.
+
+Platform engineering: Don't start too low in the stack.
+
+## Autonomy, is that what we really want?
+
+_By Evelyn Van Kelle and Kenny Baas-Schwegler_
+
+[Slides](https://speakerdeck.com/baasie/autonomy-is-that-what-we-really-want-at-fast-flow-conf-nl)
+
+> **Autonomy**, as described by **Daniel H. Pink**, is the urge to direct **one's own life**. Without the ability to control **what, when and how we work**, and who we work with, we'll never be completely motivated to complete a task.
+
+Using [Polarity maps](https://universityinnovation.org/wiki/Resource:Polarity_Mapping) to unpack different aspects of autonomy.
+
+{{< figure src="/img/fastflowconf_polarity_map.jpg" title="Polarity map of autonomy. Source: Slides of presentation." >}}
+
+Autonomy exists within a context and boundaries.
+
+> The paradox of autonomy: It empowers individuals and teams, yet risks fracturing us into 'us vs. them'. Will we allow this polarity to define us, especially as we pursue for fast flow?
+
+Let's actively reshape the narrative:
+
+> Celebrate difference, cherish equality, intentionally build 'us AND them' and actively seek our shared needs!
+
+* Autonomy within teams. Autonomy is not dictatorship.
+* Autonomy between teams. Risk of ivory towers.
+* Autonomy in organizations. A continuous negotiation.
 
 
 ## Conclusion
 
-Overarching themes
+Looking back to all the presentations, there seem to bo some overarching themes: 
 
-* Involve all layers
-* Communicate, communicate, communicate. Keep on repeating,
-* Product mindset
+* Foster a product mindset
+* Involve all layers of an organization
+* Communicate, communicate, communicate! And then communicate some more.
 
-Similar to agile, team topologies self organizing, autonomy. At a glance this might be tangent to architecture. Opposite is true: Bounded contexts help shape team structure.
+This was a great conference. Besides interesting talks, the relatively small scale, and the fine location, allowed for some nice hallway conversations. Or actually: Sunny outside terrace conversations.
+
+My take-away; "How does this affect flow?" is a valuable perspective for individuals, teams and organizations.
 
 
