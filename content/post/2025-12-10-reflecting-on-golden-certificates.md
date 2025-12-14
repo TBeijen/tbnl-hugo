@@ -10,14 +10,14 @@ tags:
   - CNCF
   - Certification
   - Kubernetes
-description: Reflecting on the Golden Kubestronaut title, and certification in general
+description: Reflecting on certification and the Golden Kubestronaut title
 thumbnail: img/c4_blastbeats_header.jpg
 
 ---
 
 Recently I passed the last of the exams that grants the [Golden Kubestronaut](https://training.linuxfoundation.org/resources/kubestronaut-program/) title. And it was quite the journey.
 
-About twenty years ago, I dabbled a bit in certification via PHP and Zend. Back then, PHP tried to be corporate Java, including the design patterns and certifications that come with it. And I went along. Let's say it has been a phase, in which I built quite some monstrosities [^footnote_monstrosities]. Then came a long period in which I had ample opportunity to explore and learn, not really caring much for certification. A privilege really.
+About twenty years ago, I dabbled a bit in certification via PHP and Zend. Back then, PHP tried to be corporate Java, including the design patterns and certifications that come with it. And I went along! Let's say it has been a phase, in which I built quite some monstrosities [^footnote_monstrosities]. Then came a long period in which I had ample opportunity to explore and learn, not really caring much for certification. A privilege really.
 
 Certification sometimes seems to be a divisive topic: People that have them, applaud them. People that don't, dislike them. So far I have been mostly neutral about certification: Not great, not terrible[^footnote_notgreat_notterrible].
 
@@ -42,9 +42,9 @@ Also, I started working for a consultancy company. In that field, certification 
 * First and foremost: Learn new things
 * Secondary: Easily slap a badge on experience I already had
 
-CKA, and especially CKS, did not disappoint and gave me new perspectives, along with working in a more security-focused role at DHL. But this put me in an interesting spot: Although not the initial goal, I now had completed the hard part of the Kubestronaut requirements. And, maybe more importantly: I had the feeling to have enough experience to back up the Kubestronaut title. 
+CKA, and especially CKS, did not disappoint and gave me new perspectives, along with changing jobs and working in a more security-focused role. But this put me in an interesting spot: Although not the initial goal, I now had completed the hard part of the Kubestronaut requirements. And, maybe more importantly: I had the feeling to have enough experience to back up the Kubestronaut title. 
 
-So Kubestronaut I became. A title I appreciate, since it represents the open source community and ecosytem that is the CNCF landscape. Let's just say it suits me a bit better than being all-in on a single big tech corporation.
+Kubestronaut I became. A title I appreciate, since it represents the open source community and ecosytem that is the CNCF landscape. Let's just say it suits me a bit better than being all-in on a single big tech corporation.
 
 But I also found myself dreading the moment two years ahead, when the first certificate would expire. Renewing CKA and CKS I could see as somewhat valueable, the others not so much.
 
@@ -52,12 +52,13 @@ And then the CNCF [announced the Golden Kubestronaut program](https://www.cncf.i
 
 > For life
 
-Two paths became clear:
+Two paths became clear. Well, three:
 
+* Just don't bother, enjoy the two years of Kubestronaut and let all of it expire.
 * Repeat the five exams every two years. A considerable amount of money and quite some effort for what feels like a chore.
 * Continue the journey all the way to Golden, learning new things in the process.
 
-Repeating the same. Or instead, exploring and learning new topics? Easy pick!
+Losing things (the horror). Repeating the same. Or instead, exploring and learning new topics? Easy pick!
 
 Having been immersed in the study process for most of the past year, how do I now feel about certification?
 
@@ -67,9 +68,9 @@ Having been immersed in the study process for most of the past year, how do I no
 
 Over the years I have worked with, and work with amazing people. Some have certificates, some don't. Frankly speaking, I don't see any correlation: Curious, motivated, smart people will show those traits, certified or not.
 
-Taking it further, I might have even become a bit sceptical about certificates. I have interviewed candidates that had resumes filled with certificates, but couldn't even tell what role they were interviewing for, nor had any meaningful question to ask. And there have been cases of similar profiles, turning out to display no problem-solving skills, and no intrinsic motivation.
+Taking it further, I might have even become a bit sceptical about certificates. I have interviewed candidates that had resumes filled with certificates, but couldn't even tell what role they were interviewing for, nor had any meaningful question to ask. And there have been cases of similar profiles being hired, turning out to display no problem-solving skills, and no intrinsic motivation.
 
-Now luckily these are outliers, and there can be factors contributing to this. Some consultancy companies are not even trying to properly match candidates or prepare them in any way. And some of the places consultants are positioned at, have a tendency to numb people down.
+Now luckily these are outliers, and there can be factors contributing to this. Some consultancy companies are not even _trying_ to properly match candidates or prepare them in any way. And some of the places consultants are typically positioned at, just have a culture that tends to numb people down.
 
 It just highlights that certificates _by themselves_ don't paint the full picture. To illustrate:
 
@@ -114,46 +115,97 @@ Let's highlight some good parts of certification:
 
 ### Objective
 
-We live in times where AI is able to generate very convincing content. Whether it's social media posts, open source contributions, or even one's homelab repository: It becomes increasingly hard to distinguish 'just talk' from 'also walk'. Or 'theoretical knowleged' from 'able to apply and solve problems'. Even real conversations, albeit remote, are [not immune](https://newsletter.pragmaticengineer.com/p/the-pulse-146) to 'AI augmentation'. 
+We live in times where AI is able to generate very convincing content. Whether it's social media posts, open source contributions, or even one's homelab repository: It becomes increasingly hard to distinguish 'just talk' from 'also walk'. Even hiring interviews, albeit remote, are [not immune](https://newsletter.pragmaticengineer.com/p/the-pulse-146) to 'AI augmentation'. 
 
 Find of certification what you want, but that fact alone will make them unlikely to go anywhere soon.
 
 ### Study path
 
+Some topics lend themselves to explore via a homelab or pet project, or by contributing to an open source project. But it requires coming up with an idea first, or find a suitable 'first issue', so there might be a bit of a barrier. And, when having passed that barrier, you might find yourself deep diving into parts of a topic, while skipping others. 
 
+But when looking at learning from that perspective, the aforementioned linear nature of certificate study, has an upside as well: It is easy to 'just start' and the curriculum will make sure you at least touch various topics at a basic level.
 
+### Scalable
 
-* Scalable
-* Study path
-* Tarifs
-* Show of dedication and motivation
-* Way of breaking into tech
-* CNCF tech stack
+Recruiters might filter resumes on certificates because it's so easy to measure. It scales. I can't say I particularly endorse this gatekeeping aspect of certification, but it is what it is. And, trying to apply a 'glass half-full approach', when having certificates, this scaling can benefit candidates as well and more easily get you noticed.
 
-One can discuss the value of certification
+### Show of dedication
 
+Dedication and motivation comes in many forms, and studying is one of them. While mostly theoretical, so probably best balanced by more hands-on ways of learning, it _is_ a way of learning. And the time it takes is real.
 
+### Breaking into tech
 
-For all of the above one can discuss 
+If trying to land your first job in tech, you might not have existing work to show. Certification _might_ help, but chose wisely, you can spend your money only once. 
 
-All of the above can help 
+For example: Spend $100 on a refurbished mini PC, or a couple of years worth of Hetzner VMs, then slap on ArgoCD, turn it inside out, while coding and posting about your learnings. That might very well be money better spent, than the [GitOps Associate](https://training.linuxfoundation.org/certification/certified-gitops-associate-cgoa/) exam.
 
+Balance proably is key here. If also demonstrating hands-on ability, then certification _might_ help with the aforementioned scalability, and put some additional visibility on the dedication one has.
 
+There are many people on LinkedIn, mentoring and coaching people to land their first job. Absorp what they have to say.
 
+### Tariffs
 
+Whether you are a freelance professional, or work for a consultancy company, tariffs need to be negotiated. Referals can help. But even then: Being a great dependable team player, while one of most important qualities to have, might turn out hard to put turn into an increased tariff.
 
+### CNCF adoption in corporates
 
+Big companies are risk averse. They happily pay vendors or traning centers large sums of money to be able to chose paved paths. Can we buy 'premium support'? Can we hire trained people? The classic "Nobody ever got fired for buying IBM"[^footnote_ibm]. 
+
+While Kubernetes itself can be considered pretty much established, the entire CNCF landscape is not there yet. Big vendors such as AWS, Microsoft all have certification programs and partner programs, that allow corporates to buy off risk. 
+
+Certifications, as well as the project governance by the CNCF, will help in puting open source solutions on the map of big, risk-averse organisations.
 
 ## The Golden Kubestronaut program
 
+When looking at the Kubestronaut program, one can observe a clear trajectory:
+
+* Kubestronaut: Focuses on the core itself, deeply understanding Kubernetes, culminating in the CKS exam.
+* Golden Kubestronaut: Advances into the wider ecosystem. The additional components one needs, to turn Kubernetes into a usable platform, such as observability, policies and advanced networking.
+
+Now, if looking at difficulty, the arc flattens a bit when going from Kubestronaut to Golden Kubestronaut. The sheer volume is the main challenge, but CKS I still find the hardest exam of the entire series. And if I had to recommend a single one, it would be CKS, hands down.
+
+Interestingly, two exams are coming that might bend the flattened arc upwards a bit:
+
+* [Cloud Native Platform Engineer (CNPE)](https://training.linuxfoundation.org/certification/certified-cloud-native-platform-engineer-cnpe/). A hands-on exam, launched in november, and a requirement for Golden Kubstronaut starting March. 1st 2026. It is perceived as quite difficult by the first takers.
+* [Certified Kubernetes Network Engineer (CKNE)](https://training.linuxfoundation.org/kubernetes-network-engineer-program/). Not a lot is known yet, but it is announced to be a 'practical exam'.
+
+By the looks of it, those two will be worthy additions to the Golden Kubestronaut program, adding a bit more depth to the vast breadth.
+
+The CNCF exams are not cheap at $250 for associate, and $445 for hands-on exams. So, there is a bit of a pay-to-win ring to it. But in their defence:
+
+* There are bundles which reduce cost by about 10% when comparing to the individual exams
+* Most importantly: There are occasional reductions of 50% and sometimes even 60%!
+* Purchases are valid for a year. So you can buy during one of the reductions, even if studying does not fit your schedule immediately
+* A re-take is included in case you fail the first attempt
+* Most of the hands-on exams include two [killer.sh](https://killer.sh/) practice exams, which are very valuable
+
+The validity of 2 years is rather short, and sadly CNCF (nor AWS for that matter) offer the [renewal procedure that Microsoft does](https://learn.microsoft.com/en-us/credentials/certifications/renew-your-microsoft-certification).
+
+It's serious money one needs to budget, but from a CNCF perspective perhaps not the cash-grab some people claim it to be. Looking at the [2024 report](https://www.cncf.io/reports/cncf-annual-report-2024/), training makes up 7.5% of fundraising, althouth, given the very marketable Kubestronaut program, I expect this figure to be higher in 2025.
+
+Finally, I can't help but think [Linux Foundation Certified System Administrator (LFCS)](https://training.linuxfoundation.org/certification/linux-foundation-certified-sysadmin-lfcs/) would fit better in the regular Kubestronaut program. Linux is the foundation on top of which all other parts are built. Now it feels a bit like an afterthought.
+
 ## What does it mean?
 
-Certificates, learn from team mates, mentors, homelab, video courses, hallway tracks, 
+There are many, many ways to learn: Working in a team, colleagues and mentors, pet projects, contributing to open source, video courses, conference talks, attending meetups or conferences, fixing things at 2am and wondering how to prevent the next mishap. 
 
+More on the educating side of things, mentoring, training people, conducting workshops, speaking, writing, are ways of learning as well. As is leaving your comfort zone in general.
 
+Each have their strong and weak points: A homelab is a great source of experimenting and learning, but doesn't have the scale at which a lack of automation becomes painful. A video course, while informative, might not 'click' until one encounters the topic in professional life. Similarly, studying certificates brings knowledge, but does not focus on the ability to explain things to non-technical stakeholders.
 
+So, all of the above contribute to personal growth in different ways, and in that regard, certification is no different. But, let's face it, certificates are a very visible component of personal branding. And that's ok, but it probably attributes to their sometimes mixed response. The diagram under 'the value' in my opinion, illustrates the pitfall to avoid.
 
+As I stated in my [LinkedIn post](https://www.linkedin.com/posts/tibobeijen_kubestronaut-goldenkubestronaut-cncf-activity-7401881647786278913-rCV5), I see the Golden Kubestronaut title foremost as raising the bar of the professional that I aspire to be, and perhaps a bit as a display of dedication and perseverance. 
 
-[^footnote_monstrosities]: Let's call it my 'Gang of Four phase'
+If I visit a community event, for every certificate I now have, there will be people having more experience on that particular subject, that I can learn a lot from. Nothing changed about that, and if anything, the title emphasizes the need to keep learning, and bring a balanced perspective into any conversation.
+
+Would I recommend it? Sure! Read the above, and if you're still enthousiast, go for it! It's rewarding and you will grow as a professional. 
+
+What stayed the same? The questions one asks, are often more interesting than the education one shows.
+
+Thoughts? Don't hesitate to find me on [LinkedIn](https://www.linkedin.com/in/tibobeijen/), BlueSky or CNCF Slack.
+
+[^footnote_monstrosities]: Let's call it my [Gang of Four](https://martinfowler.com/bliki/GangOfFour.html) phase
 [^footnote_notgreat_notterrible]: Yes, that's a [reference](https://en.wikipedia.org/wiki/Chernobyl_(miniseries)). And one that is very relevant to tech, since it shows how bad culture will lead to very bad outcomes.
 [^footnote_aws_sap]: People have told me I should try AWS Software Architect Professional instead, since it focuses more on understanding and less on facts and I'll probably like it better. Maybe...
+[^footnote_ibm]: Emphasis on _classic_. Not sure if picking IBM is as safe these days.
