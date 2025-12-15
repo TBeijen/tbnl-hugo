@@ -1,8 +1,8 @@
 ---
-title: "Reflecting on Golden Kubestronaut and Certificates"
+title: "Reflecting on certification and Golden Kubestronaut"
 author: Tibo Beijen
-date: 2025-12-10T05:00:00+01:00
-url: /2025/12/10/reflecting-on-golden-kubestronaut-certificates
+date: 2025-12-17T05:00:00+01:00
+url: /2025/12/17/reflecting-on-certification-golden-kubestronaut
 categories:
   - articles
 tags:
@@ -123,7 +123,9 @@ Find of certification what you want, but that fact alone will make them unlikely
 
 Some topics lend themselves to explore via a homelab or pet project, or by contributing to an open source project. But it requires coming up with an idea first, or find a suitable 'first issue', so there might be a bit of a barrier. And, when having passed that barrier, you might find yourself deep diving into parts of a topic, while skipping others. 
 
-But when looking at learning from that perspective, the aforementioned linear nature of certificate study, has an upside as well: It is easy to 'just start' and the curriculum will make sure you at least touch various topics at a basic level.
+When looking at learning from that perspective, the aforementioned linear nature of certificate study, has an upside as well: It is easy to 'just start' and the curriculum will make sure you at least touch various topics at a basic level.
+
+Furthermore, there are certifications, like [CISSP](https://en.wikipedia.org/wiki/Certified_Information_Systems_Security_Professional), that are not technical. There simply is no pet project for that subject matter.
 
 ### Scalable
 
