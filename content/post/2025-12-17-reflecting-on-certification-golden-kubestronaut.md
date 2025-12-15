@@ -25,28 +25,28 @@ And now I have fifteen of them. Sixteen even, if counting the odd AWS Solutions 
 
 ## My Kubernetes journey in a nutshell
 
-My Kubernetes journey started in 2018. Back then I worked at [NU.nl](https://www.nu.nl), a large dutch news site. Coming from a lift-and-shift migration to AWS, we had EC2 instead of co-located VMs, but other than that, not a lot was 'cloud native'. We were struggling with managing python versions and virtual-envs on mutable infrastructure, scripted deploys and a lack of auto-scaling.
+My Kubernetes journey started in 2018. Back then I worked at [NU.nl](https://www.nu.nl), a large Dutch news site. Coming from a lift-and-shift migration to AWS, we had EC2 instead of co-located VMs, but other than that, not a lot was 'cloud native'. We were struggling with managing Python versions and virtual-envs on mutable infrastructure, scripted deploys and a lack of auto-scaling.
 
-Containers were already something I was focusing on: The artifacts in our 'to-be' landscape. So when Kubernetes entered the stage, everything 'clicked': A system that allowed all of our workloads to run in a scalable, consistent way. Furthermore providing unlimited adaptability and the ability to offer great return on investment, by allowing any improvement to directly apply to all workloads: The plaform mindset.
+Containers were already something I was focusing on: The artifacts in our 'to-be' landscape. So when Kubernetes entered the stage, everything 'clicked': A system that allowed all of our workloads to run in a scalable, consistent way. Furthermore providing unlimited adaptability and the ability to offer great return on investment, by allowing any improvement to directly apply to all workloads: The platform mindset.
 
-Our new commenting platform gave us a nice, isolated greenfield project to wet our feet, we dove in, explored many topics, [made some obvious mistakes](https://www.tibobeijen.nl/2019/02/01/learning-from-kubernetes-cluster-failure/), and learned a lot.
+Our new commenting platform gave us a nice, isolated greenfield project to get our feet wet, we dove in, explored many topics, [made some obvious mistakes](https://www.tibobeijen.nl/2019/02/01/learning-from-kubernetes-cluster-failure/), and learned a lot.
 
 ## Why?
 
 If already having managed to learn a lot about Kubernetes in well over six years, and working in tech for over twenty years, then why all of a sudden start with certificates?
 
-Well, one thing lead to another. Having worked mostly with EKS, I had the CKA and CKS exams on my radar for a while. Mostly to explore where gaps in my knowledge existed.
+Well, one thing led to another. Having worked mostly with EKS, I had the CKA and CKS exams on my radar for a while. Mostly to explore where gaps in my knowledge existed.
 
 Also, I started working for a consultancy company. In that field, certification is valued a lot, creating a nice incentive. So, the goal for me was twofold:
 
 * First and foremost: Learn new things
 * Secondary: Easily slap a badge on experience I already had
 
-CKA, and especially CKS, did not disappoint and gave me new perspectives, along with changing jobs and working in a more security-focused role. But this put me in an interesting spot: Although not the initial goal, I now had completed the hard part of the Kubestronaut requirements. And, maybe more importantly: I had the feeling to have enough experience to back up the Kubestronaut title. 
+CKA, and especially CKS, did not disappoint and gave me new perspectives, along with changing jobs and working in a more security-focused role. But this put me in an interesting spot: Although not the initial goal, I now had completed the hard part of the Kubestronaut requirements. And, maybe more importantly: I felt I had enough experience to back up the Kubestronaut title. 
 
-Kubestronaut I became. A title I appreciate, since it represents the open source community and ecosytem that is the CNCF landscape. Let's just say it suits me a bit better than being all-in on a single big tech corporation.
+Kubestronaut I became. A title I appreciate, since it represents the open source community and ecosystem that is the CNCF landscape. Let's just say it suits me a bit better than being all-in on a single big tech corporation.
 
-But I also found myself dreading the moment two years ahead, when the first certificate would expire. Renewing CKA and CKS I could see as somewhat valueable, the others not so much.
+But I also found myself dreading the moment two years ahead, when the first certificate would expire. Renewing CKA and CKS I could see as somewhat valuable, the others not so much.
 
 And then the CNCF [announced the Golden Kubestronaut program](https://www.cncf.io/announcements/2025/04/01/cncf-launches-golden-kubestronaut-program-and-expands-cloud-native-education-initiatives/), and one thing stood out:
 
@@ -66,9 +66,9 @@ Having been immersed in the study process for most of the past year, how do I no
 
 ### The value
 
-Over the years I have worked with, and work with amazing people. Some have certificates, some don't. Frankly speaking, I don't see any correlation: Curious, motivated, smart people will show those traits, certified or not.
+Over the years I have worked with, and still work with, amazing people. Some have certificates, some don't. Frankly speaking, I don't see any correlation: Curious, motivated, smart people will show those traits, certified or not.
 
-Taking it further, I might have even become a bit sceptical about certificates. I have interviewed candidates that had resumes filled with certificates, but couldn't even tell what role they were interviewing for, nor had any meaningful question to ask. And there have been cases of similar profiles being hired, turning out to display no problem-solving skills, and no intrinsic motivation.
+Taking it further, I might have even become a bit skeptical about certificates. I have interviewed candidates that had resumes filled with certificates, but couldn't even tell what role they were interviewing for, nor had any meaningful question to ask. And there have been cases of similar profiles being hired, turning out to display no problem-solving skills, and no intrinsic motivation.
 
 Now luckily these are outliers, and there can be factors contributing to this. Some consultancy companies are not even _trying_ to properly match candidates or prepare them in any way. And some of the places consultants are typically positioned at, just have a culture that tends to numb people down.
 
@@ -89,19 +89,19 @@ However, the performance-based exams, such as CKA and CKS gave me a much better 
 
 While studying one exam after another, I noticed some parallels with a game I used to play: [Ingress](https://ingress.com/en). Let me explain.
 
-Ingress is a geomobile game, a predecessor to Pokemon Go. You go outside, walk around and play. Part of the game is the ability to do a mission, usually wakling around and hacking a specific set of portals in order. Completing the mission grants you a badge. Multiple mission badges might form a banner.
+Ingress is a geomobile game, a predecessor to Pokemon Go. You go outside, walk around and play. Part of the game is the ability to do a mission, usually walking around and hacking a specific set of portals in order. Completing the mission grants you a badge. Multiple mission badges might form a banner.
 
 Let's take this banner I did at some point in Helsinki, as a metaphor:
 
 So, when abroad for a business or city trip, it's very tempting to go out and complete a banner. The good thing is: The banner creates an incentive to go out and explore, and running into fellow players (the community!). The banner might even take you to places you otherwise wouldn't have visited.
 
-But there are downsides as well: Everything tends to become focused on completing the banner. Instead of looking around and absorbing the atmosphere, one is looking at it's cell phone, figuring out where the next portal is. Casually ending up at a nice spot? Bummer, need to move on, train is leaving in an hour and there are badges to complete.
+But there are downsides as well: Everything tends to become focused on completing the banner. Instead of looking around and absorbing the atmosphere, one is looking at its cell phone, figuring out where the next portal is. Casually ending up at a nice spot? Bummer, need to move on, train is leaving in an hour and there are badges to complete.
 
 Studying exams tends to be a bit like that. It's prescriptive and linear. There is no creativity, no 'identifying of problems to solve'. Instead of wondering how to get the most out of an afternoon in Helsinki, the process becomes: Choose a banner that's doable in an afternoon. Follow the path, rinse and repeat.
 
 ### The visibility
 
-Another similarity to Ingress is that the banners themselves become the talking point. Instead of talking about where to find the best _korvapuusti_ (a cinamon roll) in Helsinki, the topic becomes: What banners are you planning to do? In a way the banners can become a distraction to the experience.
+Another similarity to Ingress is that the banners themselves become the talking point. Instead of talking about where to find the best _korvapuusti_ (a cinnamon roll) in Helsinki, the topic becomes: What banners are you planning to do? In a way the banners can become a distraction to the experience.
 
 Finally: Some players in Ingress are just crazy: If you happen to capture a portal at night they consider 'theirs', they get out of their bed, into their car, drive out, and capture it back. 
 
@@ -109,7 +109,7 @@ Now there is nothing wrong with dedication and being fanatic. The point is: Ther
 
 ## Certification: Not terrible!
 
-Now the previous might come across as a bit critical to certificates. I think it just illustrates that certificates can be a valuable _part of the package_, as long as they don't _become_ the package. They can help getting you into a converstion, but after that their value quickly dissipates.
+Now the previous might come across as a bit critical to certificates. I think it just illustrates that certificates can be a valuable _part of the package_, as long as they don't _become_ the package. They can help getting you into a conversation, but after that their value quickly dissipates.
 
 Let's highlight some good parts of certification:
 
@@ -117,7 +117,7 @@ Let's highlight some good parts of certification:
 
 We live in times where AI is able to generate very convincing content. Whether it's social media posts, open source contributions, or even one's homelab repository: It becomes increasingly hard to distinguish 'just talk' from 'also walk'. Even hiring interviews, albeit remote, are [not immune](https://newsletter.pragmaticengineer.com/p/the-pulse-146) to 'AI augmentation'. 
 
-Find of certification what you want, but that fact alone will make them unlikely to go anywhere soon.
+Think what you will of certification, but that fact alone will make them unlikely to go anywhere soon.
 
 ### Study path
 
@@ -137,25 +137,25 @@ Dedication and motivation comes in many forms, and studying is one of them. Whil
 
 ### Breaking into tech
 
-If trying to land your first job in tech, you might not have existing work to show. Certification _might_ help, but chose wisely, you can spend your money only once. 
+If trying to land your first job in tech, you might not have existing work to show. Certification _might_ help, but choose wisely, you can spend your money only once. 
 
 For example: Spend $100 on a refurbished mini PC, or a couple of years worth of Hetzner VMs, then slap on ArgoCD, turn it inside out, while coding and posting about your learnings. That might very well be money better spent, than the [GitOps Associate](https://training.linuxfoundation.org/certification/certified-gitops-associate-cgoa/) exam.
 
-Balance proably is key here. If also demonstrating hands-on ability, then certification _might_ help with the aforementioned scalability, and put some additional visibility on the dedication one has.
+Balance probably is key here. If also demonstrating hands-on ability, then certification _might_ help with the aforementioned scalability, and put some additional visibility on the dedication one has.
 
-There are many people on LinkedIn, mentoring and coaching people to land their first job. Absorp what they have to say.
+There are many people on LinkedIn, mentoring and coaching people to land their first job. Absorb what they have to say.
 
 ### Tariffs
 
-Whether you are a freelance professional, or work for a consultancy company, tariffs need to be negotiated. Referals can help. But even then: Being a great dependable team player, while one of most important qualities to have, might turn out hard to put turn into an increased tariff.
+Whether you are a freelance professional, or work for a consultancy company, tariffs need to be negotiated. Referrals can help. But even then: Being a great dependable team player, while one of most important qualities to have, might turn out hard to turn into a higher tariff.
 
 ### CNCF adoption in corporates
 
-Big companies are risk averse. They happily pay vendors or traning centers large sums of money to be able to chose paved paths. Can we buy 'premium support'? Can we hire trained people? The classic "Nobody ever got fired for buying IBM"[^footnote_ibm]. 
+Big companies are risk averse. They happily pay vendors or training centers large sums of money to be able to choose paved paths. Can we buy 'premium support'? Can we hire trained people? The classic "Nobody ever got fired for buying IBM"[^footnote_ibm]. 
 
 While Kubernetes itself can be considered pretty much established, the entire CNCF landscape is not there yet. Big vendors such as AWS, Microsoft all have certification programs and partner programs, that allow corporates to buy off risk. 
 
-Certifications, as well as the project governance by the CNCF, will help in puting open source solutions on the map of big, risk-averse organisations.
+Certifications, as well as the project governance by the CNCF, will help in putting open source solutions on the map of big, risk-averse organisations.
 
 ## The Golden Kubestronaut program
 
@@ -168,7 +168,7 @@ Now, if looking at difficulty, the arc flattens a bit when going from Kubestrona
 
 Interestingly, two exams are coming that might bend the flattened arc upwards a bit:
 
-* [Cloud Native Platform Engineer (CNPE)](https://training.linuxfoundation.org/certification/certified-cloud-native-platform-engineer-cnpe/). A hands-on exam, launched in november, and a requirement for Golden Kubstronaut starting March. 1st 2026. It is perceived as quite difficult by the first takers.
+* [Cloud Native Platform Engineer (CNPE)](https://training.linuxfoundation.org/certification/certified-cloud-native-platform-engineer-cnpe/). A hands-on exam, launched in November, and a requirement for Golden Kubestronaut starting March. 1st 2026. It is perceived as quite difficult by the first takers.
 * [Certified Kubernetes Network Engineer (CKNE)](https://training.linuxfoundation.org/kubernetes-network-engineer-program/). Not a lot is known yet, but it is announced to be a 'practical exam'.
 
 By the looks of it, those two will be worthy additions to the Golden Kubestronaut program, adding a bit more depth to the vast breadth.
@@ -181,9 +181,9 @@ The CNCF exams are not cheap at $250 for associate, and $445 for hands-on exams.
 * A re-take is included in case you fail the first attempt
 * Most of the hands-on exams include two [killer.sh](https://killer.sh/) practice exams, which are very valuable
 
-The validity of 2 years is rather short, and sadly CNCF (nor AWS for that matter) offer the [renewal procedure that Microsoft does](https://learn.microsoft.com/en-us/credentials/certifications/renew-your-microsoft-certification).
+The validity of two years is rather short, and sadly CNCF (nor AWS for that matter) offer the [renewal procedure that Microsoft does](https://learn.microsoft.com/en-us/credentials/certifications/renew-your-microsoft-certification).
 
-It's serious money one needs to budget, but from a CNCF perspective perhaps not the cash-grab some people claim it to be. Looking at the [2024 report](https://www.cncf.io/reports/cncf-annual-report-2024/), training makes up 7.5% of fundraising, althouth, given the very marketable Kubestronaut program, I expect this figure to be higher in 2025.
+It's serious money one needs to budget, but from a CNCF perspective perhaps not the cash-grab some people claim it to be. Looking at the [2024 report](https://www.cncf.io/reports/cncf-annual-report-2024/), training makes up 7.5% of fundraising, although, given the very marketable Kubestronaut program, I expect this figure to be higher in 2025.
 
 Finally, I can't help but think [Linux Foundation Certified System Administrator (LFCS)](https://training.linuxfoundation.org/certification/linux-foundation-certified-sysadmin-lfcs/) would fit better in the regular Kubestronaut program. Linux is the foundation on top of which all other parts are built. Now it feels a bit like an afterthought.
 
@@ -201,7 +201,7 @@ As I stated in my [LinkedIn post](https://www.linkedin.com/posts/tibobeijen_kube
 
 If I visit a community event, for every certificate I now have, there will be people having more experience on that particular subject, that I can learn a lot from. Nothing changed about that, and if anything, the title emphasizes the need to keep learning, and bring a balanced perspective into any conversation.
 
-Would I recommend it? Sure! Read the above, and if you're still enthousiast, go for it! It's rewarding and you will grow as a professional. 
+Would I recommend it? Sure! Read the above, and if you're still enthusiastic, go for it! It's rewarding and you will grow as a professional. 
 
 What stayed the same? The questions one asks, are often more interesting than the education one shows.
 
