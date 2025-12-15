@@ -117,7 +117,7 @@ Let's highlight some good parts of certification:
 
 We live in times where AI is able to generate very convincing content. Whether it's social media posts, open source contributions, or even one's homelab repository: It becomes increasingly hard to distinguish 'just talk' from 'also walk'. Even hiring interviews, albeit remote, are [not immune](https://newsletter.pragmaticengineer.com/p/the-pulse-146) to 'AI augmentation'. 
 
-Think what you will of certification, but that fact alone will make them unlikely to go anywhere soon.
+Think what you will about certification, but that fact alone makes certifications unlikely to go anywhere soon.
 
 ### Study path
 
@@ -147,7 +147,7 @@ There are many people on LinkedIn, mentoring and coaching people to land their f
 
 ### Tariffs
 
-Whether you are a freelance professional, or work for a consultancy company, tariffs need to be negotiated. Referrals can help. But even then: Being a great dependable team player, while one of most important qualities to have, might turn out hard to turn into a higher tariff.
+Whether you are a freelance professional, or work for a consultancy company, tariffs need to be negotiated. Referrals can help. But even then: Being a great dependable team player, one of most important qualities to have, can still be hard to price into a higher tariff.
 
 ### CNCF adoption in corporates
 
@@ -155,7 +155,7 @@ Big companies are risk averse. They happily pay vendors or training centers larg
 
 While Kubernetes itself can be considered pretty much established, the entire CNCF landscape is not there yet. Big vendors such as AWS, Microsoft all have certification programs and partner programs, that allow corporates to buy off risk. 
 
-Certifications, as well as the project governance by the CNCF, will help in putting open source solutions on the map of big, risk-averse organisations.
+Certification, as well as the project governance by the CNCF, will help in putting open source solutions on the map of big, risk-averse organizations.
 
 ## The Golden Kubestronaut program
 
@@ -193,13 +193,13 @@ There are many, many ways to learn: Working in a team, colleagues and mentors, p
 
 More on the educating side of things, mentoring, training people, conducting workshops, speaking, writing, are ways of learning as well. As is leaving your comfort zone in general.
 
-Each have their strong and weak points: A homelab is a great source of experimenting and learning, but doesn't have the scale at which a lack of automation becomes painful. A video course, while informative, might not 'click' until one encounters the topic in professional life. Similarly, studying certificates brings knowledge, but does not focus on the ability to explain things to non-technical stakeholders.
+Each have their strong and weak points: A homelab is a great source of experimenting and learning, but doesn't have the scale at which a lack of automation becomes painful. A video course, while informative, might not 'click' until one encounters the topic in professional life. Similarly, studying certification brings knowledge, but does not focus on the ability to explain things to non-technical stakeholders.
 
 So, all of the above contribute to personal growth in different ways, and in that regard, certification is no different. But, let's face it, certificates are a very visible component of personal branding. And that's ok, but it probably attributes to their sometimes mixed response. The diagram under 'the value' in my opinion, illustrates the pitfall to avoid.
 
 As I stated in my [LinkedIn post](https://www.linkedin.com/posts/tibobeijen_kubestronaut-goldenkubestronaut-cncf-activity-7401881647786278913-rCV5), I see the Golden Kubestronaut title foremost as raising the bar of the professional that I aspire to be, and perhaps a bit as a display of dedication and perseverance. 
 
-If I visit a community event, for every certificate I now have, there will be people having more experience on that particular subject, that I can learn a lot from. Nothing changed about that, and if anything, the title emphasizes the need to keep learning, and bring a balanced perspective into any conversation.
+If I visit a community event, for every certificate I now have, there will be people having more experience on that particular subject, that I can learn a lot from and have an interesting chat with. Nothing changed about that, and if anything, the title emphasizes the need to keep learning, and bring a balanced perspective into any conversation.
 
 Would I recommend it? Sure! Read the above, and if you're still enthusiastic, go for it! It's rewarding and you will grow as a professional. 
 
