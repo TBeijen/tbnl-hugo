@@ -11,17 +11,19 @@ tags:
   - Certification
   - Kubernetes
 description: Reflecting on certification and the Golden Kubestronaut title
-thumbnail: img/c4_blastbeats_header.jpg
+thumbnail: img/certification-header.jpg
 
 ---
 
 Recently I passed the last of the exams that grants the [Golden Kubestronaut](https://training.linuxfoundation.org/resources/kubestronaut-program/) title. And it was quite the journey.
 
-About twenty years ago, I dabbled a bit in certification via PHP and Zend. Back then, PHP tried to be corporate Java, including the design patterns and certifications that come with it. And I went along! Let's say it has been a phase, in which I built quite some monstrosities [^footnote_monstrosities]. Then came a long period in which I had ample opportunity to explore and learn, not really caring much for certification. A privilege really.
+About twenty years ago, I dabbled a bit in certification via PHP and Zend. Back then, PHP tried to be corporate Java, including the design patterns and certifications that come with it. And I went along! Let's say it has been a phase, in which I built quite some monstrosities [^footnote_monstrosities]. Then came a long period in which I had ample opportunity to explore and learn, not really needing or caring much for certification. A privilege in a way.
 
 Certification sometimes seems to be a divisive topic: People that have them, applaud them. People that don't, dislike them. So far I have been mostly neutral about certification: Not great, not terrible[^footnote_notgreat_notterrible].
 
 And now I have fifteen of them. Sixteen even, if counting the odd AWS Solutions Architect Associate exam. How did that come? And did it change my look at certification? (Spoiler: Not really)
+
+{{< figure src="/img/certification-kubestronauts.jpg" title="Kubestronauts reflecting on their accomplishments. Source: AI augmented with Powerpoint and WTF-8" >}}
 
 ## My Kubernetes journey in a nutshell
 
@@ -29,11 +31,11 @@ My Kubernetes journey started in 2018. Back then I worked at [NU.nl](https://www
 
 Containers were already something I was focusing on: The artifacts in our 'to-be' landscape. So when Kubernetes entered the stage, everything 'clicked': A system that allowed all of our workloads to run in a scalable, consistent way. Furthermore providing unlimited adaptability and the ability to offer great return on investment, by allowing any improvement to directly apply to all workloads: The platform mindset.
 
-Our new commenting platform gave us a nice, isolated greenfield project to get our feet wet, we dove in, explored many topics, [made some obvious mistakes](https://www.tibobeijen.nl/2019/02/01/learning-from-kubernetes-cluster-failure/), and learned a lot.
+Our new commenting system gave us a nice, isolated greenfield project to get our feet wet, we dove in, explored many topics, [made some obvious mistakes](https://www.tibobeijen.nl/2019/02/01/learning-from-kubernetes-cluster-failure/), and learned a lot.
 
 ## Why?
 
-If already having managed to learn a lot about Kubernetes in well over six years, and working in tech for over twenty years, then why all of a sudden start with certificates?
+If already having managed to learn a lot about Kubernetes in well over seven years, and working in tech for over twenty years, then why all of a sudden start with certificates?
 
 Well, one thing led to another. Having worked mostly with EKS, I had the CKA and CKS exams on my radar for a while. Mostly to explore where gaps in my knowledge existed.
 
@@ -46,42 +48,43 @@ CKA, and especially CKS, did not disappoint and gave me new perspectives, along 
 
 Kubestronaut I became. A title I appreciate, since it represents the open source community and ecosystem that is the CNCF landscape. Let's just say it suits me a bit better than being all-in on a single big tech corporation.
 
-But I also found myself dreading the moment two years ahead, when the first certificate would expire. Renewing CKA and CKS I could see as somewhat valuable, the others not so much.
+But I also found myself dreading the moment two years ahead, when the first certificate would expire. Renewing CKS I could see as somewhat valuable, refreshing my knowledge. The others not so much.
 
 And then the CNCF [announced the Golden Kubestronaut program](https://www.cncf.io/announcements/2025/04/01/cncf-launches-golden-kubestronaut-program-and-expands-cloud-native-education-initiatives/), and one thing stood out:
 
 > For life
 
-Two paths became clear. Well, three:
+Three paths became clear:
 
-* Just don't bother, enjoy the two years of Kubestronaut and let all of it expire.
+* Just don't bother, enjoy the two years of Kubestronaut and let it all expire.
 * Repeat the five exams every two years. A considerable amount of money and quite some effort for what feels like a chore.
 * Continue the journey all the way to Golden, learning new things in the process.
 
-Losing things (the horror). Repeating the same. Or instead, exploring and learning new topics? Easy pick!
+Losing things (the horror!). Repeating the same. Or instead, exploring and learning new topics? Easy pick!
 
-Having been immersed in the study process for most of the past year, how do I now feel about certification?
+Having been immersed in the study process for quite some months, how do I now feel about certification?
 
 ## Certification: Not great
 
 ### The value
 
-Over the years I have worked with, and still work with, amazing people. Some have certificates, some don't. Frankly speaking, I don't see any correlation: Curious, motivated, smart people will show those traits, certified or not.
+Over the years I have worked with, and work with amazing people. Some have certificates, some don't. Frankly speaking, I don't see any correlation: Curious, motivated, smart people will show those traits, certified or not.
 
-Taking it further, I might have even become a bit skeptical about certificates. I have interviewed candidates that had resumes filled with certificates, but couldn't even tell what role they were interviewing for, nor had any meaningful question to ask. And there have been cases of similar profiles being hired, turning out to display no problem-solving skills, and no intrinsic motivation.
+Taking it further, I might have even become a bit skeptical about certificates. I have interviewed candidates with resumes full of certificates who couldn't tell what role they were interviewing for, or struggled to ask meaningful questions. And there have been cases of similar profiles being hired, but then having a hard time showing problem-solving skills or motivation.
 
-Now luckily these are outliers, and there can be factors contributing to this. Some consultancy companies are not even _trying_ to properly match candidates or prepare them in any way. And some of the places consultants are typically positioned at, just have a culture that tends to numb people down.
+These are outliers, and the system can set people up to fail: Not all consultancy shops value proper matching or preparation, and some client environments have a culture that numbs people down.
 
 It just highlights that certificates _by themselves_ don't paint the full picture. To illustrate:
 
-
-Diagram soft & hard skills - certificates
+<iv style="width:50%;margin:0 auto">
+{{< figure src="/img/certification-matrix.svg" title="Balancing certification and soft and hard skills" >}}
+</div>
 
 ### The format
 
 Some exams are just filled with facts. To me, grasping concepts is what matters. Exact details one can look up, like one does in professional life: Not verifying details, that are easy to verify, is _not_ a flex.
 
-Looking back at for example [AWS Solutions Architect Associate](https://aws.amazon.com/certification/certified-solutions-architect-associate/): For me it has been one third learning, one third facts I forgot straight away, and one third facts that are probably outdated because of the never-ending stream of service updates[^footnote_aws_sap]. Make no mistake: I learned things, and the one third that sticks _has_ value. Just the overall experience I don't find very satisfying.
+Looking back at for example [AWS Solutions Architect Associate](https://aws.amazon.com/certification/certified-solutions-architect-associate/): For me it has been one third learning, one third facts I forgot straight away, and one third facts that are probably outdated because of the never-ending stream of service updates[^footnote_aws_sap]. That's two third being facts one can and should look up anyway. Make no mistake: I learned things, and the one third that sticks _has_ value. Just the overall experience I don't find very satisfying.
 
 However, the performance-based exams, such as CKA and CKS gave me a much better impression: One _needs_ to have a decent understanding of the topic, and the exam might include some actual troubleshooting. Furthermore there is the ability to look up examples and command line flags so the exam format is much closer to reality.
 
@@ -93,11 +96,13 @@ Ingress is a geomobile game, a predecessor to Pokemon Go. You go outside, walk a
 
 Let's take this banner I did at some point in Helsinki, as a metaphor:
 
+{{< figure src="/img/certification-ingress-helsinki.jpg" title="Ingress banner that can be accomplished in Helsinki" >}}
+
 So, when abroad for a business or city trip, it's very tempting to go out and complete a banner. The good thing is: The banner creates an incentive to go out and explore, and running into fellow players (the community!). The banner might even take you to places you otherwise wouldn't have visited.
 
 But there are downsides as well: Everything tends to become focused on completing the banner. Instead of looking around and absorbing the atmosphere, one is looking at its cell phone, figuring out where the next portal is. Casually ending up at a nice spot? Bummer, need to move on, train is leaving in an hour and there are badges to complete.
 
-Studying exams tends to be a bit like that. It's prescriptive and linear. There is no creativity, no 'identifying of problems to solve'. Instead of wondering how to get the most out of an afternoon in Helsinki, the process becomes: Choose a banner that's doable in an afternoon. Follow the path, rinse and repeat.
+Studying exams tends to be a bit like that. It's prescriptive and linear. There is no creativity, no 'identifying of problems to solve'. The focus shifts from exploring to time management. Instead of wondering how to get the most out of an afternoon in Helsinki, the process becomes: Choose a banner that's doable in an afternoon. Follow the path, rinse and repeat.
 
 ### The visibility
 
@@ -137,7 +142,7 @@ Dedication and motivation comes in many forms, and studying is one of them. Whil
 
 ### Breaking into tech
 
-If trying to land your first job in tech, you might not have existing work to show. Certification _might_ help, but choose wisely, you can spend your money only once. 
+If trying to land your first job in tech, you might not have existing work to show. Certification _might_ help, but choose wisely, you can spend your money and time only once. 
 
 For example: Spend $100 on a refurbished mini PC, or a couple of years worth of Hetzner VMs, then slap on ArgoCD, turn it inside out, while coding and posting about your learnings. That might very well be money better spent, than the [GitOps Associate](https://training.linuxfoundation.org/certification/certified-gitops-associate-cgoa/) exam.
 
@@ -162,7 +167,7 @@ Certification, as well as the project governance by the CNCF, will help in putti
 When looking at the Kubestronaut program, one can observe a clear trajectory:
 
 * Kubestronaut: Focuses on the core itself, deeply understanding Kubernetes, culminating in the CKS exam.
-* Golden Kubestronaut: Advances into the wider ecosystem. The additional components one needs, to turn Kubernetes into a usable platform, such as observability, policies and advanced networking.
+* Golden Kubestronaut: Advances into the wider ecosystem. The additional components one needs to turn Kubernetes into a usable platform, such as observability, policies and advanced networking.
 
 Now, if looking at difficulty, the arc flattens a bit when going from Kubestronaut to Golden Kubestronaut. The sheer volume is the main challenge, but CKS I still find the hardest exam of the entire series. And if I had to recommend a single one, it would be CKS, hands down.
 
@@ -195,17 +200,17 @@ More on the educating side of things, mentoring, training people, conducting wor
 
 Each have their strong and weak points: A homelab is a great source of experimenting and learning, but doesn't have the scale at which a lack of automation becomes painful. A video course, while informative, might not 'click' until one encounters the topic in professional life. Similarly, studying certification brings knowledge, but does not focus on the ability to explain things to non-technical stakeholders.
 
-So, all of the above contribute to personal growth in different ways, and in that regard, certification is no different. But, let's face it, certificates are a very visible component of personal branding. And that's ok, but it probably attributes to their sometimes mixed response. The diagram under 'the value' in my opinion, illustrates the pitfall to avoid.
+So, all of the above contribute to personal growth in different ways, and in that regard, certification is no different. But, let's face it, certificates are a very visible component of personal branding. And that's ok, but it probably attributes to their sometimes mixed response. The diagram under 'the value' in my opinion, illustrates the pitfall to avoid. 
 
 As I stated in my [LinkedIn post](https://www.linkedin.com/posts/tibobeijen_kubestronaut-goldenkubestronaut-cncf-activity-7401881647786278913-rCV5), I see the Golden Kubestronaut title foremost as raising the bar of the professional that I aspire to be, and perhaps a bit as a display of dedication and perseverance. 
 
-If I visit a community event, for every certificate I now have, there will be people having more experience on that particular subject, that I can learn a lot from and have an interesting chat with. Nothing changed about that, and if anything, the title emphasizes the need to keep learning, and bring a balanced perspective into any conversation.
+If I visit a community event, for every certificate I now have, there will be people with deeper experience on that topic. Great people to learn from and talk to. And there will be people contributing a _lot_ to the community. Nothing changed about that, and if anything, the title emphasizes the need to keep learning, and bring a balanced perspective into any conversation.
 
-Would I recommend it? Sure! Read the above, and if you're still enthusiastic, go for it! It's rewarding and you will grow as a professional. 
+Would I recommend it? Sure! Read the above, and if you're still enthusiastic, go for it! It's rewarding and you will grow as a professional. But ultimately: Learning is key and certification is just one of the many learning paths. It is worth noting though, that I am well aware of being in a privileged position: To be able to consider certification a 'nice to have'. 
 
 What stayed the same? The questions one asks, are often more interesting than the education one shows.
 
-Thoughts? Don't hesitate to find me on [LinkedIn](https://www.linkedin.com/in/tibobeijen/), BlueSky or CNCF Slack.
+Thoughts? Don't hesitate to find me on [LinkedIn](https://www.linkedin.com/in/tibobeijen/), [BlueSky](https://bsky.app/profile/tibobeijen.nl) or [CNCF Slack](https://cloud-native.slack.com/archives/D018RE9CA4T).
 
 [^footnote_monstrosities]: Let's call it my [Gang of Four](https://martinfowler.com/bliki/GangOfFour.html) phase
 [^footnote_notgreat_notterrible]: Yes, that's a [reference](https://en.wikipedia.org/wiki/Chernobyl_(miniseries)). And one that is very relevant to tech, since it shows how bad culture will lead to very bad outcomes.
