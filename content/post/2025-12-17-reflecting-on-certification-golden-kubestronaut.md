@@ -10,7 +10,7 @@ tags:
   - CNCF
   - Certification
   - Kubernetes
-description: Reflecting on certification and the Golden Kubestronaut title
+description: Reflecting on certification and the journey towards Golden Kubestronaut
 thumbnail: img/certification-header.jpg
 
 ---
@@ -146,9 +146,7 @@ If trying to land your first job in tech, you might not have existing work to sh
 
 For example: Spend $100 on a refurbished mini PC, or a couple of years worth of Hetzner VMs, then slap on ArgoCD, turn it inside out, while coding and posting about your learnings. That might very well be money better spent, than the [GitOps Associate](https://training.linuxfoundation.org/certification/certified-gitops-associate-cgoa/) exam.
 
-Balance probably is key here. If also demonstrating hands-on ability, then certification _might_ help with the aforementioned scalability, and put some additional visibility on the dedication one has.
-
-There are many people on LinkedIn, mentoring and coaching people to land their first job. Absorb what they have to say.
+Balance probably is key here. If also demonstrating hands-on ability, then certification _might_ help with the aforementioned scalability, and put some additional visibility on the dedication one has. 
 
 ### Tariffs
 
