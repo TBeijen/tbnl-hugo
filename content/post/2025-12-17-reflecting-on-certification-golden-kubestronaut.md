@@ -196,11 +196,11 @@ Finally, I can't help but think [Linux Foundation Certified System Administrator
 
 There are many, many ways to learn: Working in a team, colleagues and mentors, pet projects, contributing to open source, video courses, conference talks, attending meetups or conferences, fixing things at 2am and wondering how to prevent the next mishap. 
 
-More on the educating side of things, mentoring, training people, conducting workshops, speaking, writing, are ways of learning as well. As is leaving your comfort zone in general.
+More on the educating side of things, mentoring, training people, conducting workshops, speaking, writing, are ways of learning as well. And that is just professional life. Building character for a large part happens in personal life.
 
 Each have their strong and weak points: A homelab is a great source of experimenting and learning, but doesn't have the scale at which a lack of automation becomes painful. A video course, while informative, might not 'click' until one encounters the topic in professional life. Similarly, studying certification brings knowledge, but does not focus on the ability to explain things to non-technical stakeholders.
 
-So, all of the above contribute to personal growth in different ways, and in that regard, certification is no different. But, let's face it, certificates are a very visible component of personal branding. And that's ok, but it probably attributes to their sometimes mixed response. The diagram under 'the value' in my opinion, illustrates the pitfall to avoid. 
+So, all of the above contribute to personal growth in different ways, and in that regard, certification is no different. But, let's face it, certificates are a very visible component of personal branding. And that's ok, but it probably attributes to their sometimes mixed response. The diagram in the 'value' section, in my opinion, illustrates the pitfall to avoid. 
 
 As I stated in my [LinkedIn post](https://www.linkedin.com/posts/tibobeijen_kubestronaut-goldenkubestronaut-cncf-activity-7401881647786278913-rCV5), I see the Golden Kubestronaut title foremost as raising the bar of the professional that I aspire to be, and perhaps a bit as a display of dedication and perseverance. 
 
