@@ -22,11 +22,6 @@ Recently I needed to test a [Keycloak](https://www.keycloak.org/) upgrade. This 
 
 > Improve my local development DNS, routing and TLS setup
 
-### Update 2026-02
-
-* Switched default TLD from `.local` to `.internal`
-* Added capabilities for dealing with security proxies that provide an unknown CA
-
 ## The challenge
 
 Until recently, I used urls like `keycloak.127.0.0.1.nip.io:8443`. This points to `127.0.0.1` port `8443` which forwards to a local [k3d]() cluster. At the same time it provides a unique hostname that can be used for configuring ingress. 
@@ -46,6 +41,10 @@ To improve this, we need to address some things. In this article:
 {{< toc >}}
 
 ☞ Don't fancy reading? Head straight to the [github repo containing taskfile automation](https://github.com/TBeijen/dev-cluster-config)
+
+_Update 2026-02_:
+* _Switched default TLD from `.local` to `.internal`_
+* _Added capabilities for dealing with security proxies that provide an unknown CA_
 
 ## The plan
 
