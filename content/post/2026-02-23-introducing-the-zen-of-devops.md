@@ -12,7 +12,7 @@ tags:
   - Python
   - Zenofdevops
 description: Introducing the Zen of DevOps, an adaptation of the Zen of Python, providing guidance to the fields of DevOps, SRE and Platform Engineering
-thumbnail: img/certification-header.jpg
+thumbnail: img/zenofdevops-sunset.jpg
 
 ---
 
@@ -28,15 +28,17 @@ One of the most impacting pieces of guidance I have encountered, is the [Zen of 
 
 So, I have create a variant: The [Zen of DevOps](https://www.zenofdevops.org/).
 
+{{< figure src="/img/zenofdevops-sunset.jpg" title="Becoming Zen..." >}}
+
 ## The Zen of Python
 
 It must have been around 2013 or so, when working at [NU.nl](https://www.nu.nl/), when we phased out PHP in favor of Python. And that was an interesting mental exercise!
 
 Now I like my share of abstractions. When working on my graduation project, my favorite part was using OOP concepts in Macromedia Director, even though the demo app was just a small part of the project's scope. And working with PHP I went through my '[Gang of Four](https://en.wikipedia.org/wiki/Design_Patterns)' phase and built a fair share of overengineered bloat. [Zend Framework](https://framework.zend.com/manual/2.4/en/index.html) was my tool of choice, satisfying every design pattern crave I had.
 
-Then came Python. And with that came [Django](https://www.djangoproject.com/), an _opinionated_ framework. Really the opposite side of Zend Framework (which is just a grab-bag of tools with a consistent interface). And it was not just Django that has opinions, Python itself as well. A vision of the core values of the language: The Zen of Python.
+Then came Python. And with that came [Django](https://www.djangoproject.com/), an _opinionated_ framework. Really the opposite side of Zend Framework (which is just a grab-bag of tools with a consistent interface). And it was not just Django that has opinions, Python itself as well. A vision of the core values of the language: The [Zen of Python](https://peps.python.org/pep-0020/).
 
-After a transition period, shoving some PHP-isms into Python, I came to appreciate the nature of Python. At its core it's simple. But, when you need it, it gives you all the OOP you need, as well as powerful concepts such as [decorators](https://realpython.com/primer-on-python-decorators/), [context managers](https://realpython.com/python-with-statement/) and powerful[exceptions](https://realpython.com/python-exceptions/).
+After a transition period, shoving some PHP-isms into Python, I came to appreciate the nature of Python. At its core it's simple. But, when you need it, it gives you all the OOP you want, as well as powerful concepts such as [decorators](https://realpython.com/primer-on-python-decorators/), [context managers](https://realpython.com/python-with-statement/) and powerful[exceptions](https://realpython.com/python-exceptions/).
 
 Simple when possible. Complex when needed.
 
@@ -134,7 +136,7 @@ One does not complete or fail the Zen of DevOps.
 
 ## What's next
 
-It has been interesting to try to collect years of experience and observations into a small set of principles. I hope it gives teams and individuals some insights and perspectives. Even if not agreeing, unpacking why that might be can yield insights, and has value.
+It has been interesting to try to collect years of experience and observations into a small set of principles. I hope it gives teams and individuals some new perspectives. Even if not agreeing, unpacking why that might be can yield insights, and has value.
 
 In the coming time I might dive deeper into certain topics. If so, they will be tagged [zenofdevops](tags/zenofdevops/).
 
