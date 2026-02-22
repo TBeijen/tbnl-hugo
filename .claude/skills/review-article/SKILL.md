@@ -116,6 +116,23 @@ To add more exceptions, edit the list above.
   HTTP, HTML, CSS, JSON, YAML, AWS, CI/CD, PR, CLI, SDK, SQL, SSH, TLS,
   REST, gRPC, OOP)
 
+### 7. Word choice and usage
+
+- Flag words or phrases where the literal meaning differs from the clearly
+  intended meaning, even though the text is grammatically correct
+- Common patterns to watch for:
+  - Incorrect prepositions that change meaning (e.g. "design on a computer"
+    implies sitting on it; "design using a computer" conveys the intended
+    meaning)
+  - Confused word pairs (e.g. "affect" vs. "effect", "complement" vs.
+    "compliment", "principle" vs. "principal", "than" vs. "then")
+  - Malapropisms — words that sound similar but mean something different
+    (e.g. "for all intensive purposes" instead of "for all intents and
+    purposes")
+- Do NOT flag informal or colloquial usage that is clearly intentional
+- Do NOT flag preposition choices that are idiomatic and widely accepted,
+  even if technically imprecise
+
 ## What NOT to do
 
 - Do NOT alter the author's tone, voice, or personal style
