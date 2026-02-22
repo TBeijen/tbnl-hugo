@@ -20,13 +20,13 @@ thumbnail: img/zenofdevops-sunset.jpg
 
 Over the past ten years or so, my role has gradually shifted from software to platforms. More towards the 'ops' side of things, but coming from a background that values APIs, automation, artifacts and guardrails in the form of automated tests.
 
-And I found out that a lot of best practices from software engineering, can be adapted and applied to modern ops practices as well.
+And I found out that a lot of best practices from software engineering can be adapted and applied to modern ops practices as well.
 
 DevOps in a nutshell really: Bridging the gap between Dev and Ops. 
 
 One of the most impacting pieces of guidance I have encountered, is the [Zen of Python](https://peps.python.org/pep-0020/). Which largely applies to modern DevOps as well.
 
-So, I have create a variant: The [Zen of DevOps](https://www.zenofdevops.org/).
+So, I have created a variant: The [Zen of DevOps](https://www.zenofdevops.org/).
 
 {{< figure src="/img/zenofdevops-sunset.jpg" title="Becoming Zen..." >}}
 
@@ -38,7 +38,7 @@ Now I like my share of abstractions. When working on my graduation project, my f
 
 Then came Python. And with that came [Django](https://www.djangoproject.com/), an _opinionated_ framework. Really the opposite side of Zend Framework (which is just a grab-bag of tools with a consistent interface). And it was not just Django that has opinions, Python itself as well. A vision of the core values of the language: The [Zen of Python](https://peps.python.org/pep-0020/).
 
-After a transition period, shoving some PHP-isms into Python, I came to appreciate the nature of Python. At its core it's simple. But, when you need it, it gives you all the OOP you want, as well as powerful concepts such as [decorators](https://realpython.com/primer-on-python-decorators/), [context managers](https://realpython.com/python-with-statement/) and powerful[exceptions](https://realpython.com/python-exceptions/).
+After a transition period, shoving some PHP-isms into Python, I came to appreciate the nature of Python. At its core it's simple. But, when you need it, it gives you all the OOP you want, as well as powerful concepts such as [decorators](https://realpython.com/primer-on-python-decorators/), [context managers](https://realpython.com/python-with-statement/) and powerful [exceptions](https://realpython.com/python-exceptions/).
 
 Simple when possible. Complex when needed.
 
@@ -56,7 +56,7 @@ In DevOps we have to do with the languages and formats that are common: Mostly [
 
 > Special cases aren't special enough to break the rules / Although practicality beats purity
 
-Although valid points in their own right, I felt that, because the scope of DevOps is so much wider than a single programming language, that this guideline is a bit too restrictive. The reality of DevOps in large organisations is often a messy variety of practices having different levels of maturity. This guideline just gets in the way.
+Although valid points in their own right, I felt that, because the scope of DevOps is so much wider than a single programming language, that this guideline is a bit too restrictive. The reality of DevOps in large organizations is often a messy variety of practices having different levels of maturity. This guideline just gets in the way.
 
 > Now is better than never / Although never is often better than *right* now
 
@@ -68,11 +68,11 @@ It's a joke. I like jokes, and even though I'm Dutch as well: This one makes no 
 
 > Namespaces are one honking great idea -- let's do more of those!
 
-The ubiquitous 'naming things'. A bit out tone. DevOps is a lot about 'moving parts' and 'orchestration'. Not just software, where namespaces indeed are useful.
+The ubiquitous 'naming things'. A bit out of tone. DevOps is a lot about 'moving parts' and 'orchestration'. Not just software, where namespaces indeed are useful.
 
 ### Additions
 
-Some guidelines have been added, compared to the python counterpart. See the Zen of Devops for more elaborate explanation of the added guidelines.
+Some guidelines have been added, compared to the python counterpart. See the Zen of DevOps for more elaborate explanation of the added guidelines.
 
 > Be able to break non-production systems / Be able to break non-production systems only
 
@@ -88,13 +88,13 @@ As stated above, this guideline emphasizes the need to stay ahead of the mainten
 
 ## Universal and timeless
 
-Time will tell if the Zen of Devops will be as timeless as the Zen of Python. I hope so!
+Time will tell if the Zen of DevOps will be as timeless as the Zen of Python. I hope so!
 
-The range of practices that can be observed in the field of devops is increasingly wide: Front runners have already adopted agentic workflows. At the same time there are organisations where requesing a server, a cluster, a DNS change, or firewall change, can take many days[^footnote_days].
+The range of practices that can be observed in the field of devops is increasingly wide: Front runners have already adopted agentic workflows. At the same time there are organizations where requesting a server, a cluster, a DNS change, or firewall change, can take many days[^footnote_days].
 
-AI is changing many fields of works in impactful ways. At the same time, engineering principles are quite foundational. If you design a plane, you build it to last, you design for maintenance and ugrades, add redundancy[^footnote_boeing], add safety margins. Whether the design is created on paper using rulers, on a computer, or mostly by AI: Those principles still exist, and should be supervised. 
+AI is changing many fields of works in impactful ways[^footnote_ai]. At the same time, engineering principles are quite foundational. If you design a plane, you build it to last, you design for maintenance and upgrades, add redundancy[^footnote_boeing], add safety margins. Whether the design is created on paper using rulers, on a computer, or mostly by AI: Those principles still exist, and should be supervised. 
 
-Software is no different: Security, observaility, maintainability, auditability, computational efficiency are all foundational engineering practices, also known as 'non functional requirements'. 
+Software is no different: Security, observability, maintainability, auditability, computational efficiency are all foundational engineering practices, also known as 'non functional requirements'.
 
 We will see if the Zen of DevOps will hold strong in these times of AI. If it doesn't, we have probably ended up with a lot of incomprehensible junk. But I have good hopes.
 
@@ -128,7 +128,7 @@ Our industry is full of 'strong preferences' or previous choices we have become 
 
 Some of the guidelines can be interpreted in several ways. And not every guideline might be feasible or applicable in every environment. And that's ok!
 
-Take for example 'explicit'. To some it might mean: Make everything very visible. No abstractions. Everything is 'out there'. To others, including me, it means: Make conscious choices in what to expose, and what to hide, making the parts that can be considered 'the interface', explicit.
+Consider 'explicit'. To some it might mean: Make everything very visible. No abstractions. Everything is 'out there'. To others, including me, it means: Make conscious choices in what to expose, and what to hide, making the parts that can be considered 'the interface', explicit.
 
 The main take away is: Be deliberate about such practices, and keep evaluating how they affect a project and collaboration within and between teams.
 
@@ -147,4 +147,4 @@ Zen to all...
 [^footnote_okr]: I have yet to see an OKR stating 'good team mental health' as a key result.
 [^footnote_days]: I am aware there are people, upon reading, wishing it were mere days.
 [^footnote_boeing]: The price of not doing so [can be unacceptably high](https://risktec.tuv.com/knowledge-bank/the-price-of-single-point-failure/).
-[^footnote_ai]: Until we find out that we have replaced all simple deterministic processes by awesome 'magic', and now are strategically dependent on the new 'oil': Datacenter capacity, GPUs, memory. Sold by just a few big companies.
+[^footnote_ai]: Curious what happens when we find out that we have replaced all simple deterministic processes by awesome 'magic', and now are strategically dependent on the new oil: Datacenter capacity, energy, GPUs, memory. Sold by just a few big companies.
