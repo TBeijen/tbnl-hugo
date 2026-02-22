@@ -47,6 +47,10 @@ Produce findings grouped into these categories:
 - Typos and misspellings
 - Missing, misplaced, or incorrect punctuation
 - Unclosed parentheses or brackets
+- Inconsistent capitalization of proper nouns, brand names, and compound
+  terms (e.g. "DevOps" vs. "Devops", "GitHub" vs. "Github"). Flag any
+  deviation from the established or official capitalization used elsewhere
+  in the article or by the project/brand itself.
 - Do NOT flag technical terms, tool names, proper nouns, or acronyms as
   spelling errors (e.g. Kubernetes, kubectl, Terraform, Hugo, etc.)
 
@@ -99,6 +103,19 @@ To add more exceptions, edit the list above.
   repeated in a short span and feels unintentional
 - Do NOT flag intentional repetition used for rhetorical effect
 
+### 6. Abbreviation and acronym consistency
+
+- When an abbreviation or acronym is used, check that it is introduced in
+  full at least once earlier in the article (e.g. "Simple Email Service
+  (SES)" on first mention, then "SES" thereafter)
+- Flag abbreviations that are used without ever being introduced in full
+- Flag the full form being used again after the abbreviation has already
+  been introduced, unless it is a deliberate re-explanation
+- Do NOT flag acronyms and abbreviations that are universally understood
+  by a technical audience and need no introduction (e.g. API, URL, DNS,
+  HTTP, HTML, CSS, JSON, YAML, AWS, CI/CD, PR, CLI, SDK, SQL, SSH, TLS,
+  REST, gRPC, OOP)
+
 ## What NOT to do
 
 - Do NOT alter the author's tone, voice, or personal style
@@ -115,8 +132,8 @@ To add more exceptions, edit the list above.
 
 ## Consistency scope
 
-All consistency checks (US/UK, contractions, phrase repetition) apply to the
-**single article being reviewed**. Inconsistencies between different articles
+All consistency checks (US/UK, contractions, phrase repetition, abbreviations)
+apply to the **single article being reviewed**. Inconsistencies between different articles
 are irrelevant and should not be flagged.
 
 ## Output format
@@ -142,7 +159,10 @@ Ask the user how they want to proceed:
 
 - **Apply all**: apply every proposed change at once
 - **One by one**: step through each proposed change individually, where the
-  user can approve, deny, or provide an alternative for each one
+  user can approve, deny, or provide an alternative for each one. When
+  presenting each change, show the **full sentence** containing the issue
+  plus 1-2 surrounding sentences for context, so the author can judge the
+  change in situ — not just an isolated fragment.
 - **Skip**: take no action (just keep the report for reference)
 
 When applying changes, show a brief confirmation of what was changed.
