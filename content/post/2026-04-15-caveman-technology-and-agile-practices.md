@@ -45,31 +45,45 @@ Chuck went caveman: He recorded one guitar track on a regular cassete using the 
 
 He handed these demo's over to Gene with little to no guidance and said "you do you" and "there's a reason we're working together". Basically trusting Gene to come up with something good.
 
+{{< figure src="/img/individual-thought-patterns-header.jpg" title="Cavemen didn't have gettoblasters" >}}
+
 ## Tech
 
 No how does geeking out on the recording process of a more than 30 year album of not-so-middle-ground music, relate to tech? Let's see.
 
 ### Vision and execution beat tools
 
-What I find interesting is that having vary basic tools, in no way did hinder the process of creation. Perhaps it even shaped it in a way: With just two tracks, Chuck really needed to focus on the essentials: Main riff and harmony.
+What I find interesting is that having very basic tools, in no way did hinder the process of creation. Perhaps it even shaped it in a way: With just two tracks, Chuck really needed to focus on the essentials: Main riff and harmony.
 
-These days, software like Cubase or Pro Tools make it possible to create complete layererd musical arrangements. That also means there is no limit in what one can add. And every detail can be specified. So, sophistication increases and the technology becomes accessible to a larger audience. However, the need for vision, plan and guidance hasn't changed. 
+These days, software like Cubase or Pro Tools make it possible to create complete, multi-layered musical arrangements. That also means there is no limit in what one can add, and one can specify every detail one thinks of. So, sophistication increases and the technology becomes accessible to a larger audience. However, the need for vision, plan and guidance hasn't changed. 
 
 There are some interesting parallels to the current changes that are happening in tech with the rise of AI.
 
 Modern software has given musicians the ability to create professional productions from their home and to collaborate remotely without needing to travel to a physical recording studio. And we now have more music than ever, but I doubt we have more _good_ music. I fully acknowledge this is highly subjective, might be part nostalgia, and that classics can only become classics as they age. I just genuinely wonder if there is any record in contemporary metal that will be as highly regarded in 20 years as records like Metallica's "Master of Puppets" (1986), Machine Head's "Burn My Eyes" (1994) Death's "Symbolic" (1995), or Opeth's "Still Life" (1999) and "Blackwater Park" (2001).
 
-Similar to music recording software, LLMs bring the ability to create software to a large audience, at a level and speed that was impossible until very recently. And like music, guidance and vision don't magically appear because tooling has improved. And specific to software there are important aspects like security and maintainability, that are not to be taken for granted. 
+Similar to music recording software, LLMs bring the ability to create software to a large audience, at a level and speed that was impossible until very recently. And like music, guidance and vision don't magically appear because tooling has improved. Furthermore, specific to software, there are important aspects like security and maintainability, that are not to be taken for granted. 
 
 A couple of months ago, Dax Raad, creator of [OpenCode](https://opencode.ai/), posted an [interesting observation](https://x.com/thdxr/status/2022574719694758147) in his usual direct unfiltered tone of voice[^footnote_like]:
 
 I think that observation holds true. Traditionally in organisations, there are all kinds of processes: At the C-level and downwards, strategy is distilled into per-department targets such as OKRs. Then per department, teams evaluate those goals, turn them into hypothesises, prototypes, POCs. Chose what to build, since you can't build it all. Determine how to measure results. Evaluate. Repeat.
 
-Now if creating becomes cheap, it becomes tempting to stop thinking about goals. Or about how and what to evaluate. There is no need to chose, so we are tempted to (and can!) build it all. But ultimately all of that lands in the same structures that always existed: A target audience that can only consume so much. An organisition that can only evaluate so much. Processes like decision making, procurement, architecture (ADRs), A/B tests that haven't sped up. Bottlenecks everywhere. The result can hardly be anything other than: More software, with less quality, and less utilisation.
+Now if creating becomes cheap, it becomes tempting to stop thinking about goals. Or about how and what to evaluate. There is no need to chose, so we are tempted to (and can!) build it all. But ultimately all of that lands in the same structures that always existed: A target audience that can only consume so much. An organisition that can only evaluate so much. Processes like decision making, procurement, architecture (ADRs), A/B tests that haven't sped up. Bottlenecks everywhere. The result can hardly be anything other than: More software, with less quality, less vision, and less utilisation.
 
 ### "You do you" in teams
 
-"There is a reason we're working together"
+> "There is a reason we're working together"
+
+This was what Chuck said, when asked for guidance on what drum tracks Gene should lay down.
+
+And it embodies a lot of what makes great teams great. We hire people on merits and potential for growth. For the fresh perspectives they bring to the table. For the specialised skills they have, and how they can level up their team.
+
+Now if we look at [the Agile Manifesto](https://agilemanifesto.org/) it puts indivuals and interactions front and center. And this is what happened in the recording process. Chuck didn't need to spell out exact drum patterns. Of course he might have provided some ideas, the 'takada-boom' type of conversations musicians have. But he refrained from micro-management, _trusting_ Gene to come up with something good, and giving room to creativity.
+
+Now there will likely have been a back-and-forth proces of recording. Gene coming up with a track, Chuck giving feedback. And perhaps over and over, until Chuck was satisfied. That's _attention to detail_. Not the same thing as micro-management. And that works, because Chuck hired Gene, and Gene had guitar tracks to go off. Chuck didn't hire a reputated funk drummer who would come up with 70s disco beats based on the vague description "I want something up-tempo".
+
+One could say Chuck had reasonably clear expectations, but no _specifications_. Those are different things. And expectations can, and probably should, be shaped by interactions. It's what humans do, and what makes the human mind great. Taking inspiration, discussing, evaluating, adapting, transforming. The wright brothers didn't wake up and 'just invented' a plane. There was a process leading up to that.
+
+Now setting people to work based on specifications is not a bad thing in a lot of cases. Assembly line work doesn't fare well if it depends on the 'mood of the day'. And in music, it's not uncommon to hire session musicians who will track instruments based on transcribed parts, or midi files. Basically to have human-sounding recording of what was already created digitally[^footnote_session].
 
 ### "You do you" with agents
 
@@ -83,3 +97,4 @@ Now if creating becomes cheap, it becomes tempting to stop thinking about goals.
 1:01:15
 
 [^footnote_like]: Yes, I liked that tweet. Also I use LLMs intensively. Both can be true.
+[^footnote_session]: And in cases a bit of marketing: 'Featuring members of \<well-known band>'.
