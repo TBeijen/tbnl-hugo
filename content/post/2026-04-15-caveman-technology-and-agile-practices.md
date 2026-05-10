@@ -49,7 +49,7 @@ He handed these demo's over to Gene with little to no guidance and said "you do 
 
 ## Tech
 
-No how does geeking out on the recording process of a more than 30 year album of not-so-middle-ground music, relate to tech? Let's see.
+Now how does geeking out on the recording process of a more than 30 year album of not-so-middle-ground music, relate to tech? Let's see.
 
 ### Vision and execution beat tools
 
@@ -59,11 +59,15 @@ These days, software like Cubase or Pro Tools make it possible to create complet
 
 There are some interesting parallels to the current changes that are happening in tech with the rise of AI.
 
-Modern software has given musicians the ability to create professional productions from their home and to collaborate remotely without needing to travel to a physical recording studio. And we now have more music than ever, but I doubt we have more _good_ music. I fully acknowledge this is highly subjective, might be part nostalgia, and that classics can only become classics as they age. I just genuinely wonder if there is any record in contemporary metal that will be as highly regarded in 20 years as records like Metallica's "Master of Puppets" (1986), Machine Head's "Burn My Eyes" (1994) Death's "Symbolic" (1995), or Opeth's "Still Life" (1999) and "Blackwater Park" (2001).
+Modern software has given musicians the ability to create professional productions from their home and to collaborate remotely without needing to travel to a physical recording studio. And we now have more music than ever, but I doubt we have more _good_ music. 
+
+I fully acknowledge this is highly subjective, might be part nostalgia, and that classics can only become classics as they age. I just genuinely wonder if there is any record in contemporary metal that will be as highly regarded in 20 years as records like Metallica's "Master of Puppets" (1986), Machine Head's "Burn My Eyes" (1994) Death's "Symbolic" (1995), or Opeth's "Still Life" (1999) and "Blackwater Park" (2001).
 
 Similar to music recording software, LLMs bring the ability to create software to a large audience, at a level and speed that was impossible until very recently. And like music, guidance and vision don't magically appear because tooling has improved. Furthermore, specific to software, there are important aspects like security and maintainability, that are not to be taken for granted. 
 
-A couple of months ago, Dax Raad, creator of [OpenCode](https://opencode.ai/), posted an [interesting observation](https://x.com/thdxr/status/2022574719694758147) in his usual direct unfiltered tone of voice[^footnote_like]:
+A couple of months ago, Dax Raad, creator of [OpenCode](https://opencode.ai/), posted an [interesting observation](https://x.com/thdxr/status/2022574719694758147) in his usual direct, unfiltered, tone of voice[^footnote_like]:
+
+{{< figure src="/img/individual-thought-patterns-tweet.gif" title="Opinions on 'peak efficiency'" >}}
 
 I think that observation holds true. Traditionally in organisations, there are all kinds of processes: At the C-level and downwards, strategy is distilled into per-department targets such as OKRs. Then per department, teams evaluate those goals, turn them into hypothesises, prototypes, POCs. Chose what to build, since you can't build it all. Determine how to measure results. Evaluate. Repeat.
 
@@ -116,7 +120,14 @@ There's an interesting paradox in the approach: On the one hand being concise he
 
 Worth noting is that LLMs are also very useful in the phases left and right of the actual code authoring. So we can use LLMs to craft our spec. And to do QA. At the same time, they are black boxes, and their creators have an incentive to make you come back. So, the LLM will be friendly, tell you what you like to hear and is [unlikely to push back](https://www.theguardian.com/technology/2026/apr/29/making-ai-chatbots-more-friendly-mistakes-support-false-beliefs-conspiracy-theories-study). Even if it should.
 
+There is an [interesting case study on Spotify's way of working](https://www.orgtopologies.com/post/aligned-autonomy-at-scale), resulting in 'aligned autonomy'. The gist of it is that to achieve high performance, both alignment and autonomy are needed. 
+
+{{< figure src="/img/individual-thought-patterns-aligned-autonomy.png" title="Aligned Autonomy. Image by Henrik Kniberg" >}}
+
+Looking at the illustration, Spec-Driven-Development I'd say sits in the top-left corner. The real question, and challenge, is: "Do we need a bridge?". The arrival of agentic workflows hasn't removed that challenge. But it sped up building a bridge.
+
 LLMs are like good musicians. You can work with LLMs in a way that is truly interactive, the equivalent of jamming together as a band. Or you hand over your sheet music or midi files, the equivalent of spec-driven development. Which is fine if you know exactly what you want. But do you?
+
 
 ### Sovereignty and autonomy
 
