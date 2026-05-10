@@ -108,26 +108,18 @@ A lot of challenges that have always been there in software architecture remain 
 * How can we, as a indivudal, or team, or organisation, remain able to grasp, overview and review our specs?
 * Even with all our specs, do we dare to switch ~~vendors~~ models?
 
-
-
 A lot of the praise of Spec-Driven-Development seems to focus on the magical part of going from human-readable descriptions to working software at the press of a button. And it is great. But it also means part of the required effort simply moved outside of the creation phase. To the left, crafting the right spec. And to the right: QA, evaluation.
 
-There's an interesting paradox in the approach: On the one hand being concise helps in grasping what we've written from a human perspective. And less text is a good thing for the limited context windows of LLMs. On the other hand, to constrain the undeterministic nature of agents, we need to be very precise and verbose. I beleive balancing that will remain a challenge. 
+Don't take just my word on Spec-Driven-Development maybe being just moving challenges elsewhere: [Martin Fowler wrote a very interesting](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) piece exploring some of the frameworks in this space.
+
+There's an interesting paradox in the approach: On the one hand being concise helps in grasping what we've written from a human perspective. And less text is a good thing for the limited context windows of LLMs as well. On the other hand, to constrain the undeterministic nature of agents, we need to be very precise and verbose. I beleive balancing that will remain a challenge. 
 
 Worth noting is that LLMs are also very useful in the phases left and right of the actual code authoring. So we can use LLMs to craft our spec. And to do QA. At the same time, they are black boxes, and their creators have an incentive to make you come back. So, the LLM will be friendly, tell you what you like to hear and is [unlikely to push back](https://www.theguardian.com/technology/2026/apr/29/making-ai-chatbots-more-friendly-mistakes-support-false-beliefs-conspiracy-theories-study). Even if it should.
 
-LLMs are like good musicians. You can interact with LLMs, the equivalent of jamming together as a band. Or hand over your sheet music or midi files, the equivalent of spec-driven development.
-
-
-
-https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html
-
-
-effort creativity in writing spec prompts. Still no interactive process.
-
-
+LLMs are like good musicians. You can work with LLMs in a way that is truly interactive, the equivalent of jamming together as a band. Or you hand over your sheet music or midi files, the equivalent of spec-driven development. Which is fine if you know exactly what you want. But do you?
 
 ### Sovereignty and autonomy
+
 
 
 
