@@ -69,9 +69,9 @@ A couple of months ago, Dax Raad, creator of [OpenCode](https://opencode.ai/), p
 
 {{< figure src="/img/individual-thought-patterns-tweet.gif" title="Opinions on 'peak efficiency'" >}}
 
-I think that observation holds true. Traditionally in organizations, there are all kinds of processes: At the C-level and downwards, strategy is distilled into per-department targets such as OKRs. Then per department, teams evaluate those goals, turn them into hypotheses, prototypes, POCs. Chose what to build, since you can't build it all. Determine how to measure results. Evaluate. Repeat.
+I think that observation holds true. Traditionally in organizations, there are all kinds of processes: At the C-level and downwards, strategy is distilled into per-department targets such as [OKRs](https://en.wikipedia.org/wiki/Objectives_and_key_results). Then per department, teams evaluate those goals, turn them into hypotheses, prototypes, POCs. Chose what to build, since you can't build it all. Determine how to measure results. Evaluate. Repeat.
 
-Now if creating becomes cheap, it becomes tempting to stop thinking about goals. Or about how and what to evaluate. There is no need to choose, so we are tempted to (and can!) build it all. But ultimately all of that lands in the same structures that always existed: a target audience that can only consume so much. An organization that can only evaluate so much. Processes like decision making, procurement, architecture (ADRs), A/B tests that haven't sped up. Bottlenecks everywhere. The result can hardly be anything other than: more software, with less quality, less vision, and less utilisation.
+Now if creating becomes cheap, it becomes tempting to stop thinking about goals. Or about how and what to evaluate. There is no need to choose, so we are tempted to (and can!) build it all. But ultimately all of that lands in the same structures that always existed: a target audience that can only consume so much. An organization that can only evaluate so much. Processes like decision making, procurement, architecture ([ADRs](https://adr.github.io/)), A/B tests that haven't sped up. Bottlenecks everywhere. The result can hardly be anything other than: more software, with less quality, less vision, and less utilisation.
 
 ### "You do you" in teams
 
@@ -136,7 +136,7 @@ Modern day, things are often different. For recording, [Pro Tools](https://www.a
 
 That's a lot of software dependencies for essentially turning guitar string oscillations into an electrical signal. And it works by the mercy of the company that provides the software staying in business. Or not being acquired by an entity that has very different views on pricing models[^footnote_pricing].
 
-The parallels with modern software engineering are obvious. And of course it's not sane to build everything yourself just for the sake of independence. But there's a spectrum: Platforms like Postgres or Redis are widely available. Containers can run everywhere, using any orchestrator of choice. OpenTelemetry data can be sent to a wide variety of observability tools. Standards OIDC, OAuth and SPIFFE are the backbone of authentication. S3 has become the API standard for object storage. The list is endless.
+The parallels with modern software engineering are obvious. And of course it's not sane to build everything yourself just for the sake of independence. But there's a spectrum: Platforms like Postgres or Redis are widely available. Containers can run everywhere, using any orchestrator of choice. OpenTelemetry data can be sent to a wide variety of observability tools. Standards like [OIDC](https://en.wikipedia.org/wiki/OpenID#OpenID_Connect_(OIDC)), OAuth and [SPIFFE](https://spiffe.io/) are the backbone of authentication. S3 has become the API standard for object storage. The list is endless.
 
 Even when using such widely available standards and components, replacements or migrations might not be particularly _easy_. But it's always possible, without needing to rewrite a lot.
 

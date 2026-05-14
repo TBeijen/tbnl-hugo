@@ -8,3 +8,5 @@
 # image source files
 source/
 themes/start*
+
+.claude/settings.local.json
