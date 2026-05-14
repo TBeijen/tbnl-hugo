@@ -152,6 +152,8 @@ It's interesting how listening to a seemingly unrelated podcast, opens up a can 
 
 But that's ok, sometimes the journey _is_ the goal. Because the insights, or simply the reward that the journey brings, helps shape new goals.
 
+Chuck died of cancer, a disease sadly affecting many people. Let's just hope that all those water-guzzling and energy-consuming datacenters that are being built are also used to help humanity in [fighting that disease](https://www.cancerresearch.org/blog/ai-cancer). Maybe then all the AI-augmented processes that should have stayed simple, or the endless slop that shouldn't exist, might be a price worth paying. 
+
 Although written between 35 and 28 years ago, I can't help but feel Death's last 4 albums have been written specifically for the state of the world and society today:
 
 * Human
@@ -159,7 +161,7 @@ Although written between 35 and 28 years ago, I can't help but feel Death's last
 * Symbolic
 * The Sound of Perseverance
 
-Chuck died of Cancer, a disease sadly affecting many people. Let's just hope that all those water-guzzling and energy-consuming datacenters that are being built, are also used to help humanity in [fighting that disease](https://www.cancerresearch.org/blog/ai-cancer). Maybe then all the AI-augmented processes that should have stayed simple, or the endless slop that shouldn't exist, might be a price worth paying. 
+Words to live by...
 
 I hope you enjoyed reading this as much as I did writing!
 
