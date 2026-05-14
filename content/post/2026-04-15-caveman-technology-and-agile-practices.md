@@ -16,7 +16,7 @@ thumbnail: img/individual-thought-patterns-header.jpg
 
 ---
 
-During my weekly long runs I listen to podcasts. Mostly about tech or music, and a couple of months ago I listened to [an episode](https://www.youtube.com/watch?v=JVRlcJXFHGo) that contained some quotes that kept resonationg: "Going caveman" and "you do you". Let's unpack what they mean in the context of working in tech.
+During my weekly long runs I listen to podcasts. Mostly about tech or music, and a couple of months ago I listened to [an episode](https://www.youtube.com/watch?v=JVRlcJXFHGo) that contained some quotes that kept resonationg: "Going caveman" and "you do you". Let's unpack what they mean in the context of working in tech, the AI-ification of everything, and the state of the world today.
 
 ## A bit of background
 
@@ -85,13 +85,13 @@ If we look at [the Agile Manifesto](https://agilemanifesto.org/), it puts indivu
 
 Now there will likely have been a back-and-forth proces of recording. Gene coming up with a track, Chuck giving feedback. And perhaps over and over, until Chuck was satisfied. That's _attention to detail_. Not the same thing as micro-management. And that works, because Chuck hired Gene, and Gene had guitar tracks to go off. Chuck didn't hire a reputated funk drummer who would come up with 70s disco beats based on the vague description "I want something up-tempo".
 
-One could say Chuck had reasonably clear expectations, but no _specifications_. Those are different things. And expectations can, and probably should, be shaped by interactions. They are not carved in stone. It's what humans do, and what makes the human mind great. Taking inspiration, discussing, evaluating, adapting, transforming. The wright brothers didn't wake up and 'just invented' a plane. There was a process leading up to that. A proces of _high-bandwith_ interactions.
+One could say Chuck had reasonably clear expectations, but no _specifications_. Those are different things. And expectations can, and probably should, be shaped by interactions. They are not carved in stone. It's what humans do, and what makes the human mind great. Taking inspiration, discussing, trying, evaluating, adapting, transforming. The wright brothers didn't wake up and 'just invented' a plane. There was a process leading up to that. A proces of _high-bandwith_ interactions.
 
 Now setting people to work based on specifications is not a bad thing in a lot of cases. Assembly line work doesn't fare well if it depends on the 'mood of the day'. And in music, it's not uncommon to hire session musicians who will track instruments based on transcribed parts, or midi files. Basically to have human-sounding recording of what was already created digitally[^footnote_session].
 
 ### "You do you" with agents
 
-The contemporary Silicon Valley equivalent of hiring a competent drummer would be writing a specification and then having a LLM generate a drum-track. If not satisfied, refine spec, repeat. And again. And since creating has become so cheap: Another round. No team synergy. No accomplishment. A result, that fits the music, but lacks the human element.
+The contemporary Silicon Valley equivalent of hiring a competent drummer would be writing a specification and then having a LLM generate a drum-track. If not satisfied, refine spec, repeat. And again. And since creating has become so cheap: Another round. No team synergy. No accomplishment. A result that fits the music, but lacks the human element.
 
 We can write a skill: "Use albums this and that as reference material. Replace the hihat with an additional piccolo snare[^footnote_piccolo]. Don't play things that are not possible with four limbs."
 
@@ -114,7 +114,7 @@ A lot of challenges that have always been there in software architecture remain 
 
 A lot of the praise of Spec-Driven-Development seems to focus on the magical part of going from human-readable descriptions to working software at the press of a button. And it is great. But it also means part of the required effort simply moved outside of the creation phase. To the left, crafting the right spec. And to the right: QA, evaluation.
 
-Don't take just my word on Spec-Driven-Development maybe being just moving challenges elsewhere: [Martin Fowler wrote a very interesting](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) piece exploring some of the frameworks in this space.
+Don't just take my word on challenges lurking in Spec-Driven-Development: [Martin Fowler wrote a very interesting piece](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html), exploring some of the frameworks in this space.
 
 There's an interesting paradox in the approach: On the one hand being concise helps in grasping what we've written from a human perspective. And less text is a good thing for the limited context windows of LLMs as well. On the other hand, to constrain the undeterministic nature of agents, we need to be very precise and verbose. I beleive balancing that will remain a challenge. 
 
@@ -126,17 +126,46 @@ There is an [interesting case study on Spotify's way of working](https://www.org
 
 Looking at the illustration, Spec-Driven-Development I'd say sits in the top-left corner. The real question, and challenge, is: "Do we need a bridge?". The arrival of agentic workflows hasn't removed that challenge. But it sped up building a bridge.
 
-LLMs are like good musicians. You can work with LLMs in a way that is truly interactive, the equivalent of jamming together as a band. Or you hand over your sheet music or midi files, the equivalent of spec-driven development. Which is fine if you know exactly what you want. But do you?
-
+LLMs are like good musicians. You can work with LLMs in a way that is truly interactive, the equivalent of jamming together as a band. And the result might surpass the sum of its parts. Or you hand over your sheet music or midi files, the equivalent of spec-driven development, which is fine if you know exactly what you want. But do you?
 
 ### Sovereignty and autonomy
 
+A final aspect I find intriguing is that the tools to create the music, were simple, widely available, with 'no string attached'. Guitars, amps, cables, 4-track recorders, cassette. All compatible with one another and quite easy to replace. Marshall amp head broken but the studio has an ENGL sitting around? Might not give the _exact_ sound you're used to, but it will work. Forgot your cable? Borrow one.
 
+Modern day, things are often different. For recording, [Pro Tools](https://www.avid.com/pro-tools) is a common choice for professional musicians, but the licence is subscription-based. [NeuralDSP](https://neuraldsp.com/quad-cortex) offers amazing amp modelling capabilities. To get the most out of it you can use plugins that give you the complete sound of your favorite artist. Luckily the licence of plugins is for life. Still, it requires software, including a licence manager, which has requirements on the system it runs on. And software needs maintenance: The OS it runs on needs updates for security and compatibility between OS and software needs to be ensured.
 
+That's a lot of software dependencies for essentially turning guitar string oscilations into an electrical signal. And it works by the mercy of the company that provides the software staying in business. Or not being acquired by an entity that has very different views on pricing models[^footnote_pricing].
 
+The parallels with modern software engineering are obvious. And of course it's not sane to build everything yourself just for the sake of independence. But there's a spectrum: Platforms like Postgres or Redis are widely available. Containers can run everywhere, using any orchestrator of choice. OpenTelemetry data can be sent to a wide variety of observability tools. Standards OIDC, OAuth and SPIFFE are the backbone of authentication. S3 has become the API standard for object storage. The list is endless.
 
-1:01:15
+Even when using such widely available standards and components, replacements or migrations might not be particularly _easy_. But it's always possible, without needing to rewrite a lot.
+
+That's autonomy and digital sovereignty in a nutshell.
+
+Standardising on baskets is efficient. And even if the basket vendor is not your best friend, or is strongly influenced by parties who are definitely _not_ your friend, things can still work out. But if only one specific basket exists that can hold your eggs, you're on a lifeline of goodwill.
+
+Not saying we should stick to Vim. But if a year of advancement has gotten us to sitting on our hands because Claude is down, we're not doing alright either.
+
+### Conclusion
+
+It's interesting how listening to a seemingly unrelated podcast, opens up a can of metaphors. I can for sure say that connecting those dots happpens way faster than writing down those connections in a coherent way. Whether or not I succeeded is for the reader to decide.
+
+But that's ok, sometimes the journey _is_ the goal. Because the insights, or simply the reward that the journey brings, helps shape new goals.
+
+Although written between 35 and 28 years ago, I can't help but feel Death's last 4 albums have been written specifically for the state of the world and society today:
+
+* Human
+* Individual Thought Patterns
+* Symbolic
+* The Sound of Perseverance
+
+Chuck died of Cancer, a desease sadly affecting a lot of people. Let's just hope that all those water-guzzling, and energy-consuming datacenters that are being built, are also used to help humanity in [fighting that disease](https://www.cancerresearch.org/blog/ai-cancer). Maybe then all the AI-augmented processes that should have stayed simple, or the endless slop that shouldn't exist, might be a price worth paying. 
+
+I hope you enjoyed reading this as much as I did writing!
+
+Got any thoughts or feedback? Find me on [LinkedIn](https://www.linkedin.com/in/tibobeijen/) or [BlueSky](https://bsky.app/profile/tibobeijen.nl)
 
 [^footnote_like]: I liked that tweet. Also I use LLMs intensively. Both can be true.
 [^footnote_session]: And in cases a bit of marketing: 'Featuring members of \<well-known band>'.
 [^footnote_piccolo]: Yes, that's an [album reference](https://uniqueleaderrecords.bandcamp.com/album/nuklearth).
+[^footnote_pricing]: Let VMware's acquisition by Broadcam be the reminder that also big vendors can [drastically change course](https://arstechnica.com/gadgets/2025/05/broadcom-sends-cease-and-desist-letters-to-subscription-less-vmware-users/).
