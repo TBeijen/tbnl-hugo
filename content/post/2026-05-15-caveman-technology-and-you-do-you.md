@@ -142,9 +142,9 @@ Even when using such widely available standards and components, replacements or 
 
 That's autonomy and digital sovereignty in a nutshell.
 
-Standardising on baskets is efficient. And even if the basket vendor is not your best friend, or is strongly influenced by parties who are definitely _not_ your friend, things can still work out. But if only one specific basket exists that can hold your eggs, you're on a lifeline of goodwill.
+It's all about not putting eggs in one basket. Standardising on baskets is efficient. And even if the basket vendor is not your best friend, or is strongly influenced by parties who are definitely _not_ your friend, things can still work out. But if only one specific basket exists that can hold your eggs, you're on a lifeline of goodwill.
 
-Not saying we should stick to Vim. But if a year of advancement has gotten us to sitting on our hands because Claude is down, we're not doing alright either.
+Not saying we should stick to Vim. But if a year of advancement has gotten us to sitting on our hands whenever Claude is down, we're not doing alright either.
 
 ### Conclusion
 
