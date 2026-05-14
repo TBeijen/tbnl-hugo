@@ -24,7 +24,7 @@ The podcast I'm referring to is '[The Garza Podcast](https://www.patreon.com/cw/
 
 The specific episode was an interview with Gene Hoglan. A drummer often named 'the atomic clock', he is not only precise, but has also laid down some of the most creative drum parts in metal drumming, including the album Individual Thought Patterns of the band Death.
 
-Death metal is a bit like whisky: Not immediately approachable, but once you get past the first hurdle, a lot of subtle flavors unfold. And it involves craft to create. Whisky is more than just alcohol that tastes like wood, and metal is more than noise that's all about darkness.
+Death metal is a bit like whisky: not immediately approachable, but once you get past the first hurdle, many subtle flavors unfold. And it involves craft to create. Whisky is more than just alcohol that tastes like wood, and metal is more than noise that's all about darkness.
 
 In the mid-80s, early 90s, an extreme variant of metal emerged: death metal. Think of it as Metallica on steroids with guttural vocals. Youngsters trying to make music as fast, and contrarian as possible. One of the pioneers of the genre was the band 'Death', founded by the late [Chuck Schuldiner](https://en.wikipedia.org/wiki/Chuck_Schuldiner).
 
@@ -53,7 +53,7 @@ Now how does geeking out on the recording process of a more than 30-year-old alb
 
 ### Vision and execution beat tools
 
-What I find interesting is that having very basic tools, in no way did hinder the process of creation. Perhaps it even shaped it in a way: With just two tracks, Chuck really needed to focus on the essentials: Main riff and harmony.
+What I find interesting is that having very basic tools, in no way did hinder the process of creation. Perhaps it even shaped it in a way: with just two tracks, Chuck really needed to focus on the essentials: main riff and harmony.
 
 These days, software like Cubase or Pro Tools make it possible to create complete, multi-layered musical arrangements. That also means there is no limit in what one can add, and one can specify every detail one thinks of. So, sophistication increases and the technology becomes accessible to a larger audience. However, the need for vision, plan and guidance hasn't changed. 
 
@@ -69,9 +69,9 @@ A couple of months ago, Dax Raad, creator of [OpenCode](https://opencode.ai/), p
 
 {{< figure src="/img/individual-thought-patterns-tweet.gif" title="Opinions on 'peak efficiency'" >}}
 
-I think that observation holds true. Traditionally in organisations, there are all kinds of processes: At the C-level and downwards, strategy is distilled into per-department targets such as OKRs. Then per department, teams evaluate those goals, turn them into hypotheses, prototypes, POCs. Chose what to build, since you can't build it all. Determine how to measure results. Evaluate. Repeat.
+I think that observation holds true. Traditionally in organizations, there are all kinds of processes: At the C-level and downwards, strategy is distilled into per-department targets such as OKRs. Then per department, teams evaluate those goals, turn them into hypotheses, prototypes, POCs. Chose what to build, since you can't build it all. Determine how to measure results. Evaluate. Repeat.
 
-Now if creating becomes cheap, it becomes tempting to stop thinking about goals. Or about how and what to evaluate. There is no need to choose, so we are tempted to (and can!) build it all. But ultimately all of that lands in the same structures that always existed: A target audience that can only consume so much. An organization that can only evaluate so much. Processes like decision making, procurement, architecture (ADRs), A/B tests that haven't sped up. Bottlenecks everywhere. The result can hardly be anything other than: More software, with less quality, less vision, and less utilisation.
+Now if creating becomes cheap, it becomes tempting to stop thinking about goals. Or about how and what to evaluate. There is no need to choose, so we are tempted to (and can!) build it all. But ultimately all of that lands in the same structures that always existed: a target audience that can only consume so much. An organization that can only evaluate so much. Processes like decision making, procurement, architecture (ADRs), A/B tests that haven't sped up. Bottlenecks everywhere. The result can hardly be anything other than: more software, with less quality, less vision, and less utilisation.
 
 ### "You do you" in teams
 
@@ -91,7 +91,7 @@ Now setting people to work based on specifications is not a bad thing in a lot o
 
 ### "You do you" with agents
 
-The contemporary Silicon Valley equivalent of hiring a competent drummer would be writing a specification and then having a LLM generate a drum-track. If not satisfied, refine spec, repeat. And again. And since creating has become so cheap: Another round. No team synergy. No accomplishment. A result that fits the music, but lacks the human element.
+The contemporary Silicon Valley equivalent of hiring a competent drummer would be writing a specification and then having a LLM generate a drum-track. If not satisfied, refine spec, repeat. And again. And since creating has become so cheap: another round. No team synergy. No accomplishment. A result that fits the music, but lacks the human element.
 
 We can write a skill: "Use albums this and that as reference material. Replace the hihat with an additional piccolo snare[^footnote_piccolo]. Don't play things that are not possible with four limbs."
 
@@ -99,20 +99,20 @@ If it's known what one wants, this is entirely feasible. Professional musicians 
 
 Creating software can be like that. This used to be the waterfall method: If you design and specify everything in detail up-front, you can just throw that over the fence and the desired software will come out. The proverbial fence here being the border to any lower-wage off-shore or near-shore location.
 
-Although the low cost of creating can be a deciding factor, the reality is that a lot of organisations found waterfall to be quite ineffective, resulting in the emergence of Agile. Waterfall needs a considerable amount of effort in up-front design and QA, while offering no flexibility or adaptability.
+Although the low cost of creating can be a deciding factor, the reality is that a lot of organizations found waterfall to be quite ineffective, resulting in the emergence of Agile. Waterfall needs a considerable amount of effort in up-front design and QA, while offering no flexibility or adaptability.
 
-Spec-Driven-Development in a way is like traditional Waterfall condensed in a way shorter timespan. And that reduced timespan should give more of the adaptability that is lacking from waterfall: Cheaper and faster iterations.
+Spec-Driven-Development in a way is like traditional Waterfall condensed in a way shorter timespan. And that reduced timespan should give more of the adaptability that is lacking from waterfall: cheaper and faster iterations.
 
-A lot of challenges that have always been there in software architecture remain when practicing Spec-Driven-Development. To name a few:
+Many challenges that have always been there in software architecture remain when practicing Spec-Driven-Development. To name a few:
 
 * Do we really know what we want upfront?
 * How to describe everything we want in detail, so the outcome matches our expectations?
 * How do we ensure the things we write down, don't contradict one another?
 * How can we evolve architecture and requirements over time?
-* How can we, as an individual, or team, or organisation, remain able to grasp, overview and review our specs?
+* How can we, as an individual, or team, or organization, remain able to grasp, overview and review our specs?
 * Even with all our specs, do we dare to switch ~~vendors~~ models?
 
-A lot of the praise of Spec-Driven-Development seems to focus on the magical part of going from human-readable descriptions to working software at the press of a button. And it is great. But it also means part of the required effort simply moved outside of the creation phase. To the left, crafting the right spec. And to the right: QA, evaluation.
+Much of the praise of Spec-Driven-Development seems to focus on the magical part of going from human-readable descriptions to working software at the press of a button. And it is great. But it also means part of the required effort simply moved outside of the creation phase. To the left, crafting the right spec. And to the right: QA, evaluation.
 
 Don't just take my word on challenges lurking in Spec-Driven-Development: [Martin Fowler wrote a very interesting piece](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html), exploring some of the frameworks in this space.
 
@@ -132,7 +132,7 @@ LLMs are like good musicians. You can work with LLMs in a way that is truly inte
 
 A final aspect I find intriguing is that the tools to create the music, were simple, widely available, with 'no strings attached'. Guitars, amps, cables, 4-track recorders, cassette. All compatible with one another and quite easy to replace. Marshall amp head broken but the studio has an ENGL sitting around? Might not give the _exact_ sound you're used to, but it will work. Forgot your cable? Borrow one.
 
-Modern day, things are often different. For recording, [Pro Tools](https://www.avid.com/pro-tools) is a common choice for professional musicians, but the licence is subscription-based. [NeuralDSP](https://neuraldsp.com/quad-cortex) offers amazing amp modelling capabilities. To get the most out of it you can use plugins that give you the complete sound of your favorite artist. Luckily the licence of plugins is for life. Still, it requires software, including a licence manager, which has requirements on the system it runs on. And software needs maintenance: The OS it runs on needs security updates, and compatibility between OS and software needs to be ensured.
+Modern day, things are often different. For recording, [Pro Tools](https://www.avid.com/pro-tools) is a common choice for professional musicians, but the license is subscription-based. [NeuralDSP](https://neuraldsp.com/quad-cortex) offers amazing amp modeling capabilities. To get the most out of it you can use plugins that give you the complete sound of your favorite artist. Luckily the license of plugins is for life. Still, it requires software, including a license manager, which has requirements on the system it runs on. And software needs maintenance: The OS it runs on needs security updates, and compatibility between OS and software needs to be ensured.
 
 That's a lot of software dependencies for essentially turning guitar string oscillations into an electrical signal. And it works by the mercy of the company that provides the software staying in business. Or not being acquired by an entity that has very different views on pricing models[^footnote_pricing].
 
@@ -159,7 +159,7 @@ Although written between 35 and 28 years ago, I can't help but feel Death's last
 * Symbolic
 * The Sound of Perseverance
 
-Chuck died of Cancer, a disease sadly affecting a lot of people. Let's just hope that all those water-guzzling and energy-consuming datacenters that are being built, are also used to help humanity in [fighting that disease](https://www.cancerresearch.org/blog/ai-cancer). Maybe then all the AI-augmented processes that should have stayed simple, or the endless slop that shouldn't exist, might be a price worth paying. 
+Chuck died of Cancer, a disease sadly affecting many people. Let's just hope that all those water-guzzling and energy-consuming datacenters that are being built, are also used to help humanity in [fighting that disease](https://www.cancerresearch.org/blog/ai-cancer). Maybe then all the AI-augmented processes that should have stayed simple, or the endless slop that shouldn't exist, might be a price worth paying. 
 
 I hope you enjoyed reading this as much as I did writing!
 
