@@ -39,7 +39,7 @@ Things to keep in mind reading this:
 
 ### Going caveman and "you do you"
 
-In the podcast, Gene described how the recording of the drums came to be. It started with demos recorded by Chuck, referred to as the 'adorable demos'. In the time, most musicians had a 4-track or 8-track recorder, allowing to record more than one track one by one, in decent quality. 
+In the podcast, Gene described how the recording of the drums came to be. It started with demos recorded by Chuck, referred to as the 'adorable demos'. At the time, most musicians had a 4-track or 8-track recorder, allowing to record more than one track one by one, in decent quality. 
 
 Chuck went caveman: He recorded one guitar track on a regular cassette using the record function of a ghetto blaster. Then played back that track while playing additional guitar parts (harmonies, leads) and recorded both using a _second_ ghetto blaster. Very lo-fi.
 
@@ -99,7 +99,7 @@ If it's known what one wants, this is entirely feasible. Professional musicians 
 
 Creating software can be like that. This used to be the waterfall method: If you design and specify everything in detail up-front, you can just throw that over the fence and the desired software will come out. The proverbial fence here being the border to any lower-wage off-shore or near-shore location.
 
-Although the low cost of creating can be a deciding factor, the reality is that a lot of organisations found waterfall to be quite ineffective, resulting in the emergence of Agile. Waterfall needs a considerate amount of effort in up-front design and QA, while offering no flexibility or adaptability.
+Although the low cost of creating can be a deciding factor, the reality is that a lot of organisations found waterfall to be quite ineffective, resulting in the emergence of Agile. Waterfall needs a considerable amount of effort in up-front design and QA, while offering no flexibility or adaptability.
 
 Spec-Driven-Development in a way is like traditional Waterfall condensed in a way shorter timespan. And that reduced timespan should give more of the adaptability that is lacking from waterfall: Cheaper and faster iterations.
 
@@ -116,7 +116,7 @@ A lot of the praise of Spec-Driven-Development seems to focus on the magical par
 
 Don't just take my word on challenges lurking in Spec-Driven-Development: [Martin Fowler wrote a very interesting piece](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html), exploring some of the frameworks in this space.
 
-There's an interesting paradox in the approach: On the one hand being concise helps in grasping what we've written from a human perspective. And less text is a good thing for the limited context windows of LLMs as well. On the other hand, to constrain the undeterministic nature of agents, we need to be very precise and verbose. I believe balancing that will remain a challenge. 
+There's an interesting paradox in the approach: On the one hand being concise helps in grasping what we've written from a human perspective. And less text is a good thing for the limited context windows of LLMs as well. On the other hand, to constrain the nondeterministic nature of agents, we need to be very precise and verbose. I believe balancing that will remain a challenge. 
 
 Worth noting is that LLMs are also very useful in the phases left and right of the actual code authoring. So we can use LLMs to craft our spec. And to do QA. At the same time, they are black boxes, and their creators have an incentive to make you come back. So, the LLM will be friendly, tell you what you like to hear and is [unlikely to push back](https://www.theguardian.com/technology/2026/apr/29/making-ai-chatbots-more-friendly-mistakes-support-false-beliefs-conspiracy-theories-study). Even if it should.
 
@@ -132,7 +132,7 @@ LLMs are like good musicians. You can work with LLMs in a way that is truly inte
 
 A final aspect I find intriguing is that the tools to create the music, were simple, widely available, with 'no strings attached'. Guitars, amps, cables, 4-track recorders, cassette. All compatible with one another and quite easy to replace. Marshall amp head broken but the studio has an ENGL sitting around? Might not give the _exact_ sound you're used to, but it will work. Forgot your cable? Borrow one.
 
-Modern day, things are often different. For recording, [Pro Tools](https://www.avid.com/pro-tools) is a common choice for professional musicians, but the licence is subscription-based. [NeuralDSP](https://neuraldsp.com/quad-cortex) offers amazing amp modelling capabilities. To get the most out of it you can use plugins that give you the complete sound of your favorite artist. Luckily the licence of plugins is for life. Still, it requires software, including a licence manager, which has requirements on the system it runs on. And software needs maintenance: The OS it runs on needs updates for security and compatibility between OS and software needs to be ensured.
+Modern day, things are often different. For recording, [Pro Tools](https://www.avid.com/pro-tools) is a common choice for professional musicians, but the licence is subscription-based. [NeuralDSP](https://neuraldsp.com/quad-cortex) offers amazing amp modelling capabilities. To get the most out of it you can use plugins that give you the complete sound of your favorite artist. Luckily the licence of plugins is for life. Still, it requires software, including a licence manager, which has requirements on the system it runs on. And software needs maintenance: The OS it runs on needs security updates, and compatibility between OS and software needs to be ensured.
 
 That's a lot of software dependencies for essentially turning guitar string oscillations into an electrical signal. And it works by the mercy of the company that provides the software staying in business. Or not being acquired by an entity that has very different views on pricing models[^footnote_pricing].
 
