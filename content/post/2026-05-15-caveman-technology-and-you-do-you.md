@@ -1,5 +1,5 @@
 ---
-title: Individual Thought Patterns: "Going caveman" and "you do you"
+title: 'Individual Thought Patterns: "Going caveman" and "you do you"'
 author: Tibo Beijen
 date: 2026-05-15T05:00:00+01:00
 url: /2026/05/15/individual-thought-patterns-caveman-technology-and-you-do-you
