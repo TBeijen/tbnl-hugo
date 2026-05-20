@@ -1,5 +1,5 @@
 ---
-title: "Individual Thought Patterns: Caveman Technology and 'you do you'"
+title: Individual Thought Patterns: "Going caveman" and "you do you"
 author: Tibo Beijen
 date: 2026-05-15T05:00:00+01:00
 url: /2026/05/15/individual-thought-patterns-caveman-technology-and-you-do-you
@@ -16,7 +16,7 @@ thumbnail: img/individual-thought-patterns-header.jpg
 
 ---
 
-During my weekly long runs I listen to podcasts. Mostly about tech or music, and a couple of months ago I listened to [an episode](https://www.youtube.com/watch?v=JVRlcJXFHGo) that contained some quotes that kept resonating: "Going caveman" and "you do you". Let's unpack what they mean in the context of working in tech, the AI-ification of everything, and the state of the world today.
+During my weekly long runs I listen to podcasts. Mostly about tech or music, and a couple of months ago I listened to [an episode](https://www.youtube.com/watch?v=JVRlcJXFHGo) that contained some quotes that kept resonating: "Going caveman" and "you do you". Let's unpack what they mean in the context of working in tech, the AI-ification of everything, and the state of the world today[^footnote_scope_creep].
 
 ## A bit of background
 
@@ -146,7 +146,7 @@ It's all about not putting eggs in one basket. Standardising on baskets is effic
 
 Not saying we should stick to Vim. But if a year of advancement has gotten us to sitting on our hands whenever Claude is down, we're not doing alright either.
 
-### Conclusion
+## Conclusion
 
 It's interesting how listening to a seemingly unrelated podcast, opens up a can of metaphors. I can for sure say that connecting those dots happens way faster than writing down those connections in a coherent way. Whether or not I succeeded is for the reader to decide.
 
@@ -167,6 +167,7 @@ I hope you enjoyed reading this as much as I did writing!
 
 Got any thoughts or feedback? Find me on [LinkedIn](https://www.linkedin.com/in/tibobeijen/) or [BlueSky](https://bsky.app/profile/tibobeijen.nl)
 
+[^footnote_scope_creep]: This is not my job. Scope creep is allowed here.
 [^footnote_like]: I liked that tweet. Also I use LLMs intensively. Both can be true.
 [^footnote_session]: And in cases a bit of marketing: 'Featuring members of \<well-known band>'.
 [^footnote_piccolo]: Yes, that's an [album reference](https://uniqueleaderrecords.bandcamp.com/album/nuklearth).
