@@ -97,7 +97,7 @@ We can write a skill: "Use albums this and that as reference material. Replace t
 
 If it's known what one wants, this is entirely feasible. Professional musicians in an orchestra will play exactly what's written on sheet music, and follow the conductor's guidance. The conductor overviews the end result, focusing on things like overall sound and dynamics.
 
-Creating software can be like that. This used to be the waterfall method: If you design and specify everything in detail up-front, you can just throw that over the fence and the desired software will come out. The proverbial fence here being the border to any lower-wage off-shore or near-shore location.
+Creating software can be like that. This used to be the waterfall method: If you design and specify everything in detail up-front, you can just throw that over the fence and the desired software will come out. The proverbial fence here being the border to any lower-wage off-shore or near-shore country.
 
 Although the low cost of creating can be a deciding factor, the reality is that a lot of organizations found waterfall to be quite ineffective, resulting in the emergence of Agile. Waterfall needs a considerable amount of effort in up-front design and QA, while offering no flexibility or adaptability.
 
