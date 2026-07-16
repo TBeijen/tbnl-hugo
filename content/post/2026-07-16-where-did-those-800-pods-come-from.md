@@ -133,7 +133,38 @@ With all the info present in files in a directory, I started chatting a bit with
 
 All in all, a net possitive, making it clear what happened. Let's break it down:
 
+## Root cause: Argo CD Application and ApplicationSet controllers are independent
 
+> Eventual consistency does not imply order
 
+A reasoning mistake. Or more correctly: Forgetting to reason about _how_ a PR will be applied.
+
+What happened:
+
+* PR was merged
+* Argo CD picks up the new commit
+* Application controller and ApplicationSet controller start to process the change
+* In this particular case, Application controller was _first_. 
+* The `Application` object _did not yet have the new `values-shared.yaml`_
+* Reconcilers be reconciling, resulting in a lot of unexpected resources.
+
+In hindsight it is very obvious. And the concepts are well-known.
+
+Yet, how things interact can be easily overlooked. And thinking this over, our field of work is full of things like this. Some examples:
+
+* Terraform plans are presented as atomic. But applying is not. What happens if an AWS API throws a 400 half-way?
+* Promoting artifacts feels atomic, but there's usually a rolling update mechanism.
+* A PR in a monorepo can show changes of all affected components, presentad as a single update. But you have to trust orchestration to take care of upgrading the components in the right order.
+* Layers of caching making changes slow to propagate.
+
+In our case the mistake was introducing the new `values-shared.yaml` file, _and_ moving values out of the original files, in the same commit. The safe approach:
+
+* Introduce the new, empty, `values-shared.yaml`
+* Ensure `Application` is updated and now uses the shared values
+* Proceed with moving values to shared, using Argo CD Diff Preview to validate changes
+
+Cumbersome. But safe.
+
+We are considering CI checks to enforce this. Something like 'if `*.argocd.yaml` is changed, all value files concatenated should not change'. But it should be rock solid. Added complexity resulting in 10% false positives and 10% false negatives, helps no one.
 
 [^footnote_zen_explicit]: This is what I mean with 'explicit' in The Zen of DevOps: Showing intent.
