@@ -1,8 +1,8 @@
 ---
 title: Where did those 800 pods come from?
 author: Tibo Beijen
-date: 2026-07-16T05:00:00+01:00
-url: /2026/07/16/where-did-those-800-pods-come-from
+date: 2026-07-18T15:00:00+01:00
+url: /2026/07/18/where-did-those-800-pods-come-from
 categories:
   - articles
 tags:
@@ -11,8 +11,8 @@ tags:
   - EKS
   - Fargate
   - Troubleshooting
-description: "A conceptual mistake and some coincidental other quirks means: Troubleshooting to be done, insights to gain and take-aways to obtain."
-thumbnail: img/...
+description: A typical unlikely combination of factors, involving Argo CD ApplicationSets and mysterious AWS EKS Fargate nodes, resulting in some head-scratching, troubleshooting and interesting take-aways.
+thumbnail: img/unsupported-pods-800.png
 
 ---
 
@@ -20,7 +20,13 @@ Recently I merged a pull request that was like any other pull request. But thing
 
 Things didn't break, but could have. Things shouldn't have happened, but did.
 
-The usual 'unlikely combination of factors', resulting in some troubleshooting, and interesting take-aways.
+The typical unlikely combination of factors, involving Argo CD ApplicationSets and mysterious AWS EKS Fargate nodes, resulting in some head-scratching, troubleshooting and interesting take-aways.
+
+In this article:
+
+{{< toc >}}
+
+{{< figure src="/img/unsupported-pods-800.png" title="Lots of invalid pods" >}}
 
 ## The Pull Request
 
@@ -83,7 +89,7 @@ fawkes-api/helm/values-prod.yaml      | 10 ----------
 fawkes-api/helm/values-shared.yaml    | 12 ++++++++++++
 ```
 
-## This merge should not create that many pods
+## This merge should not create that many pods!?
 
 Usually with changes that might affect startup, I have a `k get pods -w` running somewhere on the side, to see things unfold. And that started to fill with lines like this:
 
@@ -106,19 +112,17 @@ Events showed things like:
 
 This application shouldn't run on Fargate. Also, pods now had the name of the application, appended with the name of the custom chart ('entertainment-apps'). Whatever was happening, this was _not_ just a typo in resources values, and this was _not_ our intended change. Roll back it is.
 
-A `git revert` and Argo sync later, at least from the Argo side things looked better. Lot of stale resources to prune but otherwise things looked ok.
+A `git revert` and Argo sync later, I could observe Argo CD picking up the reverted configuration. From CLI I could still observe `UnsupportedPodSpec` pods being stamped out. So I checked if original replicaset still was ok (it was) and deleted the `prod-fawkes-api-entertainment-app-84d7d8dfd8` replicaset.
 
-From CLI I could still observe `UnsupportedPodSpec` pods being stamped out. So I checked if original replicaset still was ok (it was) and deleted the `prod-fawkes-api-entertainment-app-84d7d8dfd8` replicaset.
+Things settled down. There were resources to prune in Argo CD, included resources such as a `prod-fawkes-api-entertainment-app` service, that existed alongside the original `prod-fawkes-api` service, and similar duplicates.
 
-Things settled down. The resources to prune in Argo CD, included resources such as a `prod-fawkes-api-entertainment-app` service, that existed alongside the original `prod-fawkes-api` service, and similar duplicates.
-
-This unexpected naming change was already a tell. As was the fact that this did not consistently happen in all of our environments...
+This unexpected resource naming change was already a tell. As was the fact that this did not consistently affect all environments (non-prod was fine)...
 
 ## What happened?
 
-With the mess cleaned up, I started collecting material to investigate into files: The list of unsupported pods. The events. Some descriptions of the unsupported pods. And Argo CD logs. 
+With the mess cleaned up, I started collecting material to investigate, into files: The list of unsupported pods. The events. Some descriptions of the unsupported pods. And Argo CD logs. 
 
-Shout out to [stern](https://github.com/stern/stern) by the way. Beats Loki. Beats MCP. Everything dumped to a file in a second: 
+Quick shout out to [stern](https://github.com/stern/stern) by the way. Beats Loki. Beats MCP. Everything dumped to a file in a second: 
 
 ```
 stern -n argocd argocd --since=20m --include="err" > argocd-errors.log
@@ -186,7 +190,7 @@ tolerations:
 
 We use labels and taints to segment our nodes. This way we can isolate application workloads from system workloads such as KEDA and gateways.
 
-With the key empty, the toleration effectively became:"tolerate everything". Not good.
+With the key empty, the toleration effectively became: "tolerate everything". Not good.
 
 ### How can we improve?
 
@@ -195,9 +199,9 @@ Our helm chart was simple and straightforward, and did not take an empty tolerat
 In this case several improvements can be considered:
 
 * Require the value in `schema.json`. Good if always wanting a value. If absent you'll have a rendering error.
-* Wrap the `tolerations` block in a conditional. Good if not specifying any toleration is acceptable. In our particular setup not a great fit. It would have resulted in pods that could not be scheduled which is better than pods scheduled on the wrong node.
-* Use a default value if `toleration` value is absent. Work if there is a safe default value. In our case 'applications' would indeed be a sane default.
-* Pair any of the above with a policy. Improving charts is nice, and can help the chart user. Howver, from a cluster operator perspective this is API input that [needs to be validated](https://www.ncsc.gov.uk/collection/securing-http-based-apis/4-input-validation).
+* Wrap the `tolerations` block in a conditional. Good if not specifying any toleration is acceptable. In our particular setup not a great fit. It would have resulted in pods that could not be scheduled. Which is still better than pods scheduled on the wrong node.
+* Use a default value if `toleration` value is absent. Works if there is a safe default value. In our case 'applications' would indeed be a sane default.
+* Pair any of the above with a policy. Improving charts is nice, and can help the chart user. However, from a cluster operator perspective this is API input that [needs to be validated](https://www.ncsc.gov.uk/collection/securing-http-based-apis/4-input-validation).
 
 ## Contributing factor: Empty Fargate node
 
@@ -334,11 +338,11 @@ spec:
 
 Fargate scheduler takes it from there.
 
-That's the intended flow. Now if something unexpected happens, say I create a pod with `nodeName` set to a Fargate node. It bypasses the scheduler and is effectively assigned to that node.
+That's the intended flow. Now if something unexpected happens, say I create a pod with `nodeName` set to a Fargate node, the pod bypasses the scheduler and is effectively assigned to that node.
 
 The Fargate node kubelet will pick it up, and run a series of admission checks[^footnote_kubelet]. In the vanilla kubelet code there is a [PodAdmitHandler](https://pkg.go.dev/k8s.io/kubernetes/pkg/kubelet/lifecycle#PodAdmitHandler) interface. As far as I am aware of there is no extension mechanism. Given its totally different runtime environment, the AWS Fargate kubelet implementation is probably completely custom anyway. Either way, it rejects the pod and throws a `UnsupportedPodSpec` warning.
 
-Problem in our case was that the ReplicaSetController did not pick this up and started churning out more pods that all went through the same motions: Scheduler, assigned to Fargate node, rejected by Kubelet.
+Problem in our case was that the ReplicaSetController did not pick this up and started churning out more pods that all went through the same motions: Default scheduler, assigned to Fargate node, rejected by Kubelet.
 
 That kubelet check needs to exist. The kubelet needs to be able to reject a pod it can't run and have a mechanism to report it.
 
@@ -346,7 +350,7 @@ But looking at the system as a whole, one could argue that these pods should not
 
 Following that reasoning, I wonder if an AWS validating admission controller, similar to the `eks-fargate-mutation` admission controller that already exists, could be an improvement:
 * It would turn the failure mode from: "Here are 800 pods that would never have been able to run anyway", into: "ReplicaSetController gets an error when trying to create a pod and backs off". Arguably cleaner.
-* The type of failure would be similar to e.g. Kyverno rejecting a pod based on policy violations. Teams will probably have mechanisms in place to surface and deal with these types of events.
+* The type of failure would be similar to e.g. Kyverno rejecting a pod based on policy violations. So: Known territory. Teams will probably have mechanisms in place to surface and deal with these types of events.
 
 ## Lucky: Prune set to false
 
@@ -371,19 +375,19 @@ Nothing wrong with being on the safe side, but I have more than once seen suppos
 
 This PR merge I did at the end of the day, right before needing to travel back home. Needing to fix things while also having an eye on the clock is nog a great combination.
 
-The revert was cleanly done and all was healthy when heading to the train. Turned out some of the wrongly named resources were still around in Argo CD, waiting to be pruned and sounding some alerts.
+The revert was cleanly done and all was healthy when I headed to the train. But it turned out some of the wrongly named resources were still around in Argo CD, waiting to be pruned and firing some alerts.
 
-I could fix that quickly when in train, but would have taken longer if not having had a seat. In this case, waiting a bit and having people silence the alert for a while would be fine. 
+I could fix that quickly when in train, but it would have taken longer if not having had a seat. In this case, waiting a bit and having people silence the alert for a while would have been fine, but that could have been different. 
 
-Nevertheless a good reminder to always think through the unlikely scenario of things not going as planned.
+A good reminder to always think through the unlikely scenario of things not going as planned.
 
 ## Take-away
 
-Identifying and fixing the mishap took minutes. It was an outlier situatation, nothing broke, so it's tempting to quickly focus on more pressing matters.
+Identifying and fixing the mishap took minutes. It was an outlier situatation, nothing broke, so it's tempting to quickly resume focus on more pressing matters.
 
-Unpacking what exactly happened takes hours. But in my opinion it's fun and worth it. It allows identifying improvements in one's way of work. It also is a good way to (re-)sharpen one's knowledge: A good incentive to dive into areas one doesn't deal with in a typical day.
+Unpacking what exactly happened takes hours. But in my opinion it's fun and worth it. It allows identifying improvements in one's way of work. It also is a good way to (re-)sharpen one's knowledge: A good incentive to dive into areas one doesn't touch in a typical day.
 
-To me, this also highlights the value of open source: Documentation, source code, all of it is yours to explore. And not yours alone, a vast community works within this ecosystem and tries to improve it. Day by day, in the open. To illustrate: Kubelet source code I could explore. Fargate control plane and Fargate kubelet I could not, there my capabilities stop at the support portal.
+To me, this also highlights the value of open source: Documentation, source code, all of it is yours to explore. And not yours alone, a vast community works within this ecosystem and tries to improve it. Day by day, in the open. To illustrate: Kubelet source code I could explore. Fargate control plane and Fargate kubelet I could not, there my capabilities stop at the AWS support portal.
 
 Never stop learning.
 
