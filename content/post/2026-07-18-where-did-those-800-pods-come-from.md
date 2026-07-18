@@ -30,7 +30,7 @@ In this article:
 
 ## The Pull Request
 
-The PR contents were basically a chore. Kubernetes (AWS EKS) and ArgoCD are our tools of choice, and we use a custom Helm chart to have consistent application deployments. The PR involved bumping the chart version and optimizing some resource and probe configuration details.
+The PR contents were basically a chore. Kubernetes (AWS EKS) and Argo CD are our tools of choice, and we use a custom Helm chart to have consistent application deployments. The PR involved bumping the chart version and optimizing some resource and probe configuration details.
 
 While at it, there was also some moving of values between files. Originally we had only a `values-non-prod.yaml` and `values-prod.yaml`, both sharing a lot of identical values. It is how things go: Somebody starts flat and simple. Then config grows over time and it becomes increasingly hard to keep things consistent. But also it becomes increasingly hard to tell _intentional_ differences from _accidental_ differences[^footnote_zen_explicit]. 
 
@@ -73,7 +73,7 @@ Furthermore, we have ApplicationSets using the [Git Generator](https://argo-cd.r
 project: audio
 namespace: fawkes
 # Default, no need to specify unless wanting to override.
-# (shown for illustrative prurposes)
+# (shown for illustrative purposes)
 valueFiles:
   - values-non-prod.yaml
 ```
@@ -114,7 +114,7 @@ This application shouldn't run on Fargate. Also, pods now had the name of the ap
 
 A `git revert` and Argo sync later, I could observe Argo CD picking up the reverted configuration. From CLI I could still observe `UnsupportedPodSpec` pods being stamped out. So I checked if original replicaset still was ok (it was) and deleted the `prod-fawkes-api-entertainment-app-84d7d8dfd8` replicaset.
 
-Things settled down. There were resources to prune in Argo CD, included resources such as a `prod-fawkes-api-entertainment-app` service, that existed alongside the original `prod-fawkes-api` service, and similar duplicates.
+Things settled down. There were resources to prune in Argo CD, including resources such as a `prod-fawkes-api-entertainment-app` service, that existed alongside the original `prod-fawkes-api` service, and similar duplicates.
 
 This unexpected resource naming change was already a tell. As was the fact that this did not consistently affect all environments (non-prod was fine)...
 
@@ -133,9 +133,9 @@ By now two things stood out:
 * Resource naming change, the appending of the chart name. I had a sense of _what_ went wrong (shared values file ignored), but not _why_.
 * Fargate scheduling. I know the mechanics of scheduling, taints and tolerations. Still: Enigma.
 
-With all the info present in files in a directory, I started chatting a bit with my [Anthropic friend](https://claude.ai/). As always: Super helpful, great at sifting through eye-bleed-inducing amounts of logs. Also great at firmly pointing out causes such as possible node pressure, or KEDA, that were completely unrelated, sending you (or itself) on an endless goose chases, if not guided properly.
+With all the info present in files in a directory, I started chatting a bit with my [Anthropic friend](https://claude.ai/). As always: Super helpful, great at sifting through eye-bleed-inducing amounts of logs. Also great at firmly pointing out causes such as possible node pressure, or KEDA, that were completely unrelated, sending you (or itself) on an endless goose chase, if not guided properly.
 
-All in all, a net possitive, making it clear what happened. Let's break it down:
+All in all, a net positive, making it clear what happened. Let's break it down:
 
 ## Root cause: Argo CD Application and ApplicationSet controllers are independent
 
@@ -173,7 +173,7 @@ Cumbersome. But safe.
 
 ### How can we improve?
 
-For starters we've updated documentation to make this abundantly clear. Likewise a warning has been added to the LLM skill that helps with authoring application helm configurations.
+For starters we've updated documentation to make this abundantly clear. Likewise a warning has been added to the LLM skill that helps with authoring application Helm configurations.
 
 We are considering CI checks to enforce this. Something like 'if `*.argocd.yaml` is changed, all value files concatenated should not change'. But it should be rock solid: Added complexity resulting in 10% false positives and 10% false negatives, helps no one.
 
@@ -194,7 +194,7 @@ With the key empty, the toleration effectively became: "tolerate everything". No
 
 ### How can we improve?
 
-Our helm chart was simple and straightforward, and did not take an empty toleration value into account. Simple has its merits, but when authoring charts it's also important to think defensive: "What will happen if this value is absent?" or "How do we want this to fail?".
+Our Helm chart was simple and straightforward, and did not take an empty toleration value into account. Simple has its merits, but when authoring charts it's also important to think defensive: "What will happen if this value is absent?" or "How do we want this to fail?".
 
 In this case several improvements can be considered:
 
@@ -209,7 +209,7 @@ An empty Fargate node you say? But how?
 
 That's a great question.
 
-AWS Fargate on EKS puts elegible pods on a node running on an AWS managed MicroVM[^footnote_firecracker]. That node's lifecycle is bound to the pod's lifecycle. Pod goes away, so does the node. At least it should.
+AWS Fargate on EKS puts eligible pods on a node running on an AWS managed MicroVM[^footnote_firecracker]. That node's lifecycle is bound to the pod's lifecycle. Pod goes away, so does the node. At least it should.
 
 Some details of the node:
 
@@ -254,7 +254,7 @@ We now had:
 * A mysterious empty Fargate node with capacity to schedule a pod
 * A pod that mistakenly tolerates all taints
 
-The (regular) scheduler assigned the pod to the farget node. Then the Fargate kubelet rejected it, as could be seen from the pod events:
+The (regular) scheduler assigned the pod to the Fargate node. Then the Fargate kubelet rejected it, as could be seen from the pod events:
 
 ```
 Events:
@@ -272,7 +272,7 @@ We can't fix the AWS Fargate control plane. And so far I have never heard of peo
 
 ### How could AWS improve?
 
-First of all: Operating services at AWS scale is hard. So there is a vast amount of context I am blissfully unaware of. That being said, it is very fun to hypothesise.
+First of all: Operating services at AWS scale is hard. So there is a vast amount of context I am blissfully unaware of. That being said, it is very fun to hypothesize.
 
 To run pods on Fargate, one defines [Fargate profiles](https://docs.aws.amazon.com/eks/latest/userguide/fargate-profile.html) but under the hood all boils down to common Kubernetes building blocks.
 
@@ -340,13 +340,13 @@ Fargate scheduler takes it from there.
 
 That's the intended flow. Now if something unexpected happens, say I create a pod with `nodeName` set to a Fargate node, the pod bypasses the scheduler and is effectively assigned to that node.
 
-The Fargate node kubelet will pick it up, and run a series of admission checks[^footnote_kubelet]. In the vanilla kubelet code there is a [PodAdmitHandler](https://pkg.go.dev/k8s.io/kubernetes/pkg/kubelet/lifecycle#PodAdmitHandler) interface. As far as I am aware of there is no extension mechanism. Given its totally different runtime environment, the AWS Fargate kubelet implementation is probably completely custom anyway. Either way, it rejects the pod and throws a `UnsupportedPodSpec` warning.
+The Fargate node kubelet will pick it up, and run a series of admission checks[^footnote_kubelet]. In the vanilla kubelet code there is a [PodAdmitHandler](https://pkg.go.dev/k8s.io/kubernetes/pkg/kubelet/lifecycle#PodAdmitHandler) interface. As far as I am aware of there is no extension mechanism. Given its totally different runtime environment, the AWS Fargate kubelet implementation is probably completely custom anyway. Either way, it rejects the pod and throws an `UnsupportedPodSpec` warning.
 
-Problem in our case was that the ReplicaSetController did not pick this up and started churning out more pods that all went through the same motions: Default scheduler, assigned to Fargate node, rejected by Kubelet.
+Problem in our case was that the ReplicaSetController did not pick this up and started churning out more pods that all went through the same motions: Default scheduler, assigned to Fargate node, rejected by kubelet.
 
 That kubelet check needs to exist. The kubelet needs to be able to reject a pod it can't run and have a mechanism to report it.
 
-But looking at the system as a whole, one could argue that these pods should not have existed in the first place. We don't _need_ the Kubelet, with information that only exists in that context, to make that decision. We can already tell from the outset, the pod spec with `nodeName` set by scheduler and no `schedulerName`, that this pod should not run.
+But looking at the system as a whole, one could argue that these pods should not have existed in the first place. We don't _need_ the kubelet, with information that only exists in that context, to make that decision. We can already tell from the outset, the pod spec with `nodeName` set by scheduler and no `schedulerName`, that this pod should not run.
 
 Following that reasoning, I wonder if an AWS validating admission controller, similar to the `eks-fargate-mutation` admission controller that already exists, could be an improvement:
 * It would turn the failure mode from: "Here are 800 pods that would never have been able to run anyway", into: "ReplicaSetController gets an error when trying to create a pod and backs off". Arguably cleaner.
@@ -373,7 +373,7 @@ The should you or should you not deploy on Fridays discussion has many variants.
 
 Nothing wrong with being on the safe side, but I have more than once seen supposedly safely timed releases turn into problems outside of office hours[^footnote_release].
 
-This PR merge I did at the end of the day, right before needing to travel back home. Needing to fix things while also having an eye on the clock is nog a great combination.
+This PR merge I did at the end of the day, right before needing to travel back home. Needing to fix things while also having an eye on the clock is not a great combination.
 
 The revert was cleanly done and all was healthy when I headed to the train. But it turned out some of the wrongly named resources were still around in Argo CD, waiting to be pruned and firing some alerts.
 
@@ -383,11 +383,11 @@ A good reminder to always think through the unlikely scenario of things not goin
 
 ## Take-away
 
-Identifying and fixing the mishap took minutes. It was an outlier situatation, nothing broke, so it's tempting to quickly resume focus on more pressing matters.
+Identifying and fixing the mishap took minutes. It was an outlier situation, nothing broke, so it's tempting to quickly resume focus on more pressing matters.
 
 Unpacking what exactly happened takes hours. But in my opinion it's fun and worth it. It allows identifying improvements in one's way of work. It also is a good way to (re-)sharpen one's knowledge: A good incentive to dive into areas one doesn't touch in a typical day.
 
-To me, this also highlights the value of open source: Documentation, source code, all of it is yours to explore. And not yours alone, a vast community works within this ecosystem and tries to improve it. Day by day, in the open. To illustrate: Kubelet source code I could explore. Fargate control plane and Fargate kubelet I could not, there my capabilities stop at the AWS support portal.
+To me, this also highlights the value of open source: Documentation, source code, all of it is yours to explore. And not yours alone, a vast community works within this ecosystem and tries to improve it. Day by day, in the open. To illustrate: kubelet source code I could explore. Fargate control plane and Fargate kubelet I could not, there my capabilities stop at the AWS support portal.
 
 Never stop learning.
 
@@ -395,5 +395,5 @@ Got any thoughts or feedback? Find me on [LinkedIn](https://www.linkedin.com/in/
 
 [^footnote_zen_explicit]: This is what I mean with 'explicit' in [The Zen of DevOps](https://www.zenofdevops.org/#explicit): Showing intent.
 [^footnote_firecracker]: Apparently [not Firecracker](https://justingarrison.com/blog/2024-02-08-fargate-is-not-firecracker/). The things you discover when digging around when writing a blogpost. AWS marketing did an admirable job.
-[^footnote_kubelet]: [This section](https://www.youtube.com/watch?v=fsuwU94kuns&t=603s) of the talk "Kubernetes SIG Node Intro and Deep Dive" goes into the admission logic that lives inside the Kubelet.
-[^footnote_release]: Regulation and compliancy can mandate release windows. But release windows should not be an excuse to not improve release procedures.
+[^footnote_kubelet]: [This section](https://www.youtube.com/watch?v=fsuwU94kuns&t=603s) of the talk "Kubernetes SIG Node Intro and Deep Dive" goes into the admission logic that lives inside the kubelet.
+[^footnote_release]: Regulation and compliance can mandate release windows. But release windows should not be an excuse to not improve release procedures.
