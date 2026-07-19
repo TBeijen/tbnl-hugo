@@ -369,7 +369,7 @@ Safe side and a bit more hassle it is.
 
 ## Lucky: Having a seat during my commute back home
 
-The should you or should you not deploy on Fridays discussion has many variants.
+The 'should you or should you not deploy on Fridays' discussion has many variants.
 
 Nothing wrong with being on the safe side, but I have more than once seen supposedly safely timed releases turn into problems outside of office hours[^footnote_release].
 
@@ -377,7 +377,7 @@ This PR merge I did at the end of the day, right before needing to travel back h
 
 The revert was cleanly done and all was healthy when I headed to the train. But it turned out some of the wrongly named resources were still around in Argo CD, waiting to be pruned and firing some alerts.
 
-I could fix that quickly when in train, but it would have taken longer if not having had a seat. In this case, waiting a bit and having people silence the alert for a while would have been fine, but that could have been different. 
+I could fix that quickly when in train, but it would have taken longer if not having had a seat. In this particular case, waiting a bit and having people silence the alert for a while would have been fine, but that could have been different. 
 
 A good reminder to always think through the unlikely scenario of things not going as planned.
 
